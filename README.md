@@ -14,6 +14,9 @@ Colorflow Player is a Node.js music streaming app (Spotify and Apple Music) wher
 
 Colorflow was first introduced in iTunes and the iOS Music app but was removed in iTunes 12.5 and iOS 10. Since then a number of jailbreak tweaks (the most popular being [ColorFlow](https://www.idownloadblog.com/2020/02/19/colorflow-5)) have been released and a few third-party iOS Music apps such as [Doppler](https://www.macobserver.com/news/doppler-music-player-ios) and [Power Player](https://powerplayer.evenwerk.com) have supported the feature.
 
+![Doppler Album View](https://apphuntt.files.wordpress.com/2018/08/7a61053f-0b26-4749-8eeb-d46fe75a65ef.png?w=450)
+![ColorFlow Now Playing](https://i.imgur.com/VMXdzFW.png)
+
 ### Colour Matching
 
 Chris Banes created an [Android utility](https://chris.banes.dev/colour-matching) using Java to take the three dominant colours (primary, secondary and tertiary) from an image and create two colours (primary text and secondary text) that provide enough contrast from the background so text is readable. His approach uses [ColorThief](https://lokeshdhakar.com/projects/color-thief) as a basis and then uses a custom approach to fine tune the results.
