@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+    <header>
+        <%- include('../partials/header') %>
+    </header>
+
+    <main class="flex-center">
+        <% bookresult.forEach(function(book) { %>
+        <a id="<%= book.best_book.id._ %>" href="/book">
+            <img class="book-result" src="<%= book.best_book.image_url %>">
+            <% }); %>
+        </a>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer') %>
+    </footer>
+
+</body>
+
+</html>
