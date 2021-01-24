@@ -11,20 +11,9 @@
     </header>
 
     <main class="flex-center">
-        <h2><%- albumname %></h2>
-        <img id="album-art" src="<%- artworkurl %>" alt="<%- albumname %> cover">
-
-        <% trackinfo.forEach(function(track) { %>
-            <div style="background-color:<%- hex %>;" class="flex-row">
-                <p><%= track.track_number %><p>
-                <p><%= track.name %><p>
-
-                <i id="<%= track.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                <audio id="audio<%= track.track_number %>" type="audio/mp3" style="background-color:<%- hex %>;">
-                <source src="<%- track.preview_url %>" type="audio/mp3">
-                </audio>
-            </div>
-        <% }); %>
+        <h2>Choose between Spotify and Apple Music</h2>
+        <button onclick="window.location.href = '/spotify'">Spotify</button>
+        <button onclick="window.location.href = '/apple-music'">Apple Music</button>
     </main>
 
     <footer>
@@ -32,4 +21,5 @@
     </footer>
 
 </body>
+
 </html>
