@@ -14,18 +14,18 @@
         <h2><%- albumname %></h2>
         <img id="album-art" src="<%- artwork %>" alt="<%- albumname %> cover">
 
-        <% tracks.forEach(function(track) { %>
+        <% for (var i = 0; i < tracks.length; i++) { %>
         <div style="background-color: rgb(<%- color %>);" class="flex-row">
-            <p><%= track.track_number %>
+            <p><%= i %>
             <p>
-            <p><%= track.name %>
+            <p><%= tracks[i].title %>
             <p>
-                <i id="<%= track.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                <audio id="audio<%= track.track_number %>" style="background-color: rgb(<%- color %>);">
-                    <source src="<%- track.preview_url %>" type="audio/mpeg">
+                <i id="<%= i %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
+                <audio id="audio<%= i %>" type="audio/mpeg" style="background-color: rgb(<%- color %>);">
+                    <source src="<%- tracks[i].preview %>" type="audio/mpeg">
                 </audio>
         </div>
-        <% }); %>
+        <% } %>
     </main>
 
     <footer>

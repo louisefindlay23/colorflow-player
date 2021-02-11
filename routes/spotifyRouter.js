@@ -55,22 +55,21 @@ spotifyRouter.get('/callback', function (req, res) {
 spotifyRouter.get("/album", function (req, res) {
     spotifyApi.getAlbum('6zeHM5CV0CjcS0K8ouWE4N')
         .then(function (data) {
-            let artworkurl = data.body.images[0].url;
+            const artwork = data.body.images[0].url;
             const albumname = data.body.name;
-            const trackinfo = data.body.tracks.items;
-            console.log(trackinfo);
+            const tracks = data.body.tracks.items;
+            console.log(tracks);
 
             const path = './public/img/image.png';
 
-            download(artworkurl, path, () => {
+            download(artwork, path, () => {
                 let color = colorThief.getColor(path);
-                console.log("RGB Colour is " + color);
 
                 res.render('pages/spotify/album', {
-                    artworkurl: artworkurl,
+                    artwork: artwork,
                     albumname: albumname,
                     color: color,
-                    trackinfo: trackinfo
+                    tracks: tracks
                 });
             });
         }, function (err) {
