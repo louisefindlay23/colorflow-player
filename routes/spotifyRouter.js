@@ -62,7 +62,7 @@ spotifyRouter.get("/album", function (req, res) {
 
             const path = './public/img/image.png';
 
-            download(artworkurl, path, () => {
+            download(artwork, path, () => {
                 let color = colorThief.getColor(path);
 
                 res.render('pages/spotify/album', {
