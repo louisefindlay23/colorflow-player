@@ -10,7 +10,7 @@
         <%- include('../../partials/header') %>
     </header>
 
-    <main class="flex-center">
+    <main class="flex-center full-width">
         <h2><%- albumname %></h2>
         <img id="album-art" src="<%- artwork %>" alt="<%- albumname %> cover">
 
@@ -32,6 +32,12 @@
         <%- include('../../partials/footer') %>
     </footer>
 
+    <script>
+        const artworkColor = document.getElementsByTagName("main")[0].style.backgroundColor;
+        if (lightOrDark(artworkColor) === "dark") {
+            document.getElementsByTagName("h2")[0].style.color = "#fff";
+        }
+    </script>
 </body>
 
 </html>

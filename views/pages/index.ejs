@@ -10,10 +10,20 @@
         <%- include('../partials/header') %>
     </header>
 
-    <main class="flex-center">
-        <h2>Choose between Spotify and Deezer Music</h2>
-        <button onclick="window.location.href = '/spotify'">Spotify</button>
-        <button onclick="window.location.href = '/deezer'">Deezer</button>
+    <main class="flex-center no-bottom">
+        <p>Colorflow Player is a Node.js music streaming app (Spotify and Apple Music) where the color of the album view and now playing screen changes to match the predominate color of the album artwork which is called ColorFlow.</p>
+        <h2>Features</h2>
+        <ul>
+            <li>Spotify and Apple Deezer Streaming</li>
+            <li>Beautiful Colorflow-inspired album and now-playing views</li>
+            <li>Branded Spotify and Deezer UI</li>
+            <li>Search for tracks, albums or artists</li>
+        </ul>
+        <h2>Choose between Spotify and Deezer</h2>
+        <div class="flex-row half">
+            <img src="https://www.scdn.co/i/_global/open-graph-default.png" alt="Spotify Banner" onclick="window.location.href = '/spotify'">
+            <img src="https://miro.medium.com/max/2500/1*fd9T39SlOJtwdPL9vquLhg.jpeg" alt="Deezer Banner" onclick="window.location.href = '/deezer'">
+        </div>
     </main>
 
     <footer>
