@@ -12,18 +12,17 @@
 
     <main class="flex-center">
         <h2><%- albumname %></h2>
-        <img id="album-art" src="<%- artworkurl %>" alt="<%- albumname %> cover">
+        <img id="album-art" src="<%- artwork %>" alt="<%- albumname %> cover">
 
-        <% trackinfo.forEach(function(track) { %>
+        <% tracks.forEach(function(track) { %>
         <div style="background-color: rgb(<%- color %>);" class="flex-row">
             <p><%= track.track_number %>
             <p>
             <p><%= track.name %>
             <p>
-
                 <i id="<%= track.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                <audio id="audio<%= track.track_number %>" type="audio/mp3" style="background-color: rgb(<%- color %>);">
-                    <source src="<%- track.preview_url %>" type="audio/mp3">
+                <audio id="audio<%= track.track_number %>" style="background-color: rgb(<%- color %>);">
+                    <source src="<%- track.preview_url %>" type="audio/mpeg">
                 </audio>
         </div>
         <% }); %>

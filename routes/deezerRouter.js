@@ -31,15 +31,17 @@ deezerRouter.get("/", function (req, res) {
 deezerRouter.get("/album", function (req, res) {
     deezer.album('86103822').then(function (result) {
 
-        let artworkurl = result.cover;
-        const track = result.tracks.data[0]
+        const artwork = result.cover;
+        const albumname = result.title;
+        const tracks = result.tracks.data
+        console.log(tracks);
         const path = './public/img/image.png';
-        download(artworkurl, path, () => {
+        download(artwork, path, () => {
             let color = colorThief.getColor(path);
-            console.log("RGB Colour is " + color);
             res.render('pages/deezer/album', {
-                artworkurl: artworkurl,
-                track: track,
+                artwork: artwork,
+                albumname: albumname,
+                tracks: tracks,
                 color: color
             });
         });
