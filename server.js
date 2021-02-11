@@ -69,7 +69,7 @@ spotifyRouter.get('/callback', function (req, res) {
             // Set the access token on the API object to use it in later calls
             spotifyApi.setAccessToken(data.body['access_token']);
             spotifyApi.setRefreshToken(data.body['refresh_token']);
-            res.redirect("/album");
+            res.redirect("/spotify/album");
         },
         function (err) {
             console.log('Something went wrong!', err);
