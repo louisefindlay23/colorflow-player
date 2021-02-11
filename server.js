@@ -1,3 +1,10 @@
+// Live reload Static Files
+const livereload = require("livereload");
+const path = require('path');
+const liveReloadServer = livereload.createServer();
+liveReloadServer.watch(path.join(__dirname, 'public'));
+const connectLivereload = require("connect-livereload");
+
 // Server Modules
 const express = require('express');
 const ejs = require('ejs');
