@@ -8,7 +8,7 @@ var credentials = {
     clientSecret: process.env.CLIENT_SECRET
 };
 
-var spotifyApi = new SpotifyWebApi(credentials);
+const spotifyApi = new SpotifyWebApi(credentials);
 
 // Colour Modules
 const ColorThief = require('color-thief');
@@ -39,13 +39,9 @@ spotifyRouter.get('/login', function (req, res) {
 });
 
 spotifyRouter.get('/callback', function (req, res) {
-    var code = req.query.code;
+    const code = req.query.code;
     spotifyApi.authorizationCodeGrant(code).then(
         function (data) {
-            console.log('The token expires in ' + data.body['expires_in']);
-            console.log('The access token is ' + data.body['access_token']);
-            console.log('The refresh token is ' + data.body['refresh_token']);
-
             // Set the access token on the API object to use it in later calls
             spotifyApi.setAccessToken(data.body['access_token']);
             spotifyApi.setRefreshToken(data.body['refresh_token']);
@@ -60,19 +56,17 @@ spotifyRouter.get('/callback', function (req, res) {
 spotifyRouter.get("/album", function (req, res) {
     spotifyApi.getAlbum('6zeHM5CV0CjcS0K8ouWE4N')
         .then(function (data) {
-            var artworkurl = data.body.images[0].url;
-            var albumname = data.body.name;
-            var trackinfo = data.body.tracks.items;
+            let artworkurl = data.body.images[0].url;
+            const albumname = data.body.name;
+            const trackinfo = data.body.tracks.items;
             console.log(trackinfo);
 
-            var url = artworkurl;
-            var path = './public/img/image.png';
+            const path = './public/img/image.png';
 
-            download(url, path, () => {
-                console.log('✅ Done!');
-                var rgb = colorThief.getColor(path);
-                var rgbCode = 'rgb( ' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-                var hex = onecolor(rgbCode).hex();
+            download(artworkurl, path, () => {
+                const rgb = colorThief.getColor(path);
+                const rgbCode = 'rgb( ' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+                const hex = onecolor(rgbCode).hex();
 
                 res.render('pages/spotify/album', {
                     artworkurl: artworkurl,
@@ -88,14 +82,14 @@ spotifyRouter.get("/album", function (req, res) {
 
 // Search Route - TBD
 spotifyRouter.post('/search', function (req, res) {
-    var bookquery = req.body.book;
-    var booklist = gr.searchBooks({
+    const bookquery = req.body.book;
+    const booklist = gr.searchBooks({
         q: bookquery,
         page: 1,
         field: 'title'
     });
     booklist.then(function (result) {
-        var bookresult = result.search.results.work;
+        const bookresult = result.search.results.work;
         console.log(bookresult);
         res.render('pages/search-results', {
             bookresult: bookresult
