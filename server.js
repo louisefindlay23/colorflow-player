@@ -46,17 +46,19 @@ app.get("/", function (req, res) {
     res.render("pages/index");
 });
 
-// Spotify Player
+// Spotify Router
+const spotifyRouter = express.Router();
+app.use("/spotify", spotifyRouter);
 
-app.get("/spotify", function (req, res) {
+spotifyRouter.get("/", function (req, res) {
     res.render("pages/spotify/index");
 });
 
-app.get('/spotify/login', function (req, res) {
+spotifyRouter.get('/login', function (req, res) {
     res.redirect("https://accounts.spotify.com/authorize?client_id=" + process.env.CLIENT_ID + "&response_type=code&redirect_uri=" + process.env.REDIRECT_URI + "&scope=user-read-private%20user-read-email&state=some-state-of-my-choice");
 });
 
-app.get('/callback', function (req, res) {
+spotifyRouter.get('/callback', function (req, res) {
     var code = req.query.code;
     spotifyApi.authorizationCodeGrant(code).then(
         function (data) {
@@ -67,7 +69,7 @@ app.get('/callback', function (req, res) {
             // Set the access token on the API object to use it in later calls
             spotifyApi.setAccessToken(data.body['access_token']);
             spotifyApi.setRefreshToken(data.body['refresh_token']);
-            res.redirect("/spotify/album");
+            res.redirect("/album");
         },
         function (err) {
             console.log('Something went wrong!', err);
@@ -75,7 +77,7 @@ app.get('/callback', function (req, res) {
     );
 });
 
-app.get("/spotify/album", function (req, res) {
+spotifyRouter.get("/album", function (req, res) {
     spotifyApi.getAlbum('6zeHM5CV0CjcS0K8ouWE4N')
         .then(function (data) {
             var artworkurl = data.body.images[0].url;
@@ -105,7 +107,7 @@ app.get("/spotify/album", function (req, res) {
 });
 
 // Search Route - TBD
-app.post('/search', function (req, res) {
+spotifyRouter.post('/search', function (req, res) {
     var bookquery = req.body.book;
     var booklist = gr.searchBooks({
         q: bookquery,
