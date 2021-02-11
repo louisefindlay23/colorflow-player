@@ -13,7 +13,6 @@ const spotifyApi = new SpotifyWebApi(credentials);
 // Colour Modules
 const ColorThief = require('color-thief');
 const colorThief = new ColorThief();
-const onecolor = require('onecolor');
 
 const fs = require('fs');
 const request = require('request');
@@ -64,14 +63,13 @@ spotifyRouter.get("/album", function (req, res) {
             const path = './public/img/image.png';
 
             download(artworkurl, path, () => {
-                const rgb = colorThief.getColor(path);
-                const rgbCode = 'rgb( ' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-                const hex = onecolor(rgbCode).hex();
+                let color = colorThief.getColor(path);
+                console.log("RGB Colour is " + color);
 
                 res.render('pages/spotify/album', {
                     artworkurl: artworkurl,
                     albumname: albumname,
-                    hex: hex,
+                    color: color,
                     trackinfo: trackinfo
                 });
             });
