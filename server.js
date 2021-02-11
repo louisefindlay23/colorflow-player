@@ -31,4 +31,6 @@ app.get("/", function (req, res) {
 const spotifyRoutes = require("./routes/spotifyRouter");
 app.use("/spotify", spotifyRoutes);
 
-// Apple Music Player
+// Deezer Routes
+const deezerRoutes = require("./routes/deezerRouter");
+app.use("/deezer", deezerRoutes);
