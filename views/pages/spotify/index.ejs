@@ -12,7 +12,20 @@
 
     <main class="flex-center">
         <h2>Spotify Coverflow Player</h2>
-        <button onclick="window.location.href = '/spotify/login'">Login to Spotify</button>
+        <!-- FUTURE: Add Spotify Intro + Logo? -->
+        <button onclick="window.location.href = '/spotify/album'">View Album</button>
+        <button onclick="window.location.href = '/spotify/artist'">View Artist</button>
+        <!-- FUTURE: Search for different things? -->
+        <form id="search-form" action="/spotify/search" method="post">
+            <label for="searchbar">Search</label>
+            <input id="search-bar" name="searchbar" type="search">
+            <select name="searchtype">
+                <option value="track">Track</option>
+                <option value="artist">Artist</option>
+                <option value="playlist">Playlist</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
     </main>
 
     <footer>

@@ -17,6 +17,9 @@ const colorThief = new ColorThief();
 const fs = require('fs');
 const request = require('request');
 
+// Parse Form Data
+const bodyParser = require('body-parser');
+
 // Download Files
 const download = (url, path, callback) => {
     request.head(url, (err, res, body) => {
@@ -26,9 +29,14 @@ const download = (url, path, callback) => {
     });
 };
 
-// Spotify Router
+// Initialise Spotify Router
 const spotifyRouter = express.Router();
+spotifyRouter.use(bodyParser.urlencoded({
+    extended: true
+}));
+spotifyRouter.use(bodyParser.json());
 
+// Spotify Routes
 spotifyRouter.get("/", function (req, res) {
     res.render("pages/spotify/index");
 });
@@ -44,12 +52,44 @@ spotifyRouter.get('/callback', function (req, res) {
             // Set the access token on the API object to use it in later calls
             spotifyApi.setAccessToken(data.body['access_token']);
             spotifyApi.setRefreshToken(data.body['refresh_token']);
-            res.redirect("/spotify/album");
+            res.redirect("/spotify");
         },
         function (err) {
             console.log('Something went wrong!', err);
         }
     );
+});
+
+// Search Route
+spotifyRouter.post('/search', function (req, res) {
+    const searchType = req.body.searchtype;
+    const searchQuery = req.body.searchbar;
+    console.log("You searched for an " + searchType + " that's called " + searchQuery);
+
+    if (searchType === "track") {
+        spotifyApi.searchTracks(searchQuery)
+            .then(function (data) {
+                console.log("Search tracks for ", data.body.tracks.items);
+            }, function (err) {
+                console.error(err);
+            });
+    } else if (searchType === "artist") {
+        spotifyApi.searchArtists(searchQuery)
+            .then(function (data) {
+                console.log("Search artists for ", data.body.artists.items);
+            }, function (err) {
+                console.error(err);
+            });
+    } else if (searchType === "playlist") {
+        spotifyApi.searchPlaylists(searchQuery)
+            .then(function (data) {
+                console.log("Search playlist for ", data.body.playlists.items);
+            }, function (err) {
+                console.error(err);
+            });
+    }
+    res.redirect("/");
+    //res.redirect("/search-results");
 });
 
 spotifyRouter.get("/album", function (req, res) {
@@ -75,25 +115,6 @@ spotifyRouter.get("/album", function (req, res) {
         }, function (err) {
             console.error(err);
         });
-});
-
-// Search Route - TBD
-spotifyRouter.post('/search', function (req, res) {
-    const bookquery = req.body.book;
-    const booklist = gr.searchBooks({
-        q: bookquery,
-        page: 1,
-        field: 'title'
-    });
-    booklist.then(function (result) {
-        const bookresult = result.search.results.work;
-        console.log(bookresult);
-        res.render('pages/search-results', {
-            bookresult: bookresult
-        });
-    }).catch(function () {
-        console.log("Goodreads Search Books Rejected");
-    });
 });
 
 module.exports = spotifyRouter;

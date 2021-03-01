@@ -121,31 +121,58 @@ footer p,
 
 /* Form Styling */
 
-input[type=search] {
-    width: 50%;
+input[type=search],
+select {
+    width: auto;
     border: 3px solid var(--main-color);
-    border-right: none;
     padding: 10px;
     height: auto;
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px;
     outline: none;
     color: #000000;
+}
+
+input[type=search] {
+    width: 30vw;
+    margin-top: 5vh;
+    margin-right: 14vh;
 }
 
 input[type=search]:focus {
     color: #000000;
 }
 
-button[type=submit] {
-    width: 40px;
+select {
+    position: relative;
+    bottom: 7vh;
+    background: var(--main-color);
+    color: #fff;
+}
+
+option {
+    border-color: #fff;
+    border-radius: 20px;
+}
+
+button {
+    width: auto;
     height: auto;
+    padding: 1% 2.5%;
+    margin: 2.5% 0;
     border: 1px solid var(--main-color);
     background: var(--main-color);
     text-align: center;
     color: #fff;
-    border-radius: 0 5px 5px 0;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 20px;
+}
+
+button:hover {
+    background: #fff;
+    color: var(--main-color);
+    border-color: var(--main-color);
+    cursor: pointer;
 }
 
 /* Utility Classes */
@@ -162,20 +189,4 @@ button[type=submit] {
     width: 50%;
     height: 100%;
     cursor: pointer;
-}
-
-
-/* Other Classes */
-
-.book-result {
-    width: 98px;
-    height: 148px;
-    margin: 0 10px;
-}
-
-#booksearch {
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
 }
