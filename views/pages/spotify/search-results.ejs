@@ -11,11 +11,29 @@
     </header>
 
     <main class="flex-center">
-        <% results.forEach(function(result) { %>
+        <h2>Tracks</h2>
+        <% trackResults.forEach(function(result) { %>
         <a id="" href="/track">
             <img src="<%= result.album.images[0].url %>">
             <h3><%= result.album.name %></h3>
             <p><%= result.album.artists[0].name %></p>
+        </a>
+        <% }); %>
+
+        <h2>Artists</h2>
+        <% artistResults.forEach(function(result) { %>
+        <a id="" href="/artist">
+            <img src="<%= result.images[0].url %>">
+            <p><%= result.name %></p>
+        </a>
+        <% }); %>
+
+        <h2>Playlists</h2>
+        <% playlistResults.forEach(function(result) { %>
+        <a id="" href="/playlist">
+            <img src="<%= result.images[0].url %>">
+            <h3><%= result.album.name %></h3>
+            <p><%= result.owner.display_name %></p>
         </a>
         <% }); %>
     </main>

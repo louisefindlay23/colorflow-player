@@ -79,7 +79,8 @@ spotifyRouter.post('/search', function (req, res) {
     } else if (searchType === "artist") {
         spotifyApi.searchArtists(searchQuery)
             .then(function (data) {
-                console.log("Search artists for ", data.body.artists.items);
+                const artistResult = data.body.artists.items;
+                console.log("Search artists for ", artistResult);
                 res.redirect("/");
             }, function (err) {
                 console.error(err);
