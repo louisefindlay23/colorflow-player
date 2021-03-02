@@ -95,14 +95,15 @@ spotifyRouter.post('/search', function (req, res) {
 });
 
 spotifyRouter.get("/album", function (req, res) {
-    spotifyApi.getAlbum('6zeHM5CV0CjcS0K8ouWE4N')
+    spotifyApi.getAlbum(req.query.id)
         .then(function (data) {
             const artwork = data.body.images[0].url;
             const albumname = data.body.name;
             const tracks = data.body.tracks.items;
             console.log(tracks);
 
-            const path = './public/img/image.png';
+            // TODO: Use album name to save/cache analysed artwork
+            const path = "./public/img/analysed-artwork/image.png";
 
             download(artwork, path, () => {
                 let color = colorThief.getColor(path);
