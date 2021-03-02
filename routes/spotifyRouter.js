@@ -69,7 +69,24 @@ spotifyRouter.post('/search', function (req, res) {
     if (searchType === "track") {
         spotifyApi.searchTracks(searchQuery)
             .then(function (data) {
-                console.log("Search tracks for ", data.body.tracks.items);
+                const trackResult = data.body.tracks.items;
+                const artistsArray = [];
+                //console.log("Search tracks for ", trackData);
+                trackResult.forEach((result) => {
+                    const artwork = result.album.images[0].url;
+                    const albumName = result.album.name;
+                    const artists = result.album.artists;
+                    artists.forEach((artist) => {
+                        artistsArray.push(artist.name);
+                    });
+                });
+                console.log(artistsArray);
+                res.render('pages/spotify/search-results', {
+                    results: trackResult,
+                    artwork: artwork,
+                    albumName: albumName,
+                    artists: artists
+                });
             }, function (err) {
                 console.error(err);
             });

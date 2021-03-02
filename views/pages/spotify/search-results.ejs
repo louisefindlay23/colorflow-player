@@ -11,9 +11,11 @@
     </header>
 
     <main class="flex-center">
-        <% bookresult.forEach(function(book) { %>
-        <a id="<%= book.best_book.id._ %>" href="/book">
-            <img class="book-result" src="<%= book.best_book.image_url %>">
+        <% results.forEach(function(result) { %>
+        <a id="" href="/track">
+            <img src="<%= result.album.images[0].url %>">
+            <h3><%= result.album.name %></h3>
+            <p><%= result.album.artists %></p>
             <% }); %>
         </a>
     </main>
