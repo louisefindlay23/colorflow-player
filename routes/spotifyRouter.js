@@ -60,40 +60,38 @@ spotifyRouter.get('/callback', function (req, res) {
     );
 });
 
-async function trackResults(query) {
-    let trackResults = await spotifyApi.searchTracks(query);
-    return await trackResults.body.tracks.items;
-}
-
 // Search Route
 spotifyRouter.post('/search', function (req, res) {
     const searchType = req.body.searchtype;
     const searchQuery = req.body.searchbar;
     console.log("You searched for an " + searchType + " that's called " + searchQuery);
 
-    trackResults(searchQuery).then((data) => {
-        console.log(data);
-    }).catch(err => console.log(err));
-
-    let artistResults = spotifyApi.searchArtists(searchQuery)
-        .then(function (data) {
-            artistResults = data.body.artists.items;
-        }, function (err) {
-            console.error(err);
+    const obtainTrackResults = spotifyApi.searchTracks(searchQuery)
+        .then((data) => {
+            return data.body.tracks.items;
         });
-    let playlistResults = spotifyApi.searchPlaylists(searchQuery)
-        .then(function (data) {
-            playlistResults = data.body.playlists.items;
-        }, function (err) {
-            console.error(err);
+    const obtainArtistResults = spotifyApi.searchArtists(searchQuery)
+        .then((data) => {
+            return data.body.artists.items;
+        });
+    const obtainPlaylistResults = spotifyApi.searchPlaylists(searchQuery)
+        .then((data) => {
+            console.log(data.body.playlists.items);
+            return data.body.playlists.items;
         });
 
-    res.redirect("/");
-    //res.render('pages/spotify/search-results', {
-    //   trackResults: trackResults,
-    //   artistResults: artistResults,
-    //   playlistResults: playlistResults
-    //});
+
+    const retrieveResults = async () => {
+        const trackResults = await obtainTrackResults;
+        const artistResults = await obtainArtistResults;
+        const playlistResults = await obtainPlaylistResults;
+        res.render('pages/spotify/search-results', {
+            trackResults: trackResults,
+            artistResults: artistResults,
+            playlistResults: playlistResults
+        });
+    }
+    retrieveResults();
 });
 
 spotifyRouter.get("/album", function (req, res) {

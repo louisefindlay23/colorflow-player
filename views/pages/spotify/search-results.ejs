@@ -32,7 +32,7 @@
         <% playlistResults.forEach(function(result) { %>
         <a id="" href="/playlist">
             <img src="<%= result.images[0].url %>">
-            <h3><%= result.album.name %></h3>
+            <h3><%= result.name %></h3>
             <p><%= result.owner.display_name %></p>
         </a>
         <% }); %>
