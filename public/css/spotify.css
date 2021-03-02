@@ -22,7 +22,7 @@ h3,
 h4,
 p,
 a,
-footer,
+footer p,
 .la-play-circle {
     color: #fff;
 }
@@ -59,10 +59,16 @@ section .flex-row {
     border-radius: 50%;
 }
 
-#albums .card {
+#albums .card,
+#playlists .card {
     max-width: 27.5vw;
 }
 
 #albums h4 {
     word-wrap: break-word;
+}
+
+#playlists img {
+    width: 100%;
+    height: auto;
 }

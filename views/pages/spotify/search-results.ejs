@@ -61,14 +61,18 @@
         </section>
 
         <section id="playlists">
-            <h4>Playlists</h4>
-            <% playlistResults.forEach(function(result) { %>
-            <a id="" href="/playlist">
-                <img src="<%= result.images[0].url %>">
-                <h3><%= result.name %></h3>
-                <p><%= result.owner.display_name %></p>
-            </a>
-            <% }); %>
+            <h2>Playlists</h2>
+            <div class="flex-row">
+                <% playlistResults.forEach(function(result) { %>
+                <div class="card">
+                    <a id="" href="/playlist">
+                        <img src="<%= result.images[0].url %>">
+                        <h4>By <%= result.name %></h4>
+                        <p><%= result.owner.display_name %></p>
+                    </a>
+                </div>
+                <% }); %>
+            </div>
         </section>
     </main>
 
