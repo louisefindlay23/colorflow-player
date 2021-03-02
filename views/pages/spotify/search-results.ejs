@@ -11,9 +11,19 @@
     </header>
 
     <main class="flex-center">
-        <h2>Tracks</h2>
+        <h2>Songs</h2>
         <% trackResults.forEach(function(result) { %>
-        <a id="" href="/track">
+        <img src="<%= result.album.images[0].url %>">
+        <h3><%= result.name %></h3>
+        <p><%= result.album.artists[0].name %></p>
+        <i id="<%= result.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
+        <audio id="audio<%= result.track_number %>">
+            <source src="<%- result.preview_url %>" type="audio/mpeg">
+        </audio>
+        <% }); %>
+        <h2>Albums</h2>
+        <% trackResults.forEach(function(result) { %>
+        <a id="" href="/album">
             <img src="<%= result.album.images[0].url %>">
             <h3><%= result.album.name %></h3>
             <p><%= result.album.artists[0].name %></p>

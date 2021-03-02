@@ -121,8 +121,7 @@ footer p,
 
 /* Form Styling */
 
-input[type=search],
-select {
+input[type=search] {
     width: auto;
     border: 3px solid var(--main-color);
     padding: 10px;
@@ -140,13 +139,6 @@ input[type=search] {
 
 input[type=search]:focus {
     color: #000000;
-}
-
-select {
-    position: relative;
-    bottom: 7vh;
-    background: var(--main-color);
-    color: #fff;
 }
 
 option {

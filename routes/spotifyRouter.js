@@ -64,10 +64,11 @@ spotifyRouter.get('/callback', function (req, res) {
 spotifyRouter.post('/search', function (req, res) {
     const searchType = req.body.searchtype;
     const searchQuery = req.body.searchbar;
-    console.log("You searched for an " + searchType + " that's called " + searchQuery);
+    console.log("You searched for " + searchQuery);
 
     const obtainTrackResults = spotifyApi.searchTracks(searchQuery)
         .then((data) => {
+            //console.log(data.body.tracks.items);
             return data.body.tracks.items;
         });
     const obtainArtistResults = spotifyApi.searchArtists(searchQuery)
@@ -76,7 +77,6 @@ spotifyRouter.post('/search', function (req, res) {
         });
     const obtainPlaylistResults = spotifyApi.searchPlaylists(searchQuery)
         .then((data) => {
-            console.log(data.body.playlists.items);
             return data.body.playlists.items;
         });
 
