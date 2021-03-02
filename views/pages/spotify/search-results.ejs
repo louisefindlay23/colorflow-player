@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-    <%- include('/views/partials/head') %>
+    <%- include('../../partials/head') %>
 </head>
 
 <body>
     <header>
-        <%- include('/views/partials/header') %>
+        <%- include('../../partials/header') %>
     </header>
 
     <main class="flex-center">
@@ -15,13 +15,13 @@
         <a id="" href="/track">
             <img src="<%= result.album.images[0].url %>">
             <h3><%= result.album.name %></h3>
-            <p><%= result.album.artists %></p>
-            <% }); %>
+            <p><%= result.album.artists[0].name %></p>
         </a>
+        <% }); %>
     </main>
 
     <footer>
-        <%- include('/views/partials/footer') %>
+        <%- include('../../partials/footer') %>
     </footer>
 
 </body>

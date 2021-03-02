@@ -70,22 +70,8 @@ spotifyRouter.post('/search', function (req, res) {
         spotifyApi.searchTracks(searchQuery)
             .then(function (data) {
                 const trackResult = data.body.tracks.items;
-                const artistsArray = [];
-                //console.log("Search tracks for ", trackData);
-                trackResult.forEach((result) => {
-                    const artwork = result.album.images[0].url;
-                    const albumName = result.album.name;
-                    const artists = result.album.artists;
-                    artists.forEach((artist) => {
-                        artistsArray.push(artist.name);
-                    });
-                });
-                console.log(artistsArray);
                 res.render('pages/spotify/search-results', {
                     results: trackResult,
-                    artwork: artwork,
-                    albumName: albumName,
-                    artists: artists
                 });
             }, function (err) {
                 console.error(err);
@@ -94,6 +80,7 @@ spotifyRouter.post('/search', function (req, res) {
         spotifyApi.searchArtists(searchQuery)
             .then(function (data) {
                 console.log("Search artists for ", data.body.artists.items);
+                res.redirect("/");
             }, function (err) {
                 console.error(err);
             });
@@ -101,12 +88,12 @@ spotifyRouter.post('/search', function (req, res) {
         spotifyApi.searchPlaylists(searchQuery)
             .then(function (data) {
                 console.log("Search playlist for ", data.body.playlists.items);
+                res.redirect("/");
             }, function (err) {
                 console.error(err);
             });
     }
-    res.redirect("/");
-    //res.redirect("/search-results");
+
 });
 
 spotifyRouter.get("/album", function (req, res) {
