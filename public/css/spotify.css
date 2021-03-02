@@ -27,24 +27,42 @@ footer,
     color: #fff;
 }
 
-#songs .flex-row,
-#artists .flex-row {
+section .flex-row {
     width: 90%;
     margin: 0 5%;
+    flex-wrap: wrap;
 }
 
-#artists .card {
+.card {
+    box-sizing: border-box;
     background: #282828;
     box-shadow: 0 8px 24px rgba(0, 0, 0, .5);
     border-radius: 10px;
     padding: 2.5%;
-    height: 45vh;
+    margin: 2.5% 0;
 }
 
-#artists .card:hover {
+.card:hover {
     background: #333;
+}
+
+.card a {
+    text-decoration: none;
+}
+
+.card p {
+    color: #ccc;
+    margin-left: 0;
 }
 
 #artists img {
     border-radius: 50%;
+}
+
+#albums .card {
+    max-width: 27.5vw;
+}
+
+#albums h4 {
+    word-wrap: break-word;
 }
