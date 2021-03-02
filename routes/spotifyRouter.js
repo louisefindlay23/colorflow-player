@@ -68,7 +68,6 @@ spotifyRouter.post('/search', function (req, res) {
 
     const obtainTrackResults = spotifyApi.searchTracks(searchQuery)
         .then((data) => {
-            //console.log(data.body.tracks.items);
             return data.body.tracks.items;
         });
     const obtainArtistResults = spotifyApi.searchArtists(searchQuery)
@@ -86,6 +85,7 @@ spotifyRouter.post('/search', function (req, res) {
         const artistResults = await obtainArtistResults;
         const playlistResults = await obtainPlaylistResults;
         res.render('pages/spotify/search-results', {
+            searchQuery: searchQuery,
             trackResults: trackResults,
             artistResults: artistResults,
             playlistResults: playlistResults
