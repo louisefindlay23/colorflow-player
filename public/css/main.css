@@ -90,6 +90,7 @@ footer p,
 }
 
 /* Flex Classes */
+
 .flex-center {
     max-width: 100vw;
     display: flex;
@@ -181,4 +182,8 @@ button:hover {
     width: 50%;
     height: 100%;
     cursor: pointer;
+}
+
+.bold {
+    font-weight: bold;
 }

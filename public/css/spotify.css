@@ -1,3 +1,5 @@
+/* Global Spotify CSS */
+
 body,
 main {
     background: #121212;
@@ -14,6 +16,7 @@ footer {
 
 section {
     width: 100%;
+    margin-bottom: 5%;
 }
 
 h1,
@@ -26,6 +29,8 @@ footer p,
 .la-play-circle {
     color: #fff;
 }
+
+/* Spotify Card/Section CSS */
 
 section .flex-row {
     width: 90%;
@@ -56,8 +61,21 @@ section .flex-row {
     margin-left: 0;
 }
 
-#artists img {
+#artists img,
+#artist img {
     border-radius: 50%;
+}
+
+#artist .flex-row {
+    justify-content: center;
+}
+
+#artist-stats {
+    text-align: center;
+}
+
+#artist-stats p:first-of-type {
+    padding-bottom: 2.5%;
 }
 
 #albums .card,

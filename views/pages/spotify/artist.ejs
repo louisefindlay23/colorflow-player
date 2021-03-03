@@ -13,8 +13,32 @@
     </header>
 
     <main class="flex-center">
-        <h2>Artist: <%- artistInfo.name %></h2>
-        <img src="<%= artistInfo.images[2].url %>">
+        <section id="artist">
+            <h2>Artist: <%- artistInfo.name %></h2>
+            <div class="flex-row">
+                <img src="<%= artistInfo.images[1].url %>">
+            </div>
+        </section>
+        <section id="artist-stats">
+            <p><span class="bold">Followers:</span> <%- artistInfo.followers.total %></p>
+            <p><span class="bold">Popularity:</span> <%- artistInfo.popularity %>%</p>
+        </section>
+        <section id="albums">
+            <h3>Albums</h3>
+            <div class="flex-row">
+                <% albumInfo.forEach(function(album) { %>
+                <div class="card">
+                    <a href="/spotify/album/<%= album.id %>">
+                        <img src="<%= album.images[1].url %>">
+                        <h4><%= album.name %></h4>
+                        <a href="/spotify/artist/?id=<%= album.id %>">
+                            <p><%= album.artists[0].name %></p>
+                        </a>
+                    </a>
+                </div>
+                <% }); %>
+            </div>
+        </section>
     </main>
 
     <footer>

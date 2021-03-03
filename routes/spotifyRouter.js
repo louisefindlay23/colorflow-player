@@ -140,20 +140,20 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
         });
 });
 
-spotifyRouter.get("/artist:id", isAuthenticated, function (req, res) {
+spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
     const obtainArtistInfo = spotifyApi.getArtist(req.params.id)
         .then((data) => {
             return data.body;
         });
     const obtainArtistAlbumInfo = spotifyApi.getArtistAlbums(req.params.id)
         .then((data) => {
-            return data.body;
+            return data.body.items;
         });
 
     const retrieveInfo = async () => {
         const artistInfo = await obtainArtistInfo;
         const albumInfo = await obtainArtistAlbumInfo;
-        console.info(albumInfo);
+        console.info(artistInfo);
         res.render('pages/spotify/artist', {
             artistInfo: artistInfo,
             albumInfo: albumInfo
