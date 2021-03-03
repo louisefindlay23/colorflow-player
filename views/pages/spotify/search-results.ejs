@@ -19,11 +19,11 @@
             <h3>Songs</h3>
             <% trackResults.forEach(function(result) { %>
             <div class="flex-row">
-                <a href="/spotify/album/?id=<%= result.album.id %>">
+                <a href="/spotify/album/<%= result.album.id %>">
                     <img src="<%= result.album.images[2].url %>">
                 </a>
                 <h4><%= result.name %></h4>
-                <a href="/spotify/artist/?id=<%= result.album.artists[0].id %>">
+                <a href="/spotify/artist/<%= result.album.artists[0].id %>">
                     <p><%= result.album.artists[0].name %></p>
                 </a>
                 <i id="<%= result.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
@@ -39,7 +39,7 @@
             <div class="flex-row">
                 <% artistResults.forEach(function(result) { %>
                 <div class="card">
-                    <a href="/spotify/artist/?id=<%= result.id %>">
+                    <a href="/spotify/artist/<%= result.id %>">
                         <img src="<%= result.images[1].url %>">
                         <h4><%= result.name %></h4>
                         <p>Artist</p>
@@ -54,7 +54,7 @@
             <div class="flex-row">
                 <% trackResults.forEach(function(result) { %>
                 <div class="card">
-                    <a href="/spotify/album/?id=<%= result.album.id %>">
+                    <a href="/spotify/album/<%= result.album.id %>">
                         <img src="<%= result.album.images[1].url %>">
                         <h4><%= result.album.name %></h4>
                         <a href="/spotify/artist/?id=<%= result.id %>">
@@ -71,7 +71,7 @@
             <div class="flex-row">
                 <% playlistResults.forEach(function(result) { %>
                 <div class="card">
-                    <a href="/spotify/playlist/?id=<%= result.id %>">
+                    <a href="/spotify/playlist/<%= result.id %>">
                         <img src="<%= result.images[0].url %>">
                         <h4>By <%= result.name %></h4>
                         <p><%= result.owner.display_name %></p>
