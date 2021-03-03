@@ -20,6 +20,9 @@ const request = require('request');
 // Parse Form Data
 const bodyParser = require('body-parser');
 
+// Parse URL Path
+const urlModule = require('url');
+
 // Download Files
 const download = (url, path, callback) => {
     request.head(url, (err, res, body) => {
@@ -36,8 +39,18 @@ spotifyRouter.use(bodyParser.urlencoded({
 }));
 spotifyRouter.use(bodyParser.json());
 
+function isAuthenticated(req, res, next) {
+    if (spotifyApi.getAccessToken() == null) {
+        console.warn("You are not authenticated with the Spotify API");
+        res.redirect("/spotify/login");
+    } else {
+        console.info(spotifyApi.getAccessToken());
+        return next();
+    }
+}
+
 // Spotify Routes
-spotifyRouter.get("/", function (req, res) {
+spotifyRouter.get("/", isAuthenticated, function (req, res) {
     res.render("pages/spotify/index");
 });
 
@@ -52,19 +65,28 @@ spotifyRouter.get('/callback', function (req, res) {
             // Set the access token on the API object to use it in later calls
             spotifyApi.setAccessToken(data.body['access_token']);
             spotifyApi.setRefreshToken(data.body['refresh_token']);
-            res.redirect("/spotify");
+            const referrer = req.get('Referrer');
+            console.log(referrer);
+            let referrerpath = urlModule.parse(referrer, true);
+            referrerpath = referrerpath.path;
+            if (referrerpath === "/") {
+                res.redirect("/spotify");
+            } else {
+                res.redirect(referrerpath);
+            }
+
         },
         function (err) {
-            console.log('Something went wrong!', err);
+            console.error('Authentication Error', err);
         }
     );
 });
 
 // Search Route
-spotifyRouter.post('/search', function (req, res) {
+spotifyRouter.post('/search', isAuthenticated, function (req, res) {
     const searchType = req.body.searchtype;
     const searchQuery = req.body.searchbar;
-    console.log("You searched for " + searchQuery);
+    console.info("You searched for " + searchQuery);
 
     const obtainTrackResults = spotifyApi.searchTracks(searchQuery)
         .then((data) => {
@@ -79,14 +101,10 @@ spotifyRouter.post('/search', function (req, res) {
             return data.body.playlists.items;
         });
 
-
     const retrieveResults = async () => {
         const trackResults = await obtainTrackResults;
         const artistResults = await obtainArtistResults;
         const playlistResults = await obtainPlaylistResults;
-
-        console.log(trackResults);
-
         res.render('pages/spotify/search-results', {
             searchQuery: searchQuery,
             trackResults: trackResults,
@@ -97,7 +115,7 @@ spotifyRouter.post('/search', function (req, res) {
     retrieveResults();
 });
 
-spotifyRouter.get("/album", function (req, res) {
+spotifyRouter.get("/album", isAuthenticated, function (req, res) {
     spotifyApi.getAlbum(req.query.id)
         .then(function (data) {
             const artwork = data.body.images[0].url;
@@ -118,8 +136,30 @@ spotifyRouter.get("/album", function (req, res) {
                 });
             });
         }, function (err) {
-            console.error(err);
+            console.error("Get Album Info error", err);
         });
+});
+
+spotifyRouter.get("/artist", isAuthenticated, function (req, res) {
+    const obtainArtistInfo = spotifyApi.getArtist(req.query.id)
+        .then((data) => {
+            return data.body;
+        });
+    const obtainArtistAlbumInfo = spotifyApi.getArtistAlbums(req.query.id)
+        .then((data) => {
+            return data.body;
+        });
+
+    const retrieveInfo = async () => {
+        const artistInfo = await obtainArtistInfo;
+        const albumInfo = await obtainArtistAlbumInfo;
+        console.info(albumInfo);
+        res.render('pages/spotify/artist', {
+            artistInfo: artistInfo,
+            albumInfo: albumInfo
+        });
+    }
+    retrieveInfo();
 });
 
 module.exports = spotifyRouter;
