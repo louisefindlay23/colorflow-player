@@ -141,6 +141,7 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
 });
 
 spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
+    // TODO: Dynamic artist image background
     const obtainArtistInfo = spotifyApi.getArtist(req.params.id)
         .then((data) => {
             return data.body;
@@ -163,28 +164,20 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
 });
 
 spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
-    spotifyApi.getPlaylist(req.params.id)
-        .then(function (data) {
-            const artwork = data.body.images[0].url;
-            //const albumname = data.body.name;
-            const tracks = data.body.tracks.items;
-
-            // TODO: Use album name to save/cache analysed artwork
-            const path = "./public/img/analysed-artwork/image.png";
-
-            download(artwork, path, () => {
-                let color = colorThief.getColor(path);
-
-                res.render('pages/spotify/album', {
-                    artwork: artwork,
-                    albumname: albumname,
-                    color: color,
-                    tracks: tracks
-                });
-            });
-        }, function (err) {
-            console.error("Get Playlist Info error", err);
+    // TODO: Dynamic playlist image background? - Most playlists are multi album art
+    const obtainPlaylistInfo = spotifyApi.getPlaylist(req.params.id)
+        .then((data) => {
+            return data.body;
         });
+
+    const retrieveInfo = async () => {
+        const playlistInfo = await obtainPlaylistInfo;
+        console.info(playlistInfo.tracks.items);
+        res.render('pages/spotify/playlist', {
+            playlistInfo: playlistInfo
+        });
+    }
+    retrieveInfo();
 });
 
 module.exports = spotifyRouter;
