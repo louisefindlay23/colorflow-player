@@ -19,9 +19,13 @@
             <h3>Songs</h3>
             <% trackResults.forEach(function(result) { %>
             <div class="flex-row">
-                <img src="<%= result.album.images[2].url %>">
+                <a href="/spotify/album/?id=<%= result.album.id %>">
+                    <img src="<%= result.album.images[2].url %>">
+                </a>
                 <h4><%= result.name %></h4>
-                <p><%= result.album.artists[0].name %></p>
+                <a href="/spotify/artist/?id=<%= result.album.artists[0].id %>">
+                    <p><%= result.album.artists[0].name %></p>
+                </a>
                 <i id="<%= result.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
                 <audio id="audio<%= result.track_number %>">
                     <source src="<%- result.preview_url %>" type="audio/mpeg">
@@ -35,7 +39,7 @@
             <div class="flex-row">
                 <% artistResults.forEach(function(result) { %>
                 <div class="card">
-                    <a id="" href="/artist">
+                    <a href="/spotify/artist/?id=<%= result.id %>">
                         <img src="<%= result.images[1].url %>">
                         <h4><%= result.name %></h4>
                         <p>Artist</p>
@@ -53,7 +57,9 @@
                     <a href="/spotify/album/?id=<%= result.album.id %>">
                         <img src="<%= result.album.images[1].url %>">
                         <h4><%= result.album.name %></h4>
-                        <p><%= result.album.artists[0].name %></p>
+                        <a href="/spotify/artist/?id=<%= result.id %>">
+                            <p><%= result.album.artists[0].name %></p>
+                        </a>
                     </a>
                 </div>
                 <% }); %>
@@ -65,7 +71,7 @@
             <div class="flex-row">
                 <% playlistResults.forEach(function(result) { %>
                 <div class="card">
-                    <a id="" href="/playlist">
+                    <a href="/spotify/playlist/?id=<%= result.id %>">
                         <img src="<%= result.images[0].url %>">
                         <h4>By <%= result.name %></h4>
                         <p><%= result.owner.display_name %></p>

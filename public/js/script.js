@@ -1,15 +1,4 @@
-window.addEventListener('load', bookLinks, false);
-
-// Append slash with book id, only if a book ID is not found in the link yet
-function bookLinks() {
-    const booklinks = document.querySelectorAll('a[href*="/book"]');
-    booklinks.forEach(function (el) {
-        if (!el.href.includes('id=')) {
-            el.href = el.href.replace(/\?.*$/, '') + '?id=' + el.getAttribute('id');
-        }
-    });
-}
-
+// Play/Pause Audio and Change Icon accordingly
 function togglePlay(id) {
     var playButton = document.getElementById(id);
     var audio = document.getElementById("audio" + id);
@@ -24,6 +13,7 @@ function togglePlay(id) {
     }
 }
 
+// Calculate whether album color is light or dark to change text
 function lightOrDark(color) {
     color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
     r = color[1];

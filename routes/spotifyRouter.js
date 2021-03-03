@@ -84,6 +84,9 @@ spotifyRouter.post('/search', function (req, res) {
         const trackResults = await obtainTrackResults;
         const artistResults = await obtainArtistResults;
         const playlistResults = await obtainPlaylistResults;
+
+        console.log(trackResults);
+
         res.render('pages/spotify/search-results', {
             searchQuery: searchQuery,
             trackResults: trackResults,
@@ -100,7 +103,6 @@ spotifyRouter.get("/album", function (req, res) {
             const artwork = data.body.images[0].url;
             const albumname = data.body.name;
             const tracks = data.body.tracks.items;
-            console.log(tracks);
 
             // TODO: Use album name to save/cache analysed artwork
             const path = "./public/img/analysed-artwork/image.png";

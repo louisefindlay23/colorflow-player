@@ -46,7 +46,8 @@ section .flex-row {
     background: #333;
 }
 
-.card a {
+.card a,
+#songs a {
     text-decoration: none;
 }
 
