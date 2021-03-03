@@ -44,7 +44,6 @@ function isAuthenticated(req, res, next) {
         console.warn("You are not authenticated with the Spotify API");
         res.redirect("/spotify/login");
     } else {
-        console.info(spotifyApi.getAccessToken());
         return next();
     }
 }
@@ -66,7 +65,6 @@ spotifyRouter.get('/callback', function (req, res) {
             spotifyApi.setAccessToken(data.body['access_token']);
             spotifyApi.setRefreshToken(data.body['refresh_token']);
             const referrer = req.get('Referrer');
-            console.log(referrer);
             let referrerpath = urlModule.parse(referrer, true);
             referrerpath = referrerpath.path;
             if (referrerpath === "/") {
@@ -169,12 +167,21 @@ spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
         .then((data) => {
             return data.body;
         });
+    const obtainPlaylistTrackInfo = spotifyApi.getPlaylistTracks(req.params.id, {
+            limit: 30,
+            fields: "items"
+        })
+        .then((data) => {
+            return data.body.items;
+        });
 
     const retrieveInfo = async () => {
         const playlistInfo = await obtainPlaylistInfo;
-        console.info(playlistInfo.tracks.items);
+        const playlistTrackInfo = await obtainPlaylistTrackInfo;
+        console.log(playlistTrackInfo[0].track.name);
         res.render('pages/spotify/playlist', {
-            playlistInfo: playlistInfo
+            playlistInfo: playlistInfo,
+            playlistTrackInfo: playlistTrackInfo
         });
     }
     retrieveInfo();

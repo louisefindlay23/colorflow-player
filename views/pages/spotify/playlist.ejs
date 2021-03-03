@@ -22,14 +22,14 @@
         </section>
         <section id="songs">
             <h3>Songs</h3>
-            <% playlistInfo.tracks.items.forEach(function(track) { %>
+            <% playlistTrackInfo.forEach(function(track) { %>
             <div class="flex-row">
                 <a href="/spotify/album/<%= track.album.id %>">
                     <img src="<%= track.album.images[2].url %>">
                 </a>
                 <h4><%= track.name %></h4>
-                <a href="/spotify/artist/<%= track.album.artists[0].id %>">
-                    <p><%= track.album.artists[0].name %></p>
+                <a href="/spotify/artist/<%= track.artists[0].id %>">
+                    <p><%= track.artists[0].name %></p>
                 </a>
                 <i id="<%= track.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
                 <audio id="audio<%= track.track_number %>">
