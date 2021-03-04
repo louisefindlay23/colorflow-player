@@ -36,6 +36,11 @@ section .flex-row {
     width: 90%;
     margin: 0 5%;
     flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#songs .flex-row {
+    justify-content: space-between;
 }
 
 .card {
@@ -77,7 +82,8 @@ section .flex-row {
     justify-content: center;
 }
 
-#artist-stats {
+#artist-stats,
+#playlist {
     text-align: center;
 }
 
@@ -85,15 +91,12 @@ section .flex-row {
     padding-bottom: 2.5%;
 }
 
-#artists .card,
-#albums .card,
-#playlists .card {
-    width: 27.5vw;
-    height: 80vh;
-}
-
 #albums h4 {
     word-wrap: break-word;
+}
+
+#playlist img {
+    margin-top: 5%;
 }
 
 #playlists img {

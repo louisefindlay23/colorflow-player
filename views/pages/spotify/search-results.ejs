@@ -17,6 +17,7 @@
         <% if (trackResults) { %>
         <section id="songs">
             <h3>Songs</h3>
+            <!-- TODO: Fix uneven track results (Grid?) -->
             <% trackResults.forEach(function(result) { %>
             <div class="flex-row">
                 <a href="/spotify/album/<%= result.album.id %>">
@@ -43,6 +44,7 @@
             <h3>Artists</h3>
             <div class="flex-row">
                 <% artistResults.forEach(function(result) { %>
+                <!-- TODO: Fix unequal card height and two card row (Grid Snippets ?) -->
                 <div class="card">
                     <a href="/spotify/artist/<%= result.id %>">
                         <% if (result.images[1]) { %>
@@ -87,13 +89,13 @@
                 <% playlistResults.forEach(function(result) { %>
                 <div class="card">
                     <a href="/spotify/playlist/<%= result.id %>">
-                        <% if (result.images[0]) { %>
-                        <img src="<%= result.images[0].url %>">
+                        <% if (result.images[1]) { %>
+                        <img src="<%= result.images[1].url %>">
                         <% } else { %>
                         <img src="/img/fallback-imgs/fallback-album.jpg">
                         <% } %>
-                        <h4>By <%= result.name %></h4>
-                        <p><%= result.owner.display_name %></p>
+                        <h4><%= result.name %></h4>
+                        <p>By <%= result.owner.display_name %></p>
                     </a>
                 </div>
                 <% }); %>

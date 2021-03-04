@@ -12,7 +12,11 @@
 
     <main class="flex-center full-width" style="background-color: rgb(<%- color %>);">
         <h2><%- albumname %></h2>
+        <% if (artwork) { %>
         <img id="album-art" src="<%- artwork %>" alt="<%- albumname %> cover">
+        <% } else { %>
+        <img src="/img/fallback-imgs/fallback-album.jpg">
+        <% } %>
 
         <% tracks.forEach(function(track) { %>
         <div style="background-color: rgb(<%- color %>);" class="flex-row">

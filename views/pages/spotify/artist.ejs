@@ -29,7 +29,11 @@
                 <% albumInfo.forEach(function(album) { %>
                 <div class="card">
                     <a href="/spotify/album/<%= album.id %>">
+                        <% if (album.images[1]) { %>
                         <img src="<%= album.images[1].url %>">
+                        <% } else { %>
+                        <img src="/img/fallback-imgs/fallback-album.jpg">
+                        <% } %>
                         <h4><%= album.name %></h4>
                         <a href="/spotify/artist/?id=<%= album.id %>">
                             <p><%= album.artists[0].name %></p>
