@@ -152,7 +152,6 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
     const retrieveInfo = async () => {
         const artistInfo = await obtainArtistInfo;
         const albumInfo = await obtainArtistAlbumInfo;
-        console.info(artistInfo);
         res.render('pages/spotify/artist', {
             artistInfo: artistInfo,
             albumInfo: albumInfo
@@ -178,7 +177,6 @@ spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
     const retrieveInfo = async () => {
         const playlistInfo = await obtainPlaylistInfo;
         const playlistTrackInfo = await obtainPlaylistTrackInfo;
-        console.log(playlistTrackInfo[0].track.name);
         res.render('pages/spotify/playlist', {
             playlistInfo: playlistInfo,
             playlistTrackInfo: playlistTrackInfo

@@ -66,7 +66,14 @@ section .flex-row {
     border-radius: 50%;
 }
 
-#artist .flex-row {
+#artists img {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 5%;
+}
+
+#artists .la-user-circle {
+    display: flex;
     justify-content: center;
 }
 
@@ -78,9 +85,11 @@ section .flex-row {
     padding-bottom: 2.5%;
 }
 
+#artists .card,
 #albums .card,
 #playlists .card {
-    max-width: 27.5vw;
+    width: 27.5vw;
+    height: 80vh;
 }
 
 #albums h4 {

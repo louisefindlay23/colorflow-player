@@ -14,13 +14,17 @@
 
     <main class="flex-center">
         <h2>Search Results For: <%- searchQuery %></h2>
-
+        <% if (trackResults) { %>
         <section id="songs">
             <h3>Songs</h3>
             <% trackResults.forEach(function(result) { %>
             <div class="flex-row">
                 <a href="/spotify/album/<%= result.album.id %>">
+                    <% if (result.album.images[2]) { %>
                     <img src="<%= result.album.images[2].url %>">
+                    <% } else { %>
+                    <img src="/img/fallback-imgs/fallback-album.jpg">
+                    <% } %>
                 </a>
                 <h4><%= result.name %></h4>
                 <a href="/spotify/artist/<%= result.album.artists[0].id %>">
@@ -33,14 +37,19 @@
             </div>
             <% }); %>
         </section>
-
+        <% } %>
+        <% if (artistResults) { %>
         <section id="artists">
             <h3>Artists</h3>
             <div class="flex-row">
                 <% artistResults.forEach(function(result) { %>
                 <div class="card">
                     <a href="/spotify/artist/<%= result.id %>">
+                        <% if (result.images[1]) { %>
                         <img src="<%= result.images[1].url %>">
+                        <% } else { %>
+                        <i class="las la-10x la-user-circle"></i>
+                        <% } %>
                         <h4><%= result.name %></h4>
                         <p>Artist</p>
                     </a>
@@ -48,14 +57,19 @@
                 <% }); %>
             </div>
         </section>
-
+        <% } %>
+        <% if (trackResults) { %>
         <section id="albums">
             <h3>Albums</h3>
             <div class="flex-row">
                 <% trackResults.forEach(function(result) { %>
                 <div class="card">
                     <a href="/spotify/album/<%= result.album.id %>">
+                        <% if (result.album.images[1]) { %>
                         <img src="<%= result.album.images[1].url %>">
+                        <% } else { %>
+                        <img src="/img/fallback-imgs/fallback-album.jpg">
+                        <% } %>
                         <h4><%= result.album.name %></h4>
                         <a href="/spotify/artist/?id=<%= result.id %>">
                             <p><%= result.album.artists[0].name %></p>
@@ -65,14 +79,19 @@
                 <% }); %>
             </div>
         </section>
-
+        <% } %>
+        <% if (playlistResults) { %>
         <section id="playlists">
             <h2>Playlists</h2>
             <div class="flex-row">
                 <% playlistResults.forEach(function(result) { %>
                 <div class="card">
                     <a href="/spotify/playlist/<%= result.id %>">
+                        <% if (result.images[0]) { %>
                         <img src="<%= result.images[0].url %>">
+                        <% } else { %>
+                        <img src="/img/fallback-imgs/fallback-album.jpg">
+                        <% } %>
                         <h4>By <%= result.name %></h4>
                         <p><%= result.owner.display_name %></p>
                     </a>
@@ -80,6 +99,7 @@
                 <% }); %>
             </div>
         </section>
+        <% } %>
     </main>
 
     <footer>
