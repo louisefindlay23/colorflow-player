@@ -54,7 +54,7 @@ nav a {
 
 main {
     max-width: 100%;
-    margin: 5% 0;
+    padding: 5% 0;
 }
 
 h2 {
@@ -114,10 +114,6 @@ footer p,
     justify-content: space-around;
     align-items: center;
     flex: 1 0 auto;
-}
-
-#album-art {
-    margin-bottom: 5%;
 }
 
 /* Form Styling */

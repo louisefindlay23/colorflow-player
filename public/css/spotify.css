@@ -26,7 +26,8 @@ h4,
 p,
 a,
 footer p,
-.la-play-circle {
+.la-play-circle,
+.la-pause-circle {
     color: #fff;
 }
 
@@ -77,13 +78,18 @@ section .flex-row {
     margin-bottom: 5%;
 }
 
+#album img {
+    margin-top: 5%;
+}
+
 #artists .la-user-circle {
     display: flex;
     justify-content: center;
 }
 
 #artist-stats,
-#playlist {
+#playlist,
+#album {
     text-align: center;
 }
 
@@ -99,7 +105,8 @@ section .flex-row {
     margin-top: 5%;
 }
 
-#playlists img {
+#songs,
+playlists img {
     width: 100%;
     height: auto;
 }

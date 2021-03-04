@@ -116,11 +116,14 @@ spotifyRouter.post('/search', isAuthenticated, function (req, res) {
 spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
     spotifyApi.getAlbum(req.params.id)
         .then(function (data) {
-            const artwork = data.body.images[0].url;
-            const albumname = data.body.name;
-            const tracks = data.body.tracks.items;
+            let artwork = data.body.images[0].url;
+            if (artwork === null) {
+                artwork = "./public/img/fallback-imgs/fallback-album.jpg";
+            }
+            const albumInfo = data.body;
+            console.info(albumInfo.tracks.items[0].artists[0].name);
 
-            // TODO: Use album name to save/cache analysed artwork
+            // TODO: Use album name to save/cache analysed artwork and send to front-end
             const path = "./public/img/analysed-artwork/image.png";
 
             download(artwork, path, () => {
@@ -128,9 +131,8 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
 
                 res.render('pages/spotify/album', {
                     artwork: artwork,
-                    albumname: albumname,
+                    albumInfo: albumInfo,
                     color: color,
-                    tracks: tracks
                 });
             });
         }, function (err) {
