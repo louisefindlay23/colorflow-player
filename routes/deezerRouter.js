@@ -1,25 +1,19 @@
 const express = require("express");
 
 // Deezer API
-const DeezerPublicApi = require('deezer-public-api');
+const DeezerPublicApi = require("deezer-public-api");
 const deezer = new DeezerPublicApi();
 
 // Deezer Router
 const deezerRouter = express.Router();
 
-// Colour Modules
-const ColorThief = require('color-thief');
-const colorThief = new ColorThief();
-
-const fs = require('fs');
-const request = require('request');
+const fs = require("fs");
+const request = require("request");
 
 // Download Files
 const download = (url, path, callback) => {
     request.head(url, (err, res, body) => {
-        request(url)
-            .pipe(fs.createWriteStream(path))
-            .on('close', callback);
+        request(url).pipe(fs.createWriteStream(path)).on("close", callback);
     });
 };
 
@@ -29,25 +23,31 @@ deezerRouter.get("/", function (req, res) {
 });
 
 deezerRouter.get("/album", function (req, res) {
-    deezer.album('86103822').then(function (result) {
+    deezer.album("86103822").then(
+        function (result) {
+            const artwork = result.cover;
+            const albumname = result.title;
+            const tracks = result.tracks.data;
+            console.log(tracks);
+            const path = "./public/img/image.png";
+            download(artwork, path, () => {
+                const { getColorFromURL } = require("color-thief-node");
 
-        const artwork = result.cover;
-        const albumname = result.title;
-        const tracks = result.tracks.data
-        console.log(tracks);
-        const path = './public/img/image.png';
-        download(artwork, path, () => {
-            let color = colorThief.getColor(path);
-            res.render('pages/deezer/album', {
-                artwork: artwork,
-                albumname: albumname,
-                tracks: tracks,
-                color: color
+                (async () => {
+                    const color = await getColorFromURL(imageURL);
+                })();
+                res.render("pages/deezer/album", {
+                    artwork: artwork,
+                    albumname: albumname,
+                    tracks: tracks,
+                    color: color,
+                });
             });
-        });
-    }, function (err) {
-        console.error(err);
-    });
+        },
+        function (err) {
+            console.error(err);
+        }
+    );
 });
 
 module.exports = deezerRouter;
