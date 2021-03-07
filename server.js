@@ -1,24 +1,25 @@
 // Live reload Static Files
 const livereload = require("livereload");
-const path = require('path');
+const path = require("path");
 const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(path.join(__dirname, 'public'));
+liveReloadServer.watch(path.join(__dirname, "public"));
 const connectLivereload = require("connect-livereload");
 
 // Server Modules
-const express = require('express');
-const ejs = require('ejs');
+const express = require("express");
+const ejs = require("ejs");
 const app = express();
+const port = 3000;
 
-require('dotenv').config();
+require("dotenv").config();
 
 // Initialising Express
-app.use(express.static('public'));
+app.use(express.static("public"));
 // set the view engine to ejs
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-app.listen(8080);
-console.log('Listening on 8080');
+app.listen(port);
+console.log("Listening on " + port);
 
 // *** GET Routes - display pages ***
 

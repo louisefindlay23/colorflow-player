@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <%- include('../partials/head') %>
+    </head>
 
-<head>
-    <%- include('../partials/head') %>
-</head>
+    <body>
+        <header><%- include('../partials/header') %></header>
 
-<body>
-    <header>
-        <%- include('../partials/header') %>
-    </header>
+        <main class="flex-center no-bottom">
+            <p>
+                Colorflow Player is a Node.js music streaming app (Spotify and Deezer) where the background color of all
+                views changes to match the predominate color of the album or playlist artwork. This style is called
+                ColorFlow.
+            </p>
+            <h2>Features</h2>
+            <ul>
+                <li>Spotify and Deezer Streaming</li>
+                <li>Beautiful Colorflow-inspired album and playlist views</li>
+                <li>Branded Spotify and Deezer UI</li>
+                <li>Search for tracks, albums, artists or playlists</li>
+            </ul>
+            <h2>Choose between Spotify and Deezer</h2>
+            <div class="flex-row half">
+                <img
+                    src="/img/spotify-banner.png"
+                    alt="Spotify Banner"
+                    onclick="window.location.href = '/spotify/login'"
+                />
+                <img src="/img/deezer-banner.jpeg" alt="Deezer Banner" onclick="window.location.href = '/deezer'" />
+            </div>
+        </main>
 
-    <main class="flex-center no-bottom">
-        <p>Colorflow Player is a Node.js music streaming app (Spotify and Apple Music) where the color of the album view and now playing screen changes to match the predominate color of the album artwork which is called ColorFlow.</p>
-        <h2>Features</h2>
-        <ul>
-            <li>Spotify and Apple Deezer Streaming</li>
-            <li>Beautiful Colorflow-inspired album and now-playing views</li>
-            <li>Branded Spotify and Deezer UI</li>
-            <li>Search for tracks, albums or artists</li>
-        </ul>
-        <h2>Choose between Spotify and Deezer</h2>
-        <div class="flex-row half">
-            <img src="https://www.scdn.co/i/_global/open-graph-default.png" alt="Spotify Banner" onclick="window.location.href = '/spotify/login'">
-            <img src="https://miro.medium.com/max/2500/1*fd9T39SlOJtwdPL9vquLhg.jpeg" alt="Deezer Banner" onclick="window.location.href = '/deezer'">
-        </div>
-    </main>
-
-    <footer>
-        <%- include('../partials/footer') %>
-    </footer>
-
-</body>
-
+        <footer><%- include('../partials/footer') %></footer>
+    </body>
 </html>

@@ -11,8 +11,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "camelcase-keys": "^6.2.2",
-        "color-thief": "^2.2.5",
+        "color-thief-node": "^1.0.3",
         "deezer-public-api": "^1.0.4",
         "dotenv": "^8.2.0",
         "ejs": "^3.1.5",
