@@ -26,6 +26,9 @@ const download = (url, path, callback) => {
     });
 };
 
+// Color Modules
+const { getColorFromURL } = require("color-thief-node");
+
 // Initialise Spotify Router
 const spotifyRouter = express.Router();
 spotifyRouter.use(
@@ -83,7 +86,6 @@ spotifyRouter.get("/callback", function (req, res) {
 
 // Search Route
 spotifyRouter.post("/search", isAuthenticated, function (req, res) {
-    const searchType = req.body.searchtype;
     const searchQuery = req.body.searchbar;
     console.info("You searched for " + searchQuery);
 
@@ -112,40 +114,42 @@ spotifyRouter.post("/search", isAuthenticated, function (req, res) {
 });
 
 spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
-    spotifyApi.getAlbum(req.params.id)
-        .then(function (data) {
-                let artwork = data.body.images[0].url;
-                if (artwork === null) {
-                    artwork = "./public/img/fallback-imgs/fallback-album.jpg";
-                }
-                const albumInfo = data.body;
+    spotifyApi.getAlbum(req.params.id).then(function (data) {
+        let artwork = data.body.images[0].url;
+        if (artwork === null) {
+            artwork = "./public/img/fallback-imgs/fallback-album.jpg";
+        }
+        const albumInfo = data.body;
 
-                // TODO: Use album name to save/cache analysed artwork and send to front-end
-                const path = "./public/img/analysed-artwork/album/" + req.params.id + ".png";
+        const path = "./public/img/analysed-artwork/album/" + req.params.id + ".png";
 
-                // Check if already downloaded album image
-                try {
-                    if (!fs.existsSync(path)) {
-                        // Download album image to get colour
-                        download(artwork, path, () => {});
-                    }
-                } catch (err) {
-                    console.error(err);
-                }
-
-                const { getColorFromURL } = require("color-thief-node");
-                (async () => {
-                    const color = await getColorFromURL(path);
-                })();
-
-                res.render('pages/spotify/album', {
-                    albumInfo: albumInfo,
-                    color: color,
+        // Check if already downloaded album image. If not, download it.
+        fs.access(path, fs.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                console.info("Image does not exist -> Downloading");
+                // Download album image to get colour
+                download(artwork, path, () => {
+                    console.info("Artwork Downloaded ✅");
+                    res.redirect("/spotify" + req.url);
                 });
-            },
-            function (err) {
-                console.error("Get Album Info error", err);
-            });
+            } else {
+                console.info("Image does exist -> Get Color");
+                // Get color and then render album page
+                const retrieveColor = async () => {
+                    const color = await getColorFromURL(path);
+                    res.render("pages/spotify/album", {
+                        albumInfo: albumInfo,
+                        color: color,
+                    });
+                };
+                retrieveColor();
+            }
+        });
+    }),
+        function (err) {
+            console.error("Get Album Info error", err);
+        };
 });
 
 spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
