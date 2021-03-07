@@ -1,52 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+    </head>
 
-<head>
-    <%- include('../../partials/head') %>
-</head>
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" type="text/css" href="/css/spotify.css" />
+        </header>
 
-<body>
-    <header>
-        <%- include('../../partials/header') %>
-        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="/css/spotify.css">
-    </header>
+        <main class="flex-center" style="background-color: rgb(<%- color %>)">
+            <section id="album">
+                <h2>Album: <%- albumInfo.name %></h2>
+                <p>
+                    <span class="bold">By:</span>
+                    <a href="/spotify/artist/<%- albumInfo.artists[0].id %>"><%- albumInfo.artists[0].name %></a>
+                </p>
+                <div class="flex-row">
+                    <img src="/img/analysed-artwork/album/<%- albumInfo.id %>.png" alt="<%- albumInfo.name %> cover" />
+                </div>
+            </section>
+            <section id="songs">
+                <% albumInfo.tracks.items.forEach(function(track) { %>
+                <div class="flex-row">
+                    <p><%= track.track_number %></p>
+                    <h4><%= track.name %></h4>
+                    <a href="/spotify/artist/<%= track.artists[0].id %>">
+                        <p><%= track.artists[0].name %></p>
+                    </a>
+                    <i id="<%= track.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
+                    <audio id="audio<%= track.track_number %>" style="background-color: rgb(<%- color %>)">
+                        <source src="<%- track.preview_url %>" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <% }); %>
+            </section>
+        </main>
 
-    <main class="flex-center" style="background-color: rgb(<%- color %>);">
-        <section id="album">
-            <h2>Album: <%- albumInfo.name %></h2>
-            <p><span class="bold">By:</span> <%- albumInfo.artists[0].name %></p>
-            <div class="flex-row">
-                <img src="/img/analysed-artwork/album/<%- albumInfo.id %>.png" alt="<%- albumInfo.name %> cover">
-            </div>
-        </section>
-        <section id="songs">
-            <% albumInfo.tracks.items.forEach(function(track) { %>
-            <div class="flex-row">
-                <p><%= track.track_number %>
-                <h4><%= track.name %></h4>
-                <a href="/spotify/artist/<%= track.artists[0].id %>">
-                    <p><%= track.artists[0].name %></p>
-                </a>
-                <i id="<%= track.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                <audio id="audio<%= track.track_number %>" style="background-color: rgb(<%- color %>);">
-                    <source src="<%- track.preview_url %>" type="audio/mpeg">
-                </audio>
-            </div>
-            <% }); %>
-        </section>
-    </main>
+        <footer><%- include('../../partials/footer') %></footer>
 
-    <footer>
-        <%- include('../../partials/footer') %>
-    </footer>
-
-    <script>
-        const artworkColor = document.getElementsByTagName("main")[0].style.backgroundColor;
-        if (lightOrDark(artworkColor) === "dark") {
-            document.getElementsByTagName("h2")[0].style.color = "#fff";
-        }
-    </script>
-</body>
-
+        <script>
+            const artworkColor = document.getElementsByTagName("main")[0].style.backgroundColor;
+            if (lightOrDark(artworkColor) === "dark") {
+                document.getElementsByTagName("h2")[0].style.color = "#fff";
+            }
+        </script>
+    </body>
 </html>
