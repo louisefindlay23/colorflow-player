@@ -116,28 +116,35 @@ spotifyRouter.post('/search', isAuthenticated, function (req, res) {
 spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
     spotifyApi.getAlbum(req.params.id)
         .then(function (data) {
-            let artwork = data.body.images[0].url;
-            if (artwork === null) {
-                artwork = "./public/img/fallback-imgs/fallback-album.jpg";
-            }
-            const albumInfo = data.body;
-            console.info(albumInfo.tracks.items[0].artists[0].name);
+                let artwork = data.body.images[0].url;
+                if (artwork === null) {
+                    artwork = "./public/img/fallback-imgs/fallback-album.jpg";
+                }
+                const albumInfo = data.body;
 
-            // TODO: Use album name to save/cache analysed artwork and send to front-end
-            const path = "./public/img/analysed-artwork/image.png";
+                // TODO: Use album name to save/cache analysed artwork and send to front-end
+                const path = "./public/img/analysed-artwork/album/" + req.params.id + ".png";
 
-            download(artwork, path, () => {
-                let color = colorThief.getColor(path);
+                // Check if already downloaded album image
+                try {
+                    if (!fs.existsSync(path)) {
+                        // Download album image to get colour
+                        download(artwork, path, () => {});
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+
+                const color = colorThief.getColor(path);
 
                 res.render('pages/spotify/album', {
-                    artwork: artwork,
                     albumInfo: albumInfo,
                     color: color,
                 });
+            },
+            function (err) {
+                console.error("Get Album Info error", err);
             });
-        }, function (err) {
-            console.error("Get Album Info error", err);
-        });
 });
 
 spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
