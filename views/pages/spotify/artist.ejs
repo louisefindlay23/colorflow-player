@@ -13,7 +13,10 @@
 
         <main class="flex-center" style="background-color: rgb(<%- color %>)">
             <section id="artist">
-                <h2>Artist: <%- artistInfo.name %></h2>
+                <div class="flex-row-center">
+                    <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                    <h2>Artist: <%- artistInfo.name %></h2>
+                </div>
                 <div class="flex-row">
                     <img src="/img/analysed-artwork/artist/<%- artistInfo.id %>.png" />
                 </div>

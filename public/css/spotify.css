@@ -29,8 +29,19 @@ p,
 a,
 footer p,
 .la-play-circle,
-.la-pause-circle {
+.la-pause-circle,
+.la-arrow-circle-left {
     color: #fff;
+}
+
+.la-arrow-circle-left {
+    color: #fff;
+    position: relative;
+    right: 10vw;
+}
+
+.la-arrow-circle-left:hover {
+    cursor: pointer;
 }
 
 /* Spotify Card/Section CSS */
@@ -49,7 +60,7 @@ section .flex-row {
 .card {
     box-sizing: border-box;
     background: #282828;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, .5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     padding: 2.5%;
     margin: 2.5% 0;
@@ -111,4 +122,9 @@ section .flex-row {
 playlists img {
     width: 100%;
     height: auto;
+}
+
+.fallback-album {
+    width: 64px;
+    height: 64px;
 }

@@ -16,7 +16,7 @@ body {
 }
 
 body,
-input[type=search] {
+input[type="search"] {
     display: flex;
     flex-direction: column;
     font-family: "Lato", sans-serif;
@@ -108,6 +108,13 @@ footer p,
     align-items: center;
 }
 
+.flex-row-center {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+
 .flex-space {
     display: flex;
     flex-direction: column;
@@ -118,7 +125,7 @@ footer p,
 
 /* Form Styling */
 
-input[type=search] {
+input[type="search"] {
     width: auto;
     border: 3px solid var(--main-color);
     padding: 10px;
@@ -128,13 +135,13 @@ input[type=search] {
     color: #000000;
 }
 
-input[type=search] {
+input[type="search"] {
     width: 30vw;
     margin-top: 5vh;
     margin-right: 14vh;
 }
 
-input[type=search]:focus {
+input[type="search"]:focus {
     color: #000000;
 }
 

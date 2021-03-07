@@ -12,9 +12,11 @@
         </header>
 
         <main class="flex-center" style="background-color: rgb(<%- color %>)">
-            <!-- TODO: Add Back Button -->
             <section id="album">
-                <h2>Album: <%- albumInfo.name %></h2>
+                <div class="flex-row-center">
+                    <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                    <h2>Album: <%- albumInfo.name %></h2>
+                </div>
                 <p>
                     <span class="bold">By:</span>
                     <a href="/spotify/artist/<%- albumInfo.artists[0].id %>"><%- albumInfo.artists[0].name %></a>
@@ -43,7 +45,9 @@
         <footer><%- include('../../partials/footer') %></footer>
 
         <script>
+            // TODO: Must move to JS file - and make sure it works on artist + playlist.ejs
             const artworkColor = document.getElementsByTagName("main")[0].style.backgroundColor;
+            // TODO: Rework to a dark default and include h3 and p tags and back icon
             if (lightOrDark(artworkColor) === "dark") {
                 document.getElementsByTagName("h2")[0].style.color = "#fff";
             }
