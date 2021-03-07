@@ -16,7 +16,7 @@
                 <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
                 <h2>Search Results For: <%- searchQuery %></h2>
             </div>
-            <% if (trackResults) { %>
+            <% if (trackResults.length > 0) { %>
             <section id="songs">
                 <h3>Songs</h3>
                 <!-- TODO: Fix uneven track results (Grid?) -->
@@ -40,7 +40,7 @@
                 </div>
                 <% }); %>
             </section>
-            <% } %> <% if (artistResults) { %>
+            <% } %> <% if (artistResults.length > 0) { %>
             <section id="artists">
                 <h3>Artists</h3>
                 <div class="flex-row">
@@ -60,7 +60,7 @@
                     <% }); %>
                 </div>
             </section>
-            <% } %> <% if (trackResults) { %>
+            <% } %> <% if (trackResults.length > 0) { %>
             <section id="albums">
                 <h3>Albums</h3>
                 <div class="flex-row">
@@ -81,7 +81,8 @@
                     <% }); %>
                 </div>
             </section>
-            <% } %> <% if (playlistResults) { %>
+            <% } %> <% if (playlistResults.length > 0) { %>
+            <p><%- playlistResults %></p>
             <section id="playlists">
                 <h2>Playlists</h2>
                 <div class="flex-row">

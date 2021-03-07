@@ -39,6 +39,7 @@ spotifyRouter.use(
 spotifyRouter.use(bodyParser.json());
 
 function isAuthenticated(req, res, next) {
+    // TODO: Fix Access Token Expired (Need to call refresh method)
     if (spotifyApi.getAccessToken() == null) {
         console.warn("You are not authenticated with the Spotify API");
         res.redirect("/spotify/login");
