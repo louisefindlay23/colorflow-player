@@ -87,21 +87,15 @@ spotifyRouter.post("/search", isAuthenticated, function (req, res) {
     const searchQuery = req.body.searchbar;
     console.info("You searched for " + searchQuery);
 
-    const obtainTrackResults = spotifyApi
-        .searchTracks(searchQuery)
-        .then((data) => {
-            return data.body.tracks.items;
-        });
-    const obtainArtistResults = spotifyApi
-        .searchArtists(searchQuery)
-        .then((data) => {
-            return data.body.artists.items;
-        });
-    const obtainPlaylistResults = spotifyApi
-        .searchPlaylists(searchQuery)
-        .then((data) => {
-            return data.body.playlists.items;
-        });
+    const obtainTrackResults = spotifyApi.searchTracks(searchQuery).then((data) => {
+        return data.body.tracks.items;
+    });
+    const obtainArtistResults = spotifyApi.searchArtists(searchQuery).then((data) => {
+        return data.body.artists.items;
+    });
+    const obtainPlaylistResults = spotifyApi.searchPlaylists(searchQuery).then((data) => {
+        return data.body.playlists.items;
+    });
 
     const retrieveResults = async () => {
         const trackResults = await obtainTrackResults;
@@ -125,10 +119,9 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
                 artwork = "./public/img/fallback-imgs/fallback-album.jpg";
             }
             const albumInfo = data.body;
-            console.info(albumInfo.tracks.items[0].artists[0].name);
 
             // TODO: Use album name to save/cache analysed artwork and send to front-end
-            const path = "./public/img/analysed-artwork/image.png";
+            const path = "./public/img/analysed-artwork/.png";
 
             download(artwork, path, () => {
                 const { getColorFromURL } = require("color-thief-node");
@@ -152,16 +145,12 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
 
 spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
     // TODO: Dynamic artist image background
-    const obtainArtistInfo = spotifyApi
-        .getArtist(req.params.id)
-        .then((data) => {
-            return data.body;
-        });
-    const obtainArtistAlbumInfo = spotifyApi
-        .getArtistAlbums(req.params.id)
-        .then((data) => {
-            return data.body.items;
-        });
+    const obtainArtistInfo = spotifyApi.getArtist(req.params.id).then((data) => {
+        return data.body;
+    });
+    const obtainArtistAlbumInfo = spotifyApi.getArtistAlbums(req.params.id).then((data) => {
+        return data.body.items;
+    });
 
     const retrieveInfo = async () => {
         const artistInfo = await obtainArtistInfo;
@@ -176,11 +165,9 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
 
 spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
     // TODO: Dynamic playlist image background? - Most playlists are multi album art
-    const obtainPlaylistInfo = spotifyApi
-        .getPlaylist(req.params.id)
-        .then((data) => {
-            return data.body;
-        });
+    const obtainPlaylistInfo = spotifyApi.getPlaylist(req.params.id).then((data) => {
+        return data.body;
+    });
     const obtainPlaylistTrackInfo = spotifyApi
         .getPlaylistTracks(req.params.id, {
             limit: 30,
