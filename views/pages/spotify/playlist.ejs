@@ -1,54 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+    </head>
 
-<head>
-    <%- include('../../partials/head') %>
-</head>
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" type="text/css" href="/css/spotify.css" />
+        </header>
 
-<body>
-    <header>
-        <%- include('../../partials/header') %>
-        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="/css/spotify.css">
-    </header>
+        <main class="flex-center" style="background-color: rgb(<%- color %>)">
+            <section id="playlist">
+                <h2>Playlist: <%- playlistInfo.name %></h2>
+                <p><span class="bold">By:</span> <%- playlistInfo.owner.display_name %></p>
+                <div class="flex-row">
+                    <img src="/img/analysed-artwork/playlist/<%- playlistInfo.id %>.png" />
+                </div>
+            </section>
+            <section id="songs">
+                <h3>Songs</h3>
+                <% playlistTrackInfo.forEach(function(track) { %>
+                <div class="flex-row">
+                    <a href="/spotify/album/<%= track.track.album.id %>">
+                        <img src="<%= track.track.album.images[2].url %>" />
+                    </a>
+                    <p><%= track.track.track_number %></p>
+                    <h4><%= track.track.name %></h4>
+                    <a href="/spotify/artist/<%= track.track.artists[0].id %>">
+                        <p><%= track.track.artists[0].name %></p>
+                    </a>
+                    <i
+                        id="<%= track.track.track_number %>"
+                        class="las la-play-circle"
+                        onclick="togglePlay(this.id)"
+                    ></i>
+                    <audio id="audio<%= track.track.track_number %>">
+                        <source src="<%- track.track.preview_url %>" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <% }); %>
+            </section>
+        </main>
 
-    <main class="flex-center">
-        <section id="playlist">
-            <h2>Playlist: <%- playlistInfo.name %></h2>
-            <p><span class="bold">By:</span> <%- playlistInfo.owner.display_name %></p>
-            <div class="flex-row">
-                <% if (playlistInfo.images[1]) { %>
-                <img src="<%= playlistInfo.images[1].url %>">
-                <% } else { %>
-                <img src="/img/fallback-imgs/fallback-album.jpg">
-                <% } %>
-            </div>
-        </section>
-        <section id="songs">
-            <h3>Songs</h3>
-            <% playlistTrackInfo.forEach(function(track) { %>
-            <div class="flex-row">
-                <a href="/spotify/album/<%= track.track.album.id %>">
-                    <img src="<%= track.track.album.images[2].url %>">
-                </a>
-                <p><%= track.track.track_number %>
-                <h4><%= track.track.name %></h4>
-                <a href="/spotify/artist/<%= track.track.artists[0].id %>">
-                    <p><%= track.track.artists[0].name %></p>
-                </a>
-                <i id="<%= track.track.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                <audio id="audio<%= track.track.track_number %>">
-                    <source src="<%- track.track.preview_url %>" type="audio/mpeg">
-                </audio>
-            </div>
-            <% }); %>
-        </section>
-    </main>
-
-    <footer>
-        <%- include('../../partials/footer') %>
-    </footer>
-
-</body>
-
+        <footer><%- include('../../partials/footer') %></footer>
+    </body>
 </html>

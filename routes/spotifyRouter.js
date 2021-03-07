@@ -163,12 +163,12 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
         let artwork = await obtainArtistInfo;
         artwork = artwork.images[1].url;
         const path = "./public/img/analysed-artwork/artist/" + req.params.id + ".png";
-        // Check if already downloaded album image. If not, download it.
+        // Check if already downloaded artist image. If not, download it.
         fs.access(path, fs.F_OK, (err) => {
             if (err) {
                 console.error(err);
                 console.info("Image does not exist -> Downloading");
-                // Download album image to get colour
+                // Download artist image to get colour
                 download(artwork, path, () => {
                     console.info("Artwork Downloaded ✅");
                     res.redirect("/spotify" + req.url);
@@ -194,7 +194,6 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
 });
 
 spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
-    // TODO: Dynamic playlist image background? - Most playlists are multi album art
     const obtainPlaylistInfo = spotifyApi.getPlaylist(req.params.id).then((data) => {
         return data.body;
     });
@@ -207,16 +206,39 @@ spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
             return data.body.items;
         });
 
-    const retrieveInfo = async () => {
-        const playlistInfo = await obtainPlaylistInfo;
-        const playlistTrackInfo = await obtainPlaylistTrackInfo;
-        console.log(playlistTrackInfo[0].track.artists[0].id);
-        res.render("pages/spotify/playlist", {
-            playlistInfo: playlistInfo,
-            playlistTrackInfo: playlistTrackInfo,
+    // TODO: Add fallback for if no playlist image
+    const retrieveArtwork = async () => {
+        let artwork = await obtainPlaylistInfo;
+        artwork = artwork.images[1].url;
+        const path = "./public/img/analysed-artwork/playlist/" + req.params.id + ".png";
+        // Check if already downloaded playlist image. If not, download it.
+        fs.access(path, fs.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                console.info("Image does not exist -> Downloading");
+                // Download playlist image to get colour
+                download(artwork, path, () => {
+                    console.info("Artwork Downloaded ✅");
+                    res.redirect("/spotify" + req.url);
+                });
+            } else {
+                console.info("Image does exist -> Get Color");
+                // Get info and then render playlist page
+                const retrieveInfo = async () => {
+                    const playlistInfo = await obtainPlaylistInfo;
+                    const playlistTrackInfo = await obtainPlaylistTrackInfo;
+                    const color = await getColorFromURL(path);
+                    res.render("pages/spotify/playlist", {
+                        playlistInfo: playlistInfo,
+                        playlistTrackInfo: playlistTrackInfo,
+                        color: color,
+                    });
+                };
+                retrieveInfo();
+            }
         });
     };
-    retrieveInfo();
+    retrieveArtwork();
 });
 
 module.exports = spotifyRouter;
