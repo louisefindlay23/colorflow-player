@@ -77,7 +77,7 @@ spotifyRouter.get("/callback", function (req, res) {
                 let referrerpath = urlModule.parse(referrer, true);
                 referrerpath = referrerpath.path;
                 res.redirect(referrerpath);
-                // TODO: Fix referrpath
+                // TODO: Fix referrerpath
                 //if (referrerpath === "/") {
                 //    res.redirect("/spotify");
                 // }
@@ -187,7 +187,11 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
     // TODO: Add fallback for if no artist image
     const retrieveArtwork = async () => {
         let artwork = await obtainArtistInfo;
-        artwork = artwork.images[1].url;
+        if (artwork.images[1]) {
+            artwork = artwork.images[1].url;
+        } else {
+            //
+        }
         const path = "./public/img/analysed-artwork/artist/" + req.params.id + ".png";
         // Check if already downloaded artist image. If not, download it.
         fs.access(path, fs.F_OK, (err) => {
@@ -232,10 +236,14 @@ spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
             return data.body.items;
         });
 
-    // TODO: Add fallback for if no playlist image
     const retrieveArtwork = async () => {
         let artwork = await obtainPlaylistInfo;
-        artwork = artwork.images[1].url;
+        if (artwork.images[1]) {
+            artwork = artwork.images[1].url;
+        } else {
+            artwork =
+                "https://raw.githubusercontent.com/louisefindlay23/colorflow-player/test/public/img/fallback-imgs/fallback-album.jpg";
+        }
         const path = "./public/img/analysed-artwork/playlist/" + req.params.id + ".png";
         // Check if already downloaded playlist image. If not, download it.
         fs.access(path, fs.F_OK, (err) => {

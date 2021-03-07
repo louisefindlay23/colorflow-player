@@ -43,7 +43,7 @@ function adaptiveBackground() {
 
     if (lightOrDark(artworkColor) === "light") {
         const adaptiveElements = document.querySelectorAll(
-            "h2, h4, p, a, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
+            "h2, h3, h4, p, a, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
         );
         adaptiveElements.forEach((element) => {
             element.style.color = "#000";
