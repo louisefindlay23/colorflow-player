@@ -143,7 +143,8 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
     spotifyApi.getAlbum(req.params.id).then(function (data) {
         let artwork = data.body.images[0].url;
         if (artwork === null) {
-            artwork = "./public/img/fallback-imgs/fallback-album.jpg";
+            artwork =
+                "https://raw.githubusercontent.com/louisefindlay23/colorflow-player/test/public/img/fallback-imgs/fallback-album.jpg";
         }
         const albumInfo = data.body;
         const path = "./public/img/analysed-artwork/album/" + req.params.id + ".png";
