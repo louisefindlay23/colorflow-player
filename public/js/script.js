@@ -13,26 +13,39 @@ function togglePlay(id) {
     }
 }
 
-// Calculate whether album color is light or dark to change text
+// Calculate whether artwork color is light or dark to change text
 function lightOrDark(color) {
     color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
     r = color[1];
     g = color[2];
     b = color[3];
-    hsp = Math.sqrt(
-        0.299 * (r * r) +
-        0.587 * (g * g) +
-        0.114 * (b * b)
-    );
+    hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
     if (hsp > 127.5) {
-
-        return 'light';
+        return "light";
     } else {
-
-        return 'dark';
+        return "dark";
     }
 }
 
-//if (document.getElementsByTagName("main")[0].style.backgroundColor === "#000") {
-//    document.getElementsByTagName("main h2")[0].style.backgroundColor[0].style.color = "#fff";
-//}
+// TODO: Must move to JS file - and make sure it works on artist + playlist.ejs
+document.addEventListener("DOMContentLoaded", function () {
+    if (
+        window.location.pathname.includes("album") ||
+        window.location.pathname.includes("artist") ||
+        window.location.pathname.includes("playlist")
+    ) {
+        adaptiveBackground();
+    }
+});
+function adaptiveBackground() {
+    const artworkColor = document.querySelector("main").style.backgroundColor;
+
+    if (lightOrDark(artworkColor) === "light") {
+        const adaptiveElements = document.querySelectorAll(
+            "h2, h4, p, a, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
+        );
+        adaptiveElements.forEach((element) => {
+            element.style.color = "#000";
+        });
+    }
+}
