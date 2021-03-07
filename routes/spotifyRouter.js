@@ -120,7 +120,6 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
             artwork = "./public/img/fallback-imgs/fallback-album.jpg";
         }
         const albumInfo = data.body;
-
         const path = "./public/img/analysed-artwork/album/" + req.params.id + ".png";
 
         // Check if already downloaded album image. If not, download it.
@@ -153,23 +152,45 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
 });
 
 spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
-    // TODO: Dynamic artist image background
     const obtainArtistInfo = spotifyApi.getArtist(req.params.id).then((data) => {
         return data.body;
     });
     const obtainArtistAlbumInfo = spotifyApi.getArtistAlbums(req.params.id).then((data) => {
         return data.body.items;
     });
-
-    const retrieveInfo = async () => {
-        const artistInfo = await obtainArtistInfo;
-        const albumInfo = await obtainArtistAlbumInfo;
-        res.render("pages/spotify/artist", {
-            artistInfo: artistInfo,
-            albumInfo: albumInfo,
+    // TODO: Add fallback for if no artist image
+    const retrieveArtwork = async () => {
+        let artwork = await obtainArtistInfo;
+        artwork = artwork.images[1].url;
+        const path = "./public/img/analysed-artwork/artist/" + req.params.id + ".png";
+        // Check if already downloaded album image. If not, download it.
+        fs.access(path, fs.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                console.info("Image does not exist -> Downloading");
+                // Download album image to get colour
+                download(artwork, path, () => {
+                    console.info("Artwork Downloaded ✅");
+                    res.redirect("/spotify" + req.url);
+                });
+            } else {
+                console.info("Image does exist -> Get Color");
+                // Get info and then render artist page
+                const retrieveInfo = async () => {
+                    const artistInfo = await obtainArtistInfo;
+                    const albumInfo = await obtainArtistAlbumInfo;
+                    const color = await getColorFromURL(path);
+                    res.render("pages/spotify/artist", {
+                        artistInfo: artistInfo,
+                        albumInfo: albumInfo,
+                        color: color,
+                    });
+                };
+                retrieveInfo();
+            }
         });
     };
-    retrieveInfo();
+    retrieveArtwork();
 });
 
 spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
