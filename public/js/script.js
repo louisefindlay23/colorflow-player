@@ -13,7 +13,7 @@ function togglePlay(id) {
     }
 }
 
-// Calculate whether artwork color is light or dark to change text
+// Calculate whether artwork color is light or dark
 function lightOrDark(color) {
     color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
     r = color[1];
@@ -27,7 +27,6 @@ function lightOrDark(color) {
     }
 }
 
-// TODO: Must move to JS file - and make sure it works on artist + playlist.ejs
 document.addEventListener("DOMContentLoaded", function () {
     if (
         window.location.pathname.includes("album") ||
@@ -37,6 +36,8 @@ document.addEventListener("DOMContentLoaded", function () {
         adaptiveBackground();
     }
 });
+
+// Change text according to background color
 function adaptiveBackground() {
     const artworkColor = document.querySelector("main").style.backgroundColor;
 

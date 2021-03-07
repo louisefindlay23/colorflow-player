@@ -7,8 +7,8 @@ var credentials = {
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
 };
-
 const spotifyApi = new SpotifyWebApi(credentials);
+let tokenExpiration = null;
 
 const fs = require("fs");
 const request = require("request");
@@ -39,7 +39,6 @@ spotifyRouter.use(
 spotifyRouter.use(bodyParser.json());
 
 function isAuthenticated(req, res, next) {
-    // TODO: Fix Access Token Expired (Need to call refresh method)
     if (spotifyApi.getAccessToken() == null) {
         console.warn("You are not authenticated with the Spotify API");
         res.redirect("/spotify/login");
@@ -67,16 +66,23 @@ spotifyRouter.get("/callback", function (req, res) {
     const code = req.query.code;
     spotifyApi.authorizationCodeGrant(code).then(
         function (data) {
-            // Set the access token on the API object to use it in later calls
+            // Get Access Token, redirect and store expiry time
             spotifyApi.setAccessToken(data.body["access_token"]);
             spotifyApi.setRefreshToken(data.body["refresh_token"]);
+            tokenExpiration = data.body["expires_in"];
+            tokenExpiration = parseInt(tokenExpiration);
+            runSpotifyAccessTokenTimer;
             const referrer = req.get("Referrer");
-            let referrerpath = urlModule.parse(referrer, true);
-            referrerpath = referrerpath.path;
-            if (referrerpath === "/") {
-                res.redirect("/spotify");
-            } else {
+            if (referrer) {
+                let referrerpath = urlModule.parse(referrer, true);
+                referrerpath = referrerpath.path;
                 res.redirect(referrerpath);
+                // TODO: Fix referrpath
+                //if (referrerpath === "/") {
+                //    res.redirect("/spotify");
+                // }
+            } else {
+                res.redirect("/spotify");
             }
         },
         function (err) {
@@ -84,6 +90,25 @@ spotifyRouter.get("/callback", function (req, res) {
         }
     );
 });
+
+// Track Spotify Access Token Expiry
+function spotifyAccessTokenRenewal() {
+    tokenExpiration = tokenExpiration - 1;
+    // Expiration looming, refresh token
+    if (tokenExpiration > 0 && tokenExpiration < 60) {
+        spotifyApi.refreshAccessToken().then(
+            function (data) {
+                tokenExpiration = data.body["expires_in"];
+                tokenExpiration = parseInt(tokenExpiration);
+            },
+            function (err) {
+                console.error("Could not refresh the token!", err.message);
+            }
+        );
+    }
+}
+
+const runSpotifyAccessTokenTimer = setInterval(spotifyAccessTokenRenewal, 1000);
 
 // Search Route
 spotifyRouter.post("/search", isAuthenticated, function (req, res) {
