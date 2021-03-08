@@ -27,6 +27,7 @@ h3,
 h4,
 p,
 a,
+li,
 footer p,
 .la-play-circle,
 .la-pause-circle,
@@ -42,6 +43,21 @@ footer p,
 
 .la-arrow-circle-left:hover {
     cursor: pointer;
+}
+
+/* Spotify Form Styling */
+input[type="search"],
+button {
+    background: #000;
+    border-color: #fff;
+    color: #fff;
+}
+
+input[type="search"]:focus,
+button:hover {
+    background: #fff;
+    border-color: #000;
+    color: #000;
 }
 
 /* Spotify Card/Section CSS */

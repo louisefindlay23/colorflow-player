@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+    </head>
 
-<head>
-    <%- include('../../partials/head') %>
-</head>
+    <body>
+        <header><%- include('../../partials/header') %></header>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="/css/spotify.css" />
 
-<body>
-    <header>
-        <%- include('../../partials/header') %>
-    </header>
+        <main class="flex-center">
+            <h2>Search In: Spotify Library</h2>
+            <!-- FUTURE: Add Spotify Intro + Logo? -->
+            <p>Search for a song, album, artist or playlist in Spotify's content library.</p>
+            <h3>Spotify Content Statistics</h3>
+            <ul>
+                <li>50 billion playlists</li>
+                <li>50 million songs</li>
+                <li>3 million artists</li>
+            </ul>
+            <form id="search-form" action="/spotify/search" method="post">
+                <label for="searchbar">Search</label>
+                <input id="search-bar" name="searchbar" type="search" required />
+                <button type="submit">Search</button>
+            </form>
+        </main>
 
-    <main class="flex-center">
-        <h2>Spotify Coverflow Player</h2>
-        <!-- FUTURE: Add Spotify Intro + Logo? -->
-        <form id="search-form" action="/spotify/search" method="post">
-            <label for="searchbar">Search</label>
-            <input id="search-bar" name="searchbar" type="search" required>
-            <button type="submit">Search</button>
-        </form>
-    </main>
-
-    <footer>
-        <%- include('../../partials/footer') %>
-    </footer>
-
-</body>
-
+        <footer><%- include('../../partials/footer') %></footer>
+    </body>
 </html>
