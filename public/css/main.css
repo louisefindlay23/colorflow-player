@@ -178,6 +178,7 @@ button:hover {
 /* Utility Classes */
 
 .full-width {
+    width: 100%;
     margin: 0;
 }
 
@@ -193,8 +194,4 @@ button:hover {
 
 .bold {
     font-weight: bold;
-}
-
-.small-border {
-    border-radius: 10px;
 }
