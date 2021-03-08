@@ -185,7 +185,7 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
     const obtainArtistAlbumInfo = spotifyApi.getArtistAlbums(req.params.id).then((data) => {
         return data.body.items;
     });
-    // TODO: Add fallback for if no artist image
+
     const retrieveArtwork = async () => {
         let artwork = await obtainArtistInfo;
         if (artwork.images[1]) {

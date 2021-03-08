@@ -35,3 +35,8 @@ app.use("/spotify", spotifyRoutes);
 // Deezer Routes
 const deezerRoutes = require("./routes/deezerRouter");
 app.use("/deezer", deezerRoutes);
+
+// 404 Route
+app.use(function (req, res) {
+    res.status(404).render("pages/404");
+});
