@@ -17,6 +17,9 @@ const download = (url, path, callback) => {
     });
 };
 
+// Color Modules
+const { getColorFromURL } = require("color-thief-node");
+
 // Root route
 deezerRouter.get("/", function (req, res) {
     res.render("pages/deezer/index");
@@ -29,19 +32,21 @@ deezerRouter.get("/album", function (req, res) {
             const albumname = result.title;
             const tracks = result.tracks.data;
             console.log(tracks);
-            const path = "./public/img/image.png";
+            // TODO: Create Spotify and Deezer subfolder under analysed-artwork
+            const path = "./public/img/analysed-artwork/album/86103822.jpg";
             download(artwork, path, () => {
-                const { getColorFromURL } = require("color-thief-node");
-
-                (async () => {
-                    const color = await getColorFromURL(imageURL);
-                })();
-                res.render("pages/deezer/album", {
-                    artwork: artwork,
-                    albumname: albumname,
-                    tracks: tracks,
-                    color: color,
-                });
+                console.info("Image does exist -> Get Color");
+                // Get color and then render album page
+                const retrieveColor = async () => {
+                    const color = await getColorFromURL(path);
+                    res.render("pages/deezer/album", {
+                        artwork: artwork,
+                        albumname: albumname,
+                        tracks: tracks,
+                        color: color,
+                    });
+                };
+                retrieveColor();
             });
         },
         function (err) {
