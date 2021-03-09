@@ -110,6 +110,11 @@ function spotifyAccessTokenRenewal() {
 
 const runSpotifyAccessTokenTimer = setInterval(spotifyAccessTokenRenewal, 1000);
 
+// Fallback if user refreshes Search page
+spotifyRouter.get("/search", isAuthenticated, function (req, res) {
+    res.redirect("/spotify");
+});
+
 // Search Route
 spotifyRouter.post("/search", isAuthenticated, function (req, res) {
     const searchQuery = req.body.searchbar;
