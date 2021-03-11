@@ -31,6 +31,7 @@ spotifyRouter.use(
 );
 spotifyRouter.use(bodyParser.json());
 
+// Authentication Check Middleware
 function isAuthenticated(req, res, next) {
     if (spotifyApi.getAccessToken() == null) {
         console.warn("You are not authenticated with the Spotify API");
@@ -38,6 +39,13 @@ function isAuthenticated(req, res, next) {
     } else {
         return next();
     }
+}
+
+// Download Files Function
+async function download(url, path) {
+    const response = await fetch(url);
+    const buffer = await response.buffer();
+    fs.writeFile(path, buffer, () => console.info("File Downloaded ✅"));
 }
 
 // Spotify Routes
@@ -104,7 +112,7 @@ function spotifyAccessTokenRenewal() {
 
 const runSpotifyAccessTokenTimer = setInterval(spotifyAccessTokenRenewal, 1000);
 
-// Fallback if user refreshes Search page
+// Search redirect
 spotifyRouter.get("/search", isAuthenticated, function (req, res) {
     res.redirect("/spotify");
 });
@@ -138,13 +146,6 @@ spotifyRouter.post("/search", isAuthenticated, function (req, res) {
     retrieveResults();
 });
 
-// Download Files Function
-async function download(url, path) {
-    const response = await fetch(url);
-    const buffer = await response.buffer();
-    fs.writeFile(path, buffer, () => console.info("File Downloaded ✅"));
-}
-
 // Spotify Media Routes
 spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
     spotifyApi.getAlbum(req.params.id).then(function (data) {
@@ -154,7 +155,7 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
                 "https://raw.githubusercontent.com/louisefindlay23/colorflow-player/test/public/img/fallback-imgs/fallback-album.jpg";
         }
         const albumInfo = data.body;
-        const path = "./public/img/analysed-artwork/album/" + req.params.id + ".png";
+        const path = "./public/img/analysed-artwork/spotify/album/" + req.params.id + ".png";
 
         // Check if already downloaded album image. If not, download it.
         fs.access(path, fs.F_OK, (err) => {

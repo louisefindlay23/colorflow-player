@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title><%- albumInfo.title %> - Deezer Album - Coverflow Player</title>
+    </head>
 
-<head>
-    <%- include('../../partials/head') %>
-</head>
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" type="text/css" href="/css/spotify.css" />
+        </header>
 
-<body>
-    <header>
-        <%- include('../../partials/header') %>
-    </header>
+        <main class="flex-center" style="background-color: rgb(<%- color %>)">
+            <section id="album">
+                <div class="flex-row-center">
+                    <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                    <h2>Album: <%- albumInfo.title %></h2>
+                </div>
+                <p>
+                    <span class="bold">By:</span>
+                    <a href="/deezer/artist/<%- albumInfo.artist.id %>"><%- albumInfo.artist.name %></a>
+                </p>
+                <div class="flex-row">
+                    <img
+                        src="/img/analysed-artwork/deezer/album/<%- albumInfo.id %>.png"
+                        alt="<%- albumInfo.name %> cover"
+                    />
+                </div>
+            </section>
+            <section id="songs">
+                <% albumInfo.tracks.data.forEach(function(track) { %>
+                <div class="flex-row">
+                    <!-- TODO: Add track number -->
+                    <p></p>
+                    <h4><%= track.title_short %></h4>
+                    <a href="/spotify/artist/<%= track.artist.id %>">
+                        <p><%= track.artist.name %></p>
+                    </a>
+                    <!-- TODO: Add track number -->
+                    <i id="" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
+                    <audio id="audio" style="background-color: rgb(<%- color %>)">
+                        <source src="<%- track.preview %>" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <% }); %>
+            </section>
+        </main>
 
-    <main class="flex-center full-width">
-        <h2><%- albumname %></h2>
-        <img id="album-art" src="<%- artwork %>" alt="<%- albumname %> cover">
-
-        <% for (var i = 0; i < tracks.length; i++) { %>
-        <div style="background-color: rgb(<%- color %>);" class="flex-row">
-            <p><%= i %>
-            <p>
-            <p><%= tracks[i].title %>
-            <p>
-                <i id="<%= i %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                <audio id="audio<%= i %>" type="audio/mpeg" style="background-color: rgb(<%- color %>);">
-                    <source src="<%- tracks[i].preview %>" type="audio/mpeg">
-                </audio>
-        </div>
-        <% } %>
-    </main>
-
-    <footer>
-        <%- include('../../partials/footer') %>
-    </footer>
-
-    <script>
-        const artworkColor = document.getElementsByTagName("main")[0].style.backgroundColor;
-        if (lightOrDark(artworkColor) === "dark") {
-            document.getElementsByTagName("h2")[0].style.color = "#fff";
-        }
-    </script>
-</body>
-
+        <footer><%- include('../../partials/footer') %></footer>
+    </body>
 </html>

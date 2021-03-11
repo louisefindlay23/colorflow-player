@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <%- include('../../partials/head') %>
+        <title><%- albumInfo.name %> - Spotify Album - Coverflow Player</title>
     </head>
 
     <body>
@@ -22,7 +23,10 @@
                     <a href="/spotify/artist/<%- albumInfo.artists[0].id %>"><%- albumInfo.artists[0].name %></a>
                 </p>
                 <div class="flex-row">
-                    <img src="/img/analysed-artwork/album/<%- albumInfo.id %>.png" alt="<%- albumInfo.name %> cover" />
+                    <img
+                        src="/img/analysed-artwork/spotify/album/<%- albumInfo.id %>.png"
+                        alt="<%- albumInfo.name %> cover"
+                    />
                 </div>
             </section>
             <section id="songs">
