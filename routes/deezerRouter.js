@@ -161,4 +161,57 @@ deezerRouter.get("/artist/:id", function (req, res) {
     retrieveArtwork();
 });
 
+deezerRouter.get("/playlist/:id", function (req, res) {
+    const obtainPlaylistInfo = deezer.playlist(req.params.id).then((data) => {
+        console.log(data);
+        return data;
+    });
+    const obtainPlaylistTrackInfo = deezer.playlist
+        .tracks(req.params.id, {
+            limit: 30,
+        })
+        .then((data) => {
+            return data;
+        });
+
+    const retrieveArtwork = async () => {
+        let artwork = await obtainPlaylistInfo;
+        if (artwork.picture_big) {
+            artwork = artwork.picture_big;
+        } else {
+            artwork =
+                "https://raw.githubusercontent.com/louisefindlay23/colorflow-player/test/public/img/fallback-imgs/fallback-album.jpg";
+        }
+        const path = "./public/img/analysed-artwork/deezer/playlist/" + req.params.id + ".png";
+        // Check if already downloaded playlist image. If not, download it.
+        fs.access(path, fs.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                console.info("Image does not exist -> Downloading");
+                // Download playlist image to get colour
+                const retrieveArtwork = async () => {
+                    await download(artwork, path);
+                    res.redirect("/spotify" + req.url);
+                };
+                retrieveArtwork();
+            } else {
+                console.info("Image does exist -> Get Color");
+                // Get info and then render playlist page
+                const retrieveInfo = async () => {
+                    const playlistInfo = await obtainPlaylistInfo;
+                    const playlistTrackInfo = await obtainPlaylistTrackInfo;
+                    const color = await getColorFromURL(path);
+                    res.render("pages/spotify/playlist", {
+                        playlistInfo: playlistInfo,
+                        playlistTrackInfo: playlistTrackInfo,
+                        color: color,
+                    });
+                };
+                retrieveInfo();
+            }
+        });
+    };
+    retrieveArtwork();
+});
+
 module.exports = deezerRouter;

@@ -256,7 +256,7 @@ spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
             artwork =
                 "https://raw.githubusercontent.com/louisefindlay23/colorflow-player/test/public/img/fallback-imgs/fallback-album.jpg";
         }
-        const path = "./public/img/analysed-artwork/playlist/" + req.params.id + ".png";
+        const path = "./public/img/analysed-artwork/spotify/playlist/" + req.params.id + ".png";
         // Check if already downloaded playlist image. If not, download it.
         fs.access(path, fs.F_OK, (err) => {
             if (err) {
