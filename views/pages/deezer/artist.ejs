@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <%- include('../../partials/head') %>
-        <title><%- artistInfo.name %> - Spotify Artist - Coverflow Player</title>
+        <title><%- artistInfo.name %> - Deezer Artist - Coverflow Player</title>
     </head>
 
     <body>
@@ -19,27 +19,26 @@
                     <h2>Artist: <%- artistInfo.name %></h2>
                 </div>
                 <div class="flex-row">
-                    <img src="/img/analysed-artwork/spotify/artist/<%- artistInfo.id %>.png" />
+                    <img src="/img/analysed-artwork/deezer/artist/<%- artistInfo.id %>.png" />
                 </div>
             </section>
             <section id="artist-stats">
-                <p><span class="bold">Followers:</span> <%- artistInfo.followers.total %></p>
-                <p><span class="bold">Popularity:</span> <%- artistInfo.popularity %>%</p>
+                <p><span class="bold">Fans:</span> <%- artistInfo.nb_fan %></p>
             </section>
             <section id="albums">
                 <h3>Albums</h3>
                 <div class="flex-row">
                     <% albumInfo.forEach(function(album) { %>
                     <div class="card">
-                        <a href="/spotify/album/<%= album.id %>">
-                            <% if (album.images[1]) { %>
-                            <img src="<%= album.images[1].url %>" />
+                        <a href="/deezer/album/<%= album.id %>">
+                            <% if (album.cover_small) { %>
+                            <img src="<%= album.cover_medium %>" />
                             <% } else { %>
                             <img src="/img/fallback-imgs/fallback-album.jpg" />
                             <% } %>
-                            <h4><%= album.name %></h4>
-                            <a href="/spotify/artist/<%= album.id %>">
-                                <p><%= album.artists[0].name %></p>
+                            <h4><%= album.title %></h4>
+                            <a href="/deezer/artist/<%= artistInfo.id %>">
+                                <p><%= artistInfo.name %></p>
                             </a>
                         </a>
                     </div>

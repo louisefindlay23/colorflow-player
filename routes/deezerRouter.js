@@ -112,4 +112,53 @@ deezerRouter.get("/album/:id", function (req, res) {
         };
 });
 
+deezerRouter.get("/artist/:id", function (req, res) {
+    const obtainArtistInfo = deezer.artist(req.params.id).then((data) => {
+        return data;
+    });
+    const obtainArtistAlbumInfo = deezer.artist.albums(req.params.id).then((data) => {
+        console.log(data.data[0]);
+        return data.data;
+    });
+
+    const retrieveArtwork = async () => {
+        let artwork = await obtainArtistInfo;
+        if (artwork.picture_big) {
+            artwork = artwork.picture_big;
+        } else {
+            artwork =
+                "https://raw.githubusercontent.com/louisefindlay23/colorflow-player/test/public/img/fallback-imgs/fallback-artist.png";
+        }
+        const path = "./public/img/analysed-artwork/deezer/artist/" + req.params.id + ".png";
+        // Check if already downloaded artist image. If not, download it.
+        fs.access(path, fs.F_OK, (err) => {
+            if (err) {
+                console.error(err);
+                console.info("Image does not exist -> Downloading");
+                // Download artist image to get colour
+                const retrieveArtwork = async () => {
+                    await download(artwork, path);
+                    res.redirect("/deezer" + req.url);
+                };
+                retrieveArtwork();
+            } else {
+                console.info("Image does exist -> Get Color");
+                // Get info and then render artist page
+                const retrieveInfo = async () => {
+                    const artistInfo = await obtainArtistInfo;
+                    const albumInfo = await obtainArtistAlbumInfo;
+                    const color = await getColorFromURL(path);
+                    res.render("pages/deezer/artist", {
+                        artistInfo: artistInfo,
+                        albumInfo: albumInfo,
+                        color: color,
+                    });
+                };
+                retrieveInfo();
+            }
+        });
+    };
+    retrieveArtwork();
+});
+
 module.exports = deezerRouter;

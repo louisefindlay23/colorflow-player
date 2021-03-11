@@ -203,7 +203,7 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
             artwork =
                 "https://raw.githubusercontent.com/louisefindlay23/colorflow-player/test/public/img/fallback-imgs/fallback-artist.png";
         }
-        const path = "./public/img/analysed-artwork/artist/" + req.params.id + ".png";
+        const path = "./public/img/analysed-artwork/spotify/artist/" + req.params.id + ".png";
         // Check if already downloaded artist image. If not, download it.
         fs.access(path, fs.F_OK, (err) => {
             if (err) {
