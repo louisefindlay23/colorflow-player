@@ -11,20 +11,13 @@ const spotifyApi = new SpotifyWebApi(credentials);
 let tokenExpiration = null;
 
 const fs = require("fs");
-const request = require("request");
+const fetch = require("node-fetch");
 
 // Parse Form Data
 const bodyParser = require("body-parser");
 
 // Parse URL Path
 const urlModule = require("url");
-
-// Download Files
-const download = (url, path, callback) => {
-    request.head(url, (err, res, body) => {
-        request(url).pipe(fs.createWriteStream(path)).on("close", callback);
-    });
-};
 
 // Color Modules
 const { getColorFromURL } = require("color-thief-node");
@@ -52,6 +45,7 @@ spotifyRouter.get("/", isAuthenticated, function (req, res) {
     res.render("pages/spotify/index");
 });
 
+// Spotify Authentication Routes
 spotifyRouter.get("/login", function (req, res) {
     res.redirect(
         "https://accounts.spotify.com/authorize?client_id=" +
@@ -144,6 +138,14 @@ spotifyRouter.post("/search", isAuthenticated, function (req, res) {
     retrieveResults();
 });
 
+// Download Files Function
+async function download(url, path) {
+    const response = await fetch(url);
+    const buffer = await response.buffer();
+    fs.writeFile(path, buffer, () => console.info("File Downloaded ✅"));
+}
+
+// Spotify Media Routes
 spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
     spotifyApi.getAlbum(req.params.id).then(function (data) {
         let artwork = data.body.images[0].url;
@@ -160,10 +162,11 @@ spotifyRouter.get("/album/:id", isAuthenticated, function (req, res) {
                 console.error(err);
                 console.info("Image does not exist -> Downloading");
                 // Download album image to get colour
-                download(artwork, path, () => {
-                    console.info("Artwork Downloaded ✅");
+                const retrieveArtwork = async () => {
+                    await download(artwork, path);
                     res.redirect("/spotify" + req.url);
-                });
+                };
+                retrieveArtwork();
             } else {
                 console.info("Image does exist -> Get Color");
                 // Get color and then render album page
@@ -206,10 +209,11 @@ spotifyRouter.get("/artist/:id", isAuthenticated, function (req, res) {
                 console.error(err);
                 console.info("Image does not exist -> Downloading");
                 // Download artist image to get colour
-                download(artwork, path, () => {
-                    console.info("Artwork Downloaded ✅");
+                const retrieveArtwork = async () => {
+                    await download(artwork, path);
                     res.redirect("/spotify" + req.url);
-                });
+                };
+                retrieveArtwork();
             } else {
                 console.info("Image does exist -> Get Color");
                 // Get info and then render artist page
@@ -258,10 +262,11 @@ spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
                 console.error(err);
                 console.info("Image does not exist -> Downloading");
                 // Download playlist image to get colour
-                download(artwork, path, () => {
-                    console.info("Artwork Downloaded ✅");
+                const retrieveArtwork = async () => {
+                    await download(artwork, path);
                     res.redirect("/spotify" + req.url);
-                });
+                };
+                retrieveArtwork();
             } else {
                 console.info("Image does exist -> Get Color");
                 // Get info and then render playlist page

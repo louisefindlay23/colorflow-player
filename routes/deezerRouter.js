@@ -4,25 +4,63 @@ const express = require("express");
 const DeezerPublicApi = require("deezer-public-api");
 const deezer = new DeezerPublicApi();
 
-// Deezer Router
-const deezerRouter = express.Router();
-
 const fs = require("fs");
-const request = require("request");
+const fetch = require("node-fetch");
 
-// Download Files
-const download = (url, path, callback) => {
-    request.head(url, (err, res, body) => {
-        request(url).pipe(fs.createWriteStream(path)).on("close", callback);
-    });
-};
+// Parse Form Data
+const bodyParser = require("body-parser");
+
+// Parse URL Path
+const urlModule = require("url");
 
 // Color Modules
 const { getColorFromURL } = require("color-thief-node");
 
-// Root route
+// Initialise Spotify Router
+const deezerRouter = express.Router();
+deezerRouter.use(
+    bodyParser.urlencoded({
+        extended: true,
+    })
+);
+deezerRouter.use(bodyParser.json());
+
+// Deezer Routes
 deezerRouter.get("/", function (req, res) {
     res.render("pages/deezer/index");
+});
+
+deezerRouter.post("/search", function (req, res) {
+    const searchQuery = req.body.searchbar;
+    console.info("You searched for " + searchQuery);
+
+    deezer.search(searchQuery).then((data) => {
+        //console.log(data);
+    });
+
+    const obtainTrackResults = deezer.search.track(searchQuery).then((data) => {
+        return data.data;
+    });
+    const obtainArtistResults = deezer.search.artist(searchQuery).then((data) => {
+        return data.data;
+    });
+    const obtainPlaylistResults = deezer.search.playlist(searchQuery).then((data) => {
+        return data.data;
+    });
+
+    const retrieveResults = async () => {
+        const trackResults = await obtainTrackResults;
+        const artistResults = await obtainArtistResults;
+        const playlistResults = await obtainPlaylistResults;
+        console.log(playlistResults[0]);
+        res.render("pages/deezer/search-results", {
+            searchQuery: searchQuery,
+            trackResults: trackResults,
+            artistResults: artistResults,
+            playlistResults: playlistResults,
+        });
+    };
+    retrieveResults();
 });
 
 deezerRouter.get("/album", function (req, res) {

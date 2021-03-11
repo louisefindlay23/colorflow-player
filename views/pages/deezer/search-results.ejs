@@ -22,20 +22,22 @@
                 <!-- TODO: Fix uneven track results (Grid?) -->
                 <% trackResults.forEach(function(result) { %>
                 <div class="flex-row">
-                    <a href="/spotify/album/<%= result.album.id %>">
-                        <% if (result.album.images[2]) { %>
-                        <img src="<%= result.album.images[2].url %>" />
+                    <a href="/deezer/album/<%= result.album.id %>">
+                        <% if (result.album.cover_small) { %>
+                        <img src="<%= result.album.cover_small %>" />
                         <% } else { %>
                         <img src="/img/fallback-imgs/fallback-album.jpg" />
                         <% } %>
                     </a>
-                    <h4><%= result.name %></h4>
-                    <a href="/spotify/artist/<%= result.album.artists[0].id %>">
-                        <p><%= result.album.artists[0].name %></p>
+                    <h4><%= result.title_short %></h4>
+                    <a href="/deezer/artist/<%= result.artist.id %>">
+                        <p><%= result.artist.name %></p>
                     </a>
-                    <i id="<%= result.track_number %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                    <audio id="audio<%= result.track_number %>">
-                        <source src="<%- result.preview_url %>" type="audio/mpeg" />
+                    <!-- TODO: Add id number [1]-->
+                    <i id="" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
+                    <!-- TODO: Add id number [1]-->
+                    <audio id="audio">
+                        <source src="<%- result.preview %>" type="audio/mpeg" />
                     </audio>
                 </div>
                 <% }); %>
@@ -47,9 +49,9 @@
                     <% artistResults.forEach(function(result) { %>
                     <!-- TODO: Fix unequal card height and two card row (Grid Snippets ?) -->
                     <div class="card">
-                        <a href="/spotify/artist/<%= result.id %>">
-                            <% if (result.images[1]) { %>
-                            <img src="<%= result.images[1].url %>" />
+                        <a href="/deezer/artist/<%= result.id %>">
+                            <% if (result.picture_medium) { %>
+                            <img src="<%= result.picture_medium %>" />
                             <% } else { %>
                             <img src="/img/fallback-imgs/fallback-artist.png" />
                             <% } %>
@@ -66,15 +68,15 @@
                 <div class="flex-row">
                     <% trackResults.forEach(function(result) { %>
                     <div class="card">
-                        <a href="/spotify/album/<%= result.album.id %>">
-                            <% if (result.album.images[1]) { %>
-                            <img src="<%= result.album.images[1].url %>" />
+                        <a href="/deezer/album/<%= result.album.id %>">
+                            <% if (result.album.cover_medium) { %>
+                            <img src="<%= result.album.cover_medium %>" />
                             <% } else { %>
                             <img src="/img/fallback-imgs/fallback-album.jpg" />
                             <% } %>
-                            <h4><%= result.album.name %></h4>
-                            <a href="/spotify/artist/<%= result.album.artists[0].id %>">
-                                <p><%= result.album.artists[0].name %></p>
+                            <h4><%= result.album.title %></h4>
+                            <a href="/deezer/artist/<%= result.artist.id %>">
+                                <p><%= result.artist.name %></p>
                             </a>
                         </a>
                     </div>
@@ -87,14 +89,14 @@
                 <div class="flex-row">
                     <% playlistResults.forEach(function(result) { %>
                     <div class="card">
-                        <a href="/spotify/playlist/<%= result.id %>">
-                            <% if (result.images[1]) { %>
-                            <img src="<%= result.images[1].url %>" />
+                        <a href="/deezer/playlist/<%= result.id %>">
+                            <% if (result.picture_medium) { %>
+                            <img src="<%= result.picture_medium %>" />
                             <% } else { %>
                             <img src="/img/fallback-imgs/fallback-album.jpg" />
                             <% } %>
-                            <h4><%= result.name %></h4>
-                            <p>By <%= result.owner.display_name %></p>
+                            <h4><%= result.title %></h4>
+                            <p>By <%= result.user.name %></p>
                         </a>
                     </div>
                     <% }); %>
