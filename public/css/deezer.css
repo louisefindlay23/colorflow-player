@@ -4,10 +4,10 @@
 
 /* CSS Variables */
 :root {
-    --main-color: #121212;
-    --header-color: #181818;
-    --accent-color: #000000;
-    --text-color: #ffffff;
+    --main-color: #ffffff;
+    --header-color: #dfdfe0;
+    --accent-color: #dfdfe0;
+    --text-color: #191919;
 }
 
 /* Main Element */

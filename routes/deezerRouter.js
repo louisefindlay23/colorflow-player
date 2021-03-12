@@ -51,6 +51,7 @@ deezerRouter.post("/search", function (req, res) {
         return data.data;
     });
     const obtainArtistResults = deezer.search.artist(searchQuery).then((data) => {
+        console.log(data.data);
         return data.data;
     });
     const obtainPlaylistResults = deezer.search.playlist(searchQuery).then((data) => {
@@ -117,7 +118,6 @@ deezerRouter.get("/artist/:id", function (req, res) {
         return data;
     });
     const obtainArtistAlbumInfo = deezer.artist.albums(req.params.id).then((data) => {
-        console.log(data.data[0]);
         return data.data;
     });
 
@@ -170,8 +170,6 @@ deezerRouter.get("/playlist/:id", function (req, res) {
             limit: 30,
         })
         .then((data) => {
-            console.log(data.data[0].album);
-            console.log(data.data[0].artist);
             return data.data;
         });
 

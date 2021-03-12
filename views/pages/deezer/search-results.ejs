@@ -22,7 +22,7 @@
             </div>
             <% if (trackResults.length > 0) { %>
             <section id="songs">
-                <h3>Songs</h3>
+                <h3>Tracks</h3>
                 <!-- TODO: Fix uneven track results (Grid?) -->
                 <% trackResults.forEach(function(result) { %>
                 <div class="flex-row">
@@ -46,21 +46,20 @@
                 </div>
                 <% }); %>
             </section>
-            <% } %> <% if (artistResults.length > 0) { %>
-            <section id="artists">
-                <h3>Artists</h3>
+            <% } %> <% if (playlistResults.length > 0) { %>
+            <section id="playlists">
+                <h2>Playlists</h2>
                 <div class="flex-row">
-                    <% artistResults.forEach(function(result) { %>
-                    <!-- TODO: Fix unequal card height and two card row (Grid Snippets ?) -->
+                    <% playlistResults.forEach(function(result) { %>
                     <div class="card">
-                        <a href="/deezer/artist/<%= result.id %>">
+                        <a href="/deezer/playlist/<%= result.id %>">
                             <% if (result.picture_medium) { %>
                             <img src="<%= result.picture_medium %>" />
                             <% } else { %>
-                            <img src="/img/fallback-imgs/fallback-artist.png" />
+                            <img src="/img/fallback-imgs/fallback-album.jpg" />
                             <% } %>
-                            <h4><%= result.name %></h4>
-                            <p>Artist</p>
+                            <h4><%= result.title %></h4>
+                            <p><%= result.nb_tracks %> tracks</p>
                         </a>
                     </div>
                     <% }); %>
@@ -80,27 +79,30 @@
                             <% } %>
                             <h4><%= result.album.title %></h4>
                             <a href="/deezer/artist/<%= result.artist.id %>">
-                                <p><%= result.artist.name %></p>
+                                <p>by <%= result.artist.name %></p>
                             </a>
                         </a>
                     </div>
                     <% }); %>
                 </div>
             </section>
-            <% } %> <% if (playlistResults.length > 0) { %>
-            <section id="playlists">
-                <h2>Playlists</h2>
+            <% } %> <% if (artistResults.length > 0) { %>
+            <section id="artists">
+                <h3>Artists</h3>
                 <div class="flex-row">
-                    <% playlistResults.forEach(function(result) { %>
+                    <% artistResults.forEach(function(result) { %>
+                    <!-- TODO: Fix unequal card height and two card row (Grid Snippets ?) -->
                     <div class="card">
-                        <a href="/deezer/playlist/<%= result.id %>">
+                        <a href="/deezer/artist/<%= result.id %>">
                             <% if (result.picture_medium) { %>
                             <img src="<%= result.picture_medium %>" />
                             <% } else { %>
-                            <img src="/img/fallback-imgs/fallback-album.jpg" />
+                            <img src="/img/fallback-imgs/fallback-artist.png" />
                             <% } %>
-                            <h4><%= result.title %></h4>
-                            <p>By <%= result.user.name %></p>
+                            <h4><%= result.name %></h4>
+                            <% if (result.nb_fan) { %>
+                            <p><%= result.nb_fan %> fans</p>
+                            <% } %>
                         </a>
                     </div>
                     <% }); %>
