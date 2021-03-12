@@ -26,6 +26,7 @@ h2,
 h3,
 h4,
 p,
+nav a,
 a,
 li,
 label,
@@ -33,6 +34,7 @@ footer p,
 .la-play-circle,
 .la-pause-circle,
 .la-arrow-circle-left {
+    font-family: "Raleway", sans-serif;
     color: #fff;
 }
 

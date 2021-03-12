@@ -1,7 +1,14 @@
 /* CSS Variables */
-
 :root {
-    --main-color: #ffd633;
+    --main-color: #df0405;
+    --header-color: red;
+    --text-color: #fff;
+}
+
+/* Custom Webfonts */
+@font-face {
+    font-family: "Squealer";
+    src: url("/css/fonts/squealer.woff2");
 }
 
 /* Main Elements */
@@ -25,7 +32,12 @@ input[type="search"] {
 header,
 footer {
     width: 100%;
-    background: var(--main-color);
+    background: var(--header-color);
+}
+
+header h1,
+header a {
+    color: var(--text-color);
 }
 
 footer {
@@ -35,6 +47,7 @@ footer {
 
 footer p {
     font-weight: bold;
+    color: #ffffff;
 }
 
 nav {
@@ -49,7 +62,9 @@ nav ul {
 }
 
 nav a {
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #ffffff;
 }
 
 main {
@@ -57,17 +72,8 @@ main {
     padding: 5% 0;
 }
 
-h2 {
-    margin: 5% 0;
-}
-
-a {
+main a {
     color: #000000;
-}
-
-p {
-    margin: 0 5%;
-    line-height: 140%;
 }
 
 main li {
@@ -78,12 +84,29 @@ main p {
     margin: 2.5% 5%;
 }
 
+h2 {
+    font-size: 1.75rem;
+    margin: 5% 0;
+}
+
+p {
+    margin: 0 5%;
+    line-height: 140%;
+}
+
+h1,
+h2,
+h3,
+nav a,
+footer p {
+    font-family: Squealer, sans-serif;
+}
+
 h1,
 h2,
 h3,
 footer p,
 .text-center {
-    color: #000000;
     text-align: center;
 }
 
@@ -184,6 +207,7 @@ button:hover {
 
 .no-bottom {
     margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .half img {
