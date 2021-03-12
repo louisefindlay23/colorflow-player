@@ -1,19 +1,28 @@
-/* Global Spotify CSS */
+/* Spotify CSS */
 
 /* TODO: Responsiveness */
 
+/* CSS Variables */
+:root {
+    --main-color: #121212;
+    --header-color: #181818;
+    --accent-color: #000000;
+    --text-color: #ffffff;
+}
+
+/* Main Element */
 body,
 main {
-    background: #121212;
+    background: var(--main-color);
     font-family: "Raleway", sans-serif;
 }
 
 header {
-    background: #000000;
+    background: var(--header-color);
 }
 
 footer {
-    background: #181818;
+    background: var(--header-color);
 }
 
 section {
@@ -30,16 +39,15 @@ nav a,
 a,
 li,
 label,
-footer p,
-.la-play-circle,
-.la-pause-circle,
-.la-arrow-circle-left {
+button,
+input[type="search"],
+footer p {
     font-family: "Raleway", sans-serif;
-    color: #fff;
+    color: var(--text-color);
 }
 
+/* Icon Styling */
 .la-arrow-circle-left {
-    color: #fff;
     position: relative;
     right: 10vw;
 }
@@ -48,23 +56,27 @@ footer p,
     cursor: pointer;
 }
 
+.la-play-circle,
+.la-pause-circle,
+.la-arrow-circle-left {
+    color: var(--text-color);
+}
+
 /* Spotify Form Styling */
 input[type="search"],
 button {
-    background: #000;
-    border-color: #fff;
-    color: #fff;
+    background: var(--accent-color);
+    border-color: var(--text-color);
 }
 
 input[type="search"]:focus,
 button:hover {
-    background: #fff;
-    border-color: #000;
-    color: #000;
+    background: var(--text-color);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 /* Spotify Card/Section CSS */
-
 section .flex-row {
     width: 90%;
     margin: 0 5%;

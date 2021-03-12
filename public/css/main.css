@@ -1,8 +1,10 @@
+/* Global CSS */
+
 /* CSS Variables */
 :root {
     --main-color: #df0405;
     --header-color: #cc0707;
-    --text-color: #fff;
+    --text-color: #ffffff;
 }
 
 /* Custom Webfonts */
