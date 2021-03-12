@@ -1,7 +1,7 @@
 /* CSS Variables */
 :root {
     --main-color: #df0405;
-    --header-color: red;
+    --header-color: #cc0707;
     --text-color: #fff;
 }
 
@@ -35,8 +35,14 @@ footer {
     background: var(--header-color);
 }
 
-header h1,
-header a {
+h1,
+h2,
+h3,
+p,
+li,
+a,
+input[type="search"],
+input[type="search"]:focus {
     color: var(--text-color);
 }
 
@@ -47,7 +53,6 @@ footer {
 
 footer p {
     font-weight: bold;
-    color: #ffffff;
 }
 
 nav {
@@ -64,16 +69,12 @@ nav ul {
 nav a {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #ffffff;
 }
 
 main {
     max-width: 100%;
     padding: 5% 0;
-}
-
-main a {
-    color: #000000;
+    background: var(--main-color);
 }
 
 main li {
@@ -108,12 +109,6 @@ h3,
 footer p,
 .text-center {
     text-align: center;
-}
-
-/* Track Styling */
-
-.flex-row p {
-    color: #fff;
 }
 
 /* Flex Classes */
@@ -159,17 +154,12 @@ input[type="search"] {
     height: auto;
     border-radius: 5px;
     outline: none;
-    color: #000000;
 }
 
 input[type="search"] {
     width: 30vw;
     margin-top: 5vh;
     margin-right: 14vh;
-}
-
-input[type="search"]:focus {
-    color: #000000;
 }
 
 option {
