@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title><%- playlistInfo.title %> - Deezer Playlist - Coverflow Player</title>
+    </head>
+
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" type="text/css" href="/css/spotify.css" />
+        </header>
+
+        <main class="flex-center" style="background-color: rgb(<%- color %>)">
+            <section id="playlist">
+                <div class="flex-row-center">
+                    <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                    <h2>Playlist: <%- playlistInfo.title %></h2>
+                </div>
+                <p><span class="bold">By:</span> <%- playlistInfo.creator.name %></p>
+                <div class="flex-row">
+                    <img src="/img/analysed-artwork/deezer/playlist/<%- playlistInfo.id %>.png" />
+                </div>
+            </section>
+            <section id="songs">
+                <h3>Songs</h3>
+                <% playlistTrackInfo.forEach(function(track) { %>
+                <div class="flex-row">
+                    <a href="/deezer/album/<%= track.album.id %>">
+                        <% if (track.album.cover_small) { %>
+                        <img src="<%= track.album.cover_small %>" />
+                        <% } else { %>
+                        <img class="fallback-album" src="/img/fallback-imgs/fallback-album.jpg" />
+                        <% } %>
+                    </a>
+                    <!-- TODO: Add track number -->
+                    <p></p>
+                    <h4><%= track.title %></h4>
+                    <a href="/deezer/artist/<%= track.artist.id %>">
+                        <p><%= track.artist.name %></p>
+                    </a>
+                    <!-- TODO: Add track number -->
+                    <i id="" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
+                    <!-- TODO: Add track number -->
+                    <audio id="audio">
+                        <source src="<%- track.preview %>" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <% }); %>
+            </section>
+        </main>
+
+        <footer><%- include('../../partials/footer') %></footer>
+    </body>
+</html>

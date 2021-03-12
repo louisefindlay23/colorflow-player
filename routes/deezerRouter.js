@@ -163,7 +163,6 @@ deezerRouter.get("/artist/:id", function (req, res) {
 
 deezerRouter.get("/playlist/:id", function (req, res) {
     const obtainPlaylistInfo = deezer.playlist(req.params.id).then((data) => {
-        console.log(data);
         return data;
     });
     const obtainPlaylistTrackInfo = deezer.playlist
@@ -171,7 +170,9 @@ deezerRouter.get("/playlist/:id", function (req, res) {
             limit: 30,
         })
         .then((data) => {
-            return data;
+            console.log(data.data[0].album);
+            console.log(data.data[0].artist);
+            return data.data;
         });
 
     const retrieveArtwork = async () => {
@@ -191,7 +192,7 @@ deezerRouter.get("/playlist/:id", function (req, res) {
                 // Download playlist image to get colour
                 const retrieveArtwork = async () => {
                     await download(artwork, path);
-                    res.redirect("/spotify" + req.url);
+                    res.redirect("/deezer" + req.url);
                 };
                 retrieveArtwork();
             } else {
@@ -201,7 +202,7 @@ deezerRouter.get("/playlist/:id", function (req, res) {
                     const playlistInfo = await obtainPlaylistInfo;
                     const playlistTrackInfo = await obtainPlaylistTrackInfo;
                     const color = await getColorFromURL(path);
-                    res.render("pages/spotify/playlist", {
+                    res.render("pages/deezer/playlist", {
                         playlistInfo: playlistInfo,
                         playlistTrackInfo: playlistTrackInfo,
                         color: color,
