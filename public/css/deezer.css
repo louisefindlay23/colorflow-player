@@ -1,0 +1,168 @@
+/* Spotify CSS */
+
+/* TODO: Responsiveness */
+
+/* CSS Variables */
+:root {
+    --main-color: #121212;
+    --header-color: #181818;
+    --accent-color: #000000;
+    --text-color: #ffffff;
+}
+
+/* Main Element */
+body,
+main {
+    background: var(--main-color);
+    font-family: "Open Sans", sans-serif;
+}
+
+header {
+    background: var(--header-color);
+}
+
+footer {
+    background: var(--header-color);
+}
+
+section {
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+nav a,
+a,
+li,
+label,
+button,
+input[type="search"],
+footer p {
+    color: var(--text-color);
+}
+
+h1,
+h2,
+h3,
+nav a,
+footer p {
+    font-family: "DM Sans", sans-serif;
+}
+
+/* Icon Styling */
+.la-arrow-circle-left {
+    position: relative;
+    right: 10vw;
+}
+
+.la-arrow-circle-left:hover {
+    cursor: pointer;
+}
+
+.la-play-circle,
+.la-pause-circle,
+.la-arrow-circle-left {
+    color: var(--text-color);
+}
+
+/* Spotify Form Styling */
+input[type="search"],
+button {
+    background: var(--accent-color);
+    border-color: var(--text-color);
+}
+
+input[type="search"]:focus,
+button:hover {
+    background: var(--text-color);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+/* Spotify Card/Section CSS */
+section .flex-row {
+    width: 90%;
+    margin: 0 5%;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#songs .flex-row {
+    justify-content: space-between;
+}
+
+.card {
+    box-sizing: border-box;
+    background: #282828;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 2.5%;
+    margin: 2.5% 0;
+}
+
+.card:hover {
+    background: #333;
+}
+
+.card a,
+#songs a {
+    text-decoration: none;
+}
+
+.card p {
+    color: #ccc;
+    margin-left: 0;
+}
+
+#artists img,
+#artist img {
+    border-radius: 50%;
+}
+
+#artists img {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 5%;
+}
+
+#album img {
+    margin-top: 5%;
+}
+
+#artists .la-user-circle {
+    display: flex;
+    justify-content: center;
+}
+
+#artist-stats,
+#playlist,
+#album {
+    text-align: center;
+}
+
+#artist-stats p:first-of-type {
+    padding-bottom: 2.5%;
+}
+
+#albums h4 {
+    word-wrap: break-word;
+}
+
+#playlist img {
+    margin-top: 5%;
+}
+
+#songs,
+playlists img {
+    width: 100%;
+    height: auto;
+}
+
+.fallback-album {
+    width: 64px;
+    height: 64px;
+}
