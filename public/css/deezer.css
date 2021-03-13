@@ -1,4 +1,4 @@
-/* Spotify CSS */
+/* Deezer CSS */
 
 /* TODO: Responsiveness */
 
@@ -8,6 +8,7 @@
     --header-color: #ffffff;
     --accent-color: #eaeaea;
     --text-color: #191919;
+    --border: 1px solid var(--accent-color);
 }
 
 /* Main Element */
@@ -71,7 +72,7 @@ h4 {
     color: var(--text-color);
 }
 
-/* Spotify Form Styling */
+/* Deezer Form Styling */
 input[type="search"],
 button {
     background: var(--accent-color);
@@ -85,7 +86,7 @@ button:hover {
     color: var(--accent-color);
 }
 
-/* Spotify Card/Section CSS */
+/* Deezer Card/Section CSS */
 section .flex-row {
     width: 90%;
     margin: 0 5%;
@@ -97,8 +98,19 @@ section .flex-row {
     justify-content: space-between;
 }
 
-#songs .flex-row:not(#songs .flex-row:first-of-type) {
-    border: 1px solid var(--accent-color);
+/* Deezer Track Border CSS */
+
+#songs .flex-row {
+    border-top: var(--border);
+    border-bottom: var(--border);
+}
+
+#songs .flex-row:first-of-type {
+    border-top: none;
+}
+
+#songs .flex-row:last-of-type {
+    border-bottom: none;
 }
 
 .card {
@@ -115,6 +127,8 @@ section .flex-row {
 .card p {
     margin-left: 0;
 }
+
+/* Deezer Card Image/Icon CSS */
 
 .card img {
     border-radius: 10px;

@@ -41,12 +41,25 @@ document.addEventListener("DOMContentLoaded", function () {
 function adaptiveBackground() {
     const artworkColor = document.querySelector("main").style.backgroundColor;
 
-    if (lightOrDark(artworkColor) === "light") {
-        const adaptiveElements = document.querySelectorAll(
-            "main h2, main h3, main a, #artist-stats p, #album p, #playlist p, #songs h4, #songs p, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
-        );
-        adaptiveElements.forEach((element) => {
-            element.style.color = "#000";
-        });
+    if (window.location.pathname.includes("spotify")) {
+        // If background is light, change text to black
+        if (lightOrDark(artworkColor) === "light") {
+            const adaptiveElements = document.querySelectorAll(
+                "main h2, main h3, main a, #artist-stats p, #album p, #playlist p, #songs h4, #songs p, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
+            );
+            adaptiveElements.forEach((element) => {
+                element.style.color = "#000000";
+            });
+        }
+    } else {
+        // If background is dark, change text to white
+        if (lightOrDark(artworkColor) === "dark") {
+            const adaptiveElements = document.querySelectorAll(
+                "main h2, main h3, main a, #artist-stats p, #album p, #playlist p, #songs h4, #songs p, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
+            );
+            adaptiveElements.forEach((element) => {
+                element.style.color = "#ffffff";
+            });
+        }
     }
 }

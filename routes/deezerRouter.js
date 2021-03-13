@@ -51,7 +51,6 @@ deezerRouter.post("/search", function (req, res) {
         return data.data;
     });
     const obtainArtistResults = deezer.search.artist(searchQuery).then((data) => {
-        console.log(data.data);
         return data.data;
     });
     const obtainPlaylistResults = deezer.search.playlist(searchQuery).then((data) => {
