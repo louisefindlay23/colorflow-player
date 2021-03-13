@@ -33,17 +33,15 @@
                 </div>
             </section>
             <section id="songs">
-                <% albumInfo.tracks.data.forEach(function(track) { %>
+                <% albumInfo.tracks.data.forEach(function(track, index) { %>
                 <div class="flex-row">
-                    <!-- TODO: Add track number -->
-                    <p></p>
+                    <p><%- index %></p>
                     <h4><%= track.title_short %></h4>
                     <a href="/spotify/artist/<%= track.artist.id %>">
                         <p><%= track.artist.name %></p>
                     </a>
-                    <!-- TODO: Add track number -->
-                    <i id="" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                    <audio id="audio" style="background-color: rgb(<%- color %>)">
+                    <i id="<%- index %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
+                    <audio id="audio<%- index %>" style="background-color: rgb(<%- color %>)">
                         <source src="<%- track.preview %>" type="audio/mpeg" />
                     </audio>
                 </div>

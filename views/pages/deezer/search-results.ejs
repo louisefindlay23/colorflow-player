@@ -24,7 +24,7 @@
             <section id="songs">
                 <h3>Tracks</h3>
                 <!-- TODO: Fix uneven track results (Grid?) -->
-                <% trackResults.forEach(function(result) { %>
+                <% trackResults.forEach(function(result, index) { %>
                 <div class="flex-row">
                     <a href="/deezer/album/<%= result.album.id %>">
                         <% if (result.album.cover_small) { %>
@@ -37,10 +37,8 @@
                     <a href="/deezer/artist/<%= result.artist.id %>">
                         <p><%= result.artist.name %></p>
                     </a>
-                    <!-- TODO: Add id number [1]-->
-                    <i id="" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                    <!-- TODO: Add id number [1]-->
-                    <audio id="audio">
+                    <i id="<%- index %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
+                    <audio id="audio<%- index %>">
                         <source src="<%- result.preview %>" type="audio/mpeg" />
                     </audio>
                 </div>
