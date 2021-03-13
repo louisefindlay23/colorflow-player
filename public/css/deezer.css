@@ -5,8 +5,8 @@
 /* CSS Variables */
 :root {
     --main-color: #ffffff;
-    --header-color: #dfdfe0;
-    --accent-color: #dfdfe0;
+    --header-color: #ffffff;
+    --accent-color: #eaeaea;
     --text-color: #191919;
 }
 
@@ -17,12 +17,10 @@ main {
     font-family: "Open Sans", sans-serif;
 }
 
-header {
-    background: var(--header-color);
-}
-
+header,
 footer {
     background: var(--header-color);
+    border: 1px solid var(--accent-color);
 }
 
 section {
@@ -51,6 +49,10 @@ h3,
 nav a,
 footer p {
     font-family: "DM Sans", sans-serif;
+}
+
+h4 {
+    font-weight: normal;
 }
 
 /* Icon Styling */
@@ -95,17 +97,14 @@ section .flex-row {
     justify-content: space-between;
 }
 
-.card {
-    box-sizing: border-box;
-    background: #282828;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    padding: 2.5%;
-    margin: 2.5% 0;
+#songs .flex-row:not(#songs .flex-row:first-of-type) {
+    border: 1px solid var(--accent-color);
 }
 
-.card:hover {
-    background: #333;
+.card {
+    box-sizing: border-box;
+    padding: 2.5%;
+    margin: 2.5% 0;
 }
 
 .card a,
@@ -114,8 +113,11 @@ section .flex-row {
 }
 
 .card p {
-    color: #ccc;
     margin-left: 0;
+}
+
+.card img {
+    border-radius: 10px;
 }
 
 #artists img,

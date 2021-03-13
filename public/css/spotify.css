@@ -17,10 +17,7 @@ main {
     font-family: "Raleway", sans-serif;
 }
 
-header {
-    background: var(--header-color);
-}
-
+header,
 footer {
     background: var(--header-color);
 }
