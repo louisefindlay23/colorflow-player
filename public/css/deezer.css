@@ -113,6 +113,10 @@ section .flex-row {
     border-bottom: none;
 }
 
+#songs .flex-row:not(#search-results #songs .flex-row) {
+    border-color: var(--text-color);
+}
+
 .card {
     box-sizing: border-box;
     padding: 2.5%;

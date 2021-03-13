@@ -55,10 +55,11 @@ function adaptiveBackground() {
         // If background is dark, change text to white
         if (lightOrDark(artworkColor) === "dark") {
             const adaptiveElements = document.querySelectorAll(
-                "main h2, main h3, main a, #artist-stats p, #album p, #playlist p, #songs h4, #songs p, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
+                "main h2, main h3, main a, main p, main h4, .la-arrow-circle-left, .la-play-circle, .la-pause-circle, #songs .flex-row"
             );
             adaptiveElements.forEach((element) => {
                 element.style.color = "#ffffff";
+                element.style.borderColor = "#ffffff";
             });
         }
     }
