@@ -12,17 +12,20 @@ const MongoClient = require("mongodb").MongoClient;
 const dbUrl = process.env.DB_URL;
 let db = null;
 
-MongoClient.connect(
-    dbUrl,
-    {
-        useUnifiedTopology: true,
-    },
-    function (err, client) {
-        if (err) throw err;
-        db = client.db("colorflow-players-users");
-        console.log("DB connected");
-    }
-);
+const mongoConnect = () => {
+    MongoClient.connect(dbUrl)
+        .then((client) => {
+            console.log("DB connected");
+            db = client.db(process.env.DB_NAME);
+        })
+        .catch((err) => {
+            console.log("MongoDB connection unsuccessful, retry after 5 seconds.");
+            console.error(err);
+            setTimeout(mongoConnect, 5000);
+        });
+};
+
+mongoConnect();
 
 // Passport
 const passport = require("passport");
@@ -65,37 +68,35 @@ passport.deserializeUser(function (username, done) {
 // Authenticate user
 passport.use(
     new LocalStrategy(function (username, password, done) {
-        const searchUser = async () => {
-            await dbConnect();
-            db.collection("users").findOne(
-                {
-                    username: username,
-                },
-                function (err, user) {
-                    if (err) {
-                        console.error(err);
-                        return done(err);
-                    }
-                    if (!user) {
+        console.log("Username to find is " + username);
+        db.collection("users").findOne(
+            {
+                username: username,
+            },
+            function (err, user) {
+                console.info("User is " + user);
+                if (err) {
+                    console.error(err);
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false, {
+                        //message: "Incorrect username.",
+                    });
+                }
+                bcrypt.compare(password, hash, function (err, res) {
+                    if (res) {
+                        console.log("Login successful");
+                        return done(null, user);
+                    } else {
+                        console.log("Incorrect password");
                         return done(null, false, {
                             //message: "Incorrect username.",
                         });
                     }
-                    bcrypt.compare(process.env.ANALYTICS_PASSWORD, hash, function (err, res) {
-                        if (res) {
-                            console.log("Login successful");
-                            return done(null, user);
-                        } else {
-                            console.log("Incorrect password");
-                            return done(null, false, {
-                                //message: "Incorrect username.",
-                            });
-                        }
-                    });
-                }
-            );
-        };
-        searchUser();
+                });
+            }
+        );
     })
 );
 
@@ -123,9 +124,9 @@ function isLoggedIn(req, res, next) {
 // Login Routes
 
 analyticsRouter.get("/login", function (req, res) {
-    //bcrypt.hash("Becomethemaster42!", 10, function (err, hash) {
-    // Store hash
-    //   console.log(hash);
+    //bcrypt.hash(process.env.ANALYTICS_PASSWORD, 10, function (err, hash) {
+    //Store hash
+    //    console.log(hash);
     // });
     res.render("pages/analytics/login");
 });
@@ -136,7 +137,6 @@ analyticsRouter.post("/login", function (req, res, next) {
         if (err || user === false) {
             if (err) {
                 console.error(err);
-                res.redirect("/analytics/login");
             }
             res.redirect("/analytics/login");
         } else {
@@ -146,7 +146,7 @@ analyticsRouter.post("/login", function (req, res, next) {
                     return next(err);
                 }
                 req.session.user = req.user;
-                console.log("User is " + req.session.user.username);
+                console.info("User is " + req.session.user.username);
                 return res.redirect("/analytics");
             });
         }
