@@ -20,7 +20,6 @@ app.set("view engine", "ejs");
 
 // DB
 const MongoClient = require("mongodb").MongoClient;
-const mongodb = require("mongodb").MongoClient;
 const dbUrl = process.env.DB_URL;
 let db;
 MongoClient.connect(

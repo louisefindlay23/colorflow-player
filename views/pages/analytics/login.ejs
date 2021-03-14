@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <%- include('../partials/head') %>
+        <%- include('../../partials/head') %>
         <title>Analytics Login - Colorflow Player</title>
     </head>
 
     <body>
-        <header><%- include('../partials/header') %></header>
+        <header><%- include('../../partials/header') %></header>
 
         <main class="flex-center">
-            <p>
-                Colorflow Player is a Node.js music streaming app (Spotify and Deezer) where the background color of all
-                views changes to match the predominate color of the album or playlist artwork. This style is called
-                ColorFlow.
-            </p>
-            <h2>Features</h2>
-            <ul>
-                <li>Spotify (30s previews) and Deezer Streaming</li>
-                <li>Beautiful Colorflow-inspired album and playlist views</li>
-                <li>Branded Spotify and Deezer UI</li>
-                <li>Search for tracks, albums, artists or playlists</li>
-            </ul>
-            <h2>Choose between Spotify and Deezer</h2>
+            <h2>Login to Access Analytics</h2>
+            <form id="login-form" action="/analytics/login" method="post">
+                <div class="flex-around">
+                    <label for="username">Username:</label>
+                    <input name="username" type="text" placeholder="Enter your username" />
+                </div>
+                <div class="flex-around">
+                    <label for="password">Password:</label>
+                    <input name="password" type="password" placeholder="Enter your password" />
+                </div>
+                <div class="flex-around">
+                    <button type="submit" value="Login">Login</button>
+                </div>
+            </form>
         </main>
 
-        <footer><%- include('../partials/footer') %></footer>
+        <footer><%- include('../../partials/footer') %></footer>
     </body>
 </html>

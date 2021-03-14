@@ -7,9 +7,15 @@ const expressSession = require("express-session")({
     saveUninitialized: false,
 });
 
+// DB
+const dbInfo = require("../server");
+const db = dbInfo;
+console.log(db);
+
 // Passport
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcrypt");
 
 // Parse Form Data
 const bodyParser = require("body-parser");
@@ -53,7 +59,7 @@ passport.use(
             },
             function (err, user) {
                 if (err) {
-                    console.log(err);
+                    console.error(err);
                     return done(err);
                 }
                 if (!user) {
@@ -62,19 +68,32 @@ passport.use(
                         message: "Incorrect username.",
                     });
                 }
-                if (user.password != password) {
-                    console.log("Incorrect Password");
-                    return done(null, false, {
-                        message: "Incorrect password.",
-                    });
-                }
-                return done(null, user);
+                bcrypt.compare(process.env.ANALYTICS_PASSWORD, hash, function (err, res) {
+                    if (res) {
+                        console.log("Login successful");
+                        return done(null, user);
+                    } else {
+                        console.log("Incorrect password");
+                        return done(null, false, {
+                            message: "Incorrect username.",
+                        });
+                    }
+                });
             }
         );
     })
 );
 
 // Hashing
+function compareHash() {
+    bcrypt.compare("somePassword", hash, function (err, res) {
+        if (res) {
+            // Passwords match
+        } else {
+            // Passwords don't match
+        }
+    });
+}
 
 // Logged In Check Middleware
 function isLoggedIn(req, res, next) {
@@ -89,7 +108,11 @@ function isLoggedIn(req, res, next) {
 // Login Routes
 
 analyticsRouter.get("/login", function (req, res) {
-    res.send("Login page");
+    //bcrypt.hash("Becomethemaster42!", 10, function (err, hash) {
+    // Store hash
+    //   console.log(hash);
+    // });
+    res.render("pages/analytics/login");
 });
 
 analyticsRouter.post("/login", function (req, res, next) {
@@ -97,7 +120,7 @@ analyticsRouter.post("/login", function (req, res, next) {
     passport.authenticate("local", function (err, user) {
         if (err || user === false) {
             if (err) {
-                console.log(err);
+                console.error(err);
                 res.redirect("/analytics/login");
             }
             res.redirect("/analytics/login");
