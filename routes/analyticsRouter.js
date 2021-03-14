@@ -51,18 +51,54 @@ passport.deserializeUser(function (username, done) {
 });
 
 // Authenticate user
-
-
+passport.use(
+    new LocalStrategy(function (username, password, done) {
+client.connect(err => {
+    const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
+    // Search DB for user with username
+    collection.findOne({ username: username })
+        .then(user => {
+            // Test for correct username
+            if (!user) {
+                console.error("Incorrect Username " + username);
+                return done(null, false, {
+                    // TODO: Send errors to user
+                    message: "Incorrect username.",
+                });
+            // If username correct, compare password hash
+            } else {
+                compareHash(username, password);
+            }
+        }).catch(err => {
+            console.error(err);
+            return done(err);
+        })
+    });
+})
+);
 
 // Hashing
-function compareHash() {
-    bcrypt.compare("somePassword", hash, function (err, res) {
-        if (res) {
-            // Passwords match
-        } else {
-            // Passwords don't match
-        }
-    });
+function compareHash(username, password) {
+    const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
+    // Obtain user info and then user's hashed password
+    collection.findOne({ username: username })
+        .then(user => {
+            const hash = user.password;
+            // Compare hashed password to typed password
+            bcrypt.compare(password, hash, function (err, res) {
+                console.log("Entered password is " + password);
+                console.log("Hashed password is " + hash);
+                console.log(res);
+                if (res) {
+                    console.log(res);
+                } else {
+                    console.error("Password does not match " + err);
+                }
+            });
+        }).catch(err => {
+            console.error("User data doesn't exist" + err);
+            return done(err);
+        })
 }
 
 // Logged In Check Middleware
@@ -78,24 +114,37 @@ function isLoggedIn(req, res, next) {
 // Login Routes
 
 analyticsRouter.get("/", function (req, res) {
-  client.connect(err => {
-    const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
-    collection.findOne({ username: "DarthAssessor" })
-        .then(item => {
-            console.log(item);
-        }).catch(err => {
-            console.error(err);
-            return done(err);
-        })
-    });
-
+    res.send("Analytics root route");
 });
 
 analyticsRouter.get("/login", function (req, res) {
-    //bcrypt.hash(process.env.ANALYTICS_PASSWORD, 10, function (err, hash) {
-    //Store hash
-    //    console.log(hash);
-    // });
+    const password = "process.env.ANALYTICS_PASSWORD";
+    bcrypt.hash(password, 10, function (err, hash) {
+        client.connect(err => {
+            const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
+        // Obtain user info and then update user's hashed password
+        const userInfo = { name: process.env.ANALYTICS_USER };
+    const updatePassword = { $set: {password: hash } };
+        collection.updateOne(userInfo, updatePassword)
+            .then(result => {
+                console.log(result);
+                // Compare hashed password to typed password
+                const hash = user.password;
+                bcrypt.compare(password, hash, function (err, res) {
+                    console.log("Entered password is " + password);
+                    console.log("Hashed password is " + hash);
+                    console.log(res);
+                    if (res) {
+                        console.log(res);
+                    } else {
+                        console.error("Password does not match " + err);
+                    }
+                });
+            }).catch(err => {
+                console.error(err);
+            });
+        });
+ });
     res.render("pages/analytics/login");
 });
 
