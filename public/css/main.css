@@ -2,7 +2,7 @@
 
 /* CSS Variables */
 :root {
-    --main-color: #df0405;
+    --main-color: #32392f;
     --header-color: #cc0707;
     --text-color: #ffffff;
 }
@@ -35,6 +35,12 @@ header,
 footer {
     width: 100%;
     background: var(--header-color);
+}
+
+header button {
+    display: block;
+    position: absolute;
+    right: 5%;
 }
 
 h1,
@@ -100,6 +106,7 @@ p {
 h1,
 h2,
 h3,
+button,
 nav a,
 footer p {
     font-family: Squealer, sans-serif;
@@ -177,15 +184,15 @@ button {
     border: 3px solid var(--main-color);
     background: var(--main-color);
     text-align: center;
-    color: #fff;
+    color: var(--text-color);
     border-radius: 5px;
     cursor: pointer;
     font-size: 20px;
 }
 
 button:hover {
-    background: #fff;
-    color: var(--main-color);
+    background: var(--header-color);
+    color: var(--text-color);
     border-color: var(--main-color);
     cursor: pointer;
 }

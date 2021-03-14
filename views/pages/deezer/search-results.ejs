@@ -37,6 +37,7 @@
                     <a href="/deezer/artist/<%= result.artist.id %>">
                         <p><%= result.artist.name %></p>
                     </a>
+                    <!-- TODO: Fix audio playback -->
                     <i id="<%- index %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
                     <audio id="audio<%- index %>">
                         <source src="<%- result.preview %>" type="audio/mpeg" />

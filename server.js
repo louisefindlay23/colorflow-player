@@ -18,8 +18,23 @@ app.use(express.static("public"));
 // set the view engine to ejs
 app.set("view engine", "ejs");
 
-app.listen(port);
-console.log("Listening on " + port);
+// DB
+const MongoClient = require("mongodb").MongoClient;
+const mongodb = require("mongodb").MongoClient;
+const dbUrl = process.env.DB_URL;
+let db;
+MongoClient.connect(
+    dbUrl,
+    {
+        useUnifiedTopology: true,
+    },
+    function (err, client) {
+        if (err) throw err;
+        db = client.db("colorflow-players-users");
+        app.listen(port);
+        console.log("Listening on " + port);
+    }
+);
 
 // *** GET Routes - display pages ***
 
@@ -35,6 +50,10 @@ app.use("/spotify", spotifyRoutes);
 // Deezer Routes
 const deezerRoutes = require("./routes/deezerRouter");
 app.use("/deezer", deezerRoutes);
+
+// Analytics Routes
+const analyticsRoutes = require("./routes/analyticsRouter");
+app.use("/analytics", analyticsRoutes);
 
 // 404 Route
 app.use(function (req, res) {
