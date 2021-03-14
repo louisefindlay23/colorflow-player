@@ -10,22 +10,7 @@ const expressSession = require("express-session")({
 // DB
 const MongoClient = require("mongodb").MongoClient;
 const dbUrl = process.env.DB_URL;
-let db = null;
-
-const mongoConnect = () => {
-    MongoClient.connect(dbUrl)
-        .then((client) => {
-            console.log("DB connected");
-            db = client.db(process.env.DB_NAME);
-        })
-        .catch((err) => {
-            console.log("MongoDB connection unsuccessful, retry after 5 seconds.");
-            console.error(err);
-            setTimeout(mongoConnect, 5000);
-        });
-};
-
-mongoConnect();
+const client = new MongoClient(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Passport
 const passport = require("passport");
@@ -66,39 +51,8 @@ passport.deserializeUser(function (username, done) {
 });
 
 // Authenticate user
-passport.use(
-    new LocalStrategy(function (username, password, done) {
-        console.log("Username to find is " + username);
-        db.collection("users").findOne(
-            {
-                username: username,
-            },
-            function (err, user) {
-                console.info("User is " + user);
-                if (err) {
-                    console.error(err);
-                    return done(err);
-                }
-                if (!user) {
-                    return done(null, false, {
-                        //message: "Incorrect username.",
-                    });
-                }
-                bcrypt.compare(password, hash, function (err, res) {
-                    if (res) {
-                        console.log("Login successful");
-                        return done(null, user);
-                    } else {
-                        console.log("Incorrect password");
-                        return done(null, false, {
-                            //message: "Incorrect username.",
-                        });
-                    }
-                });
-            }
-        );
-    })
-);
+
+
 
 // Hashing
 function compareHash() {
@@ -122,6 +76,20 @@ function isLoggedIn(req, res, next) {
 }
 
 // Login Routes
+
+analyticsRouter.get("/", function (req, res) {
+  client.connect(err => {
+    const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
+    collection.findOne({ username: "DarthAssessor" })
+        .then(item => {
+            console.log(item);
+        }).catch(err => {
+            console.error(err);
+            return done(err);
+        })
+    });
+
+});
 
 analyticsRouter.get("/login", function (req, res) {
     //bcrypt.hash(process.env.ANALYTICS_PASSWORD, 10, function (err, hash) {
