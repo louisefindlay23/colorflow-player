@@ -8,9 +8,21 @@ const expressSession = require("express-session")({
 });
 
 // DB
-const dbInfo = require("../server");
-const db = dbInfo;
-console.log(db);
+const MongoClient = require("mongodb").MongoClient;
+const dbUrl = process.env.DB_URL;
+let db = null;
+
+MongoClient.connect(
+    dbUrl,
+    {
+        useUnifiedTopology: true,
+    },
+    function (err, client) {
+        if (err) throw err;
+        db = client.db("colorflow-players-users");
+        console.log("DB connected");
+    }
+);
 
 // Passport
 const passport = require("passport");
@@ -53,34 +65,37 @@ passport.deserializeUser(function (username, done) {
 // Authenticate user
 passport.use(
     new LocalStrategy(function (username, password, done) {
-        db.collection("users").findOne(
-            {
-                username: username,
-            },
-            function (err, user) {
-                if (err) {
-                    console.error(err);
-                    return done(err);
-                }
-                if (!user) {
-                    console.log("Incorrect Username");
-                    return done(null, false, {
-                        message: "Incorrect username.",
-                    });
-                }
-                bcrypt.compare(process.env.ANALYTICS_PASSWORD, hash, function (err, res) {
-                    if (res) {
-                        console.log("Login successful");
-                        return done(null, user);
-                    } else {
-                        console.log("Incorrect password");
+        const searchUser = async () => {
+            await dbConnect();
+            db.collection("users").findOne(
+                {
+                    username: username,
+                },
+                function (err, user) {
+                    if (err) {
+                        console.error(err);
+                        return done(err);
+                    }
+                    if (!user) {
                         return done(null, false, {
-                            message: "Incorrect username.",
+                            //message: "Incorrect username.",
                         });
                     }
-                });
-            }
-        );
+                    bcrypt.compare(process.env.ANALYTICS_PASSWORD, hash, function (err, res) {
+                        if (res) {
+                            console.log("Login successful");
+                            return done(null, user);
+                        } else {
+                            console.log("Incorrect password");
+                            return done(null, false, {
+                                //message: "Incorrect username.",
+                            });
+                        }
+                    });
+                }
+            );
+        };
+        searchUser();
     })
 );
 
@@ -115,8 +130,8 @@ analyticsRouter.get("/login", function (req, res) {
     res.render("pages/analytics/login");
 });
 
+// Passport-Local Auth
 analyticsRouter.post("/login", function (req, res, next) {
-    // Passport-Local Auth
     passport.authenticate("local", function (err, user) {
         if (err || user === false) {
             if (err) {
@@ -126,6 +141,7 @@ analyticsRouter.post("/login", function (req, res, next) {
             res.redirect("/analytics/login");
         } else {
             req.logIn(user, function (err) {
+                console.info("Auth successful");
                 if (err) {
                     return next(err);
                 }

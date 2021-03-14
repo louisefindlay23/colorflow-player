@@ -18,24 +18,9 @@ app.use(express.static("public"));
 // set the view engine to ejs
 app.set("view engine", "ejs");
 
-// DB
-const MongoClient = require("mongodb").MongoClient;
-const dbUrl = process.env.DB_URL;
-let db;
-MongoClient.connect(
-    dbUrl,
-    {
-        useUnifiedTopology: true,
-    },
-    function (err, client) {
-        if (err) throw err;
-        db = client.db("colorflow-players-users");
-        app.listen(port);
-        console.log("Listening on " + port);
-    }
-);
-
-// *** GET Routes - display pages ***
+// Run server
+app.listen(port);
+console.log("Listening on " + port);
 
 // Root Route
 app.get("/", function (req, res) {
