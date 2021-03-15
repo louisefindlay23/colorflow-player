@@ -1,10 +1,3 @@
-// Live reload Static Files
-const livereload = require("livereload");
-const path = require("path");
-const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(path.join(__dirname, "public"));
-const connectLivereload = require("connect-livereload");
-
 // Server Modules
 const express = require("express");
 const ejs = require("ejs");
@@ -23,13 +16,13 @@ app.listen(process.env.PORT);
 console.log("Listening on " + process.env.PORT);
 
 // Live reload Static Files
-console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === "development") {
     const livereload = require("livereload");
     const options = {
         port: process.env.RELOAD_PORT,
     };
     const liveReloadServer = livereload.createServer(options);
+    const path = require("path");
     liveReloadServer.watch(path.join(__dirname, "public"));
     const connectLivereload = require("connect-livereload");
     // Setup Live Reload

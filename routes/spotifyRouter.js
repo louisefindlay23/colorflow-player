@@ -250,8 +250,8 @@ spotifyRouter.get("/playlist/:id", isAuthenticated, function (req, res) {
 
     const retrieveArtwork = async () => {
         let artwork = await obtainPlaylistInfo;
-        if (artwork.images[1]) {
-            artwork = artwork.images[1].url;
+        if (artwork.images[0]) {
+            artwork = artwork.images[0].url;
         } else {
             artwork =
                 "https://raw.githubusercontent.com/louisefindlay23/colorflow-player/test/public/img/fallback-imgs/fallback-album.jpg";

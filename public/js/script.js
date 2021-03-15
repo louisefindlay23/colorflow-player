@@ -1,17 +1,25 @@
 // Play/Pause Audio and Change Icon accordingly
-function togglePlay(id) {
-    var playButton = document.getElementById(id);
-    var audio = document.getElementById("audio" + id);
-    if (audio.paused) {
-        audio.play();
-        playButton.classList.toggle("la-play-circle");
-        playButton.classList.toggle("la-pause-circle");
-    } else {
-        audio.pause();
-        playButton.classList.toggle("la-play-circle");
-        playButton.classList.toggle("la-pause-circle");
-    }
-}
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("#songs i").forEach((playButton) => {
+        playButton.addEventListener("click", (e) => {
+            const audio = e.target.nextElementSibling;
+            if (audio.paused) {
+                document.querySelectorAll("#songs audio").forEach((track) => {
+                    if (!track.paused) {
+                        track.pause();
+                        track.previousElementSibling.classList.remove("la-pause-circle");
+                        track.previousElementSibling.classList.add("la-play-circle");
+                    }
+                });
+                audio.play();
+            } else {
+                audio.pause();
+            }
+            e.target.classList.toggle("la-play-circle");
+            e.target.classList.toggle("la-pause-circle");
+        });
+    });
+});
 
 // Calculate whether artwork color is light or dark
 function lightOrDark(color) {

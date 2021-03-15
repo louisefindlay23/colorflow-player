@@ -42,8 +42,8 @@
                     <a href="/deezer/artist/<%= track.artist.id %>">
                         <p><%= track.artist.name %></p>
                     </a>
-                    <i id="<%- index %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                    <audio id="audio<%- index %>">
+                    <i class="las la-play-circle"></i>
+                    <audio>
                         <source src="<%- track.preview %>" type="audio/mpeg" />
                     </audio>
                 </div>

@@ -40,8 +40,8 @@
                     <a href="/spotify/artist/<%= track.artist.id %>">
                         <p><%= track.artist.name %></p>
                     </a>
-                    <i id="<%- index %>" class="las la-play-circle" onclick="togglePlay(this.id)"></i>
-                    <audio id="audio<%- index %>" style="background-color: rgb(<%- color %>)">
+                    <i class="las la-play-circle"></i>
+                    <audio style="background-color: rgb(<%- color %>)">
                         <source src="<%- track.preview %>" type="audio/mpeg" />
                     </audio>
                 </div>
