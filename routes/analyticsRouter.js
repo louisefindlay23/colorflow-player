@@ -1,12 +1,5 @@
 const express = require("express");
 
-// Express Session
-const expressSession = require("express-session")({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-});
-
 // MongoDB
 const { MongoClient } = require("mongodb");
 const mongo = new MongoClient(process.env.DB_URL, {
@@ -26,6 +19,7 @@ mongo.connect((err, result) => {
 // Passport
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const session = require("express-session");
 const bcrypt = require("bcrypt");
 
 // Parse Form Data
@@ -42,8 +36,15 @@ analyticsRouter.use(bodyParser.json());
 
 // Passport Session
 analyticsRouter.use(passport.initialize());
-analyticsRouter.use(express.session());
+analyticsRouter.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 analyticsRouter.use(passport.session());
+const user = null;
 
 // Add User to Session
 passport.serializeUser(function (user, done) {
@@ -88,7 +89,6 @@ passport.use(
                         // Compare hashed password to typed password
                         bcrypt.compare(password, hash, function (err, res) {
                             if (res) {
-                                console.info(res);
                                 return done(null, user);
                             } else {
                                 console.error("Password does not match");
@@ -131,7 +131,9 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
 
 // Login Form
 analyticsRouter.get("/login", function (req, res) {
-    res.render("pages/analytics/login");
+    res.render("pages/analytics/login", {
+        loggedIn: true,
+    });
 });
 
 // Passport-Local Auth
@@ -144,11 +146,11 @@ analyticsRouter.post("/login", function (req, res, next) {
             res.redirect("/analytics/login");
         } else {
             req.logIn(user, function (err) {
-                console.info("Auth successful");
                 if (err) {
                     return next(err);
                 }
                 req.session.user = req.user;
+                const user = req.session.user;
                 console.info("User is " + req.session.user.username);
                 return res.redirect("/analytics");
             });

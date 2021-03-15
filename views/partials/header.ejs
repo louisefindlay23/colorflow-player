@@ -1,6 +1,6 @@
 <div class="flex-row-center">
     <h1><a href="/">Colorflow Player</a></h1>
-    <button onclick="window.location.href='/analytics/login'">Analytics</button>
+    <button type="button" onclick="window.location.href='/analytics/login'" value="Analytics">Analytics</button>
 </div>
 <nav role="navigation">
     <ul>
@@ -8,3 +8,6 @@
         <li><a href="/deezer">Deezer</a></li>
     </ul>
 </nav>
+<% if (result.images[1]) { %>
+<img src="<%= result.images[1].url %>" />
+<% } else { %>
