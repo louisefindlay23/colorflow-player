@@ -53,36 +53,39 @@ passport.deserializeUser(function (username, done) {
 // Authenticate user
 passport.use(
     new LocalStrategy(function (username, password, done) {
-client.connect(err => {
-    const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
-    // Search DB for user with username
-    collection.findOne({ username: username })
-        .then(user => {
-            // Test for correct username
-            if (!user) {
-                console.error("Incorrect Username " + username);
-                return done(null, false, {
-                    // TODO: Send errors to user
-                    message: "Incorrect username.",
+        client.connect((err) => {
+            const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
+            // Search DB for user with username
+            collection
+                .findOne({ username: username })
+                .then((user) => {
+                    // Test for correct username
+                    if (!user) {
+                        console.error("Incorrect Username " + username);
+                        return done(null, false, {
+                            // TODO: Send errors to user
+                            message: "Incorrect username.",
+                        });
+                        // If username correct, compare password hash
+                    } else {
+                        compareHash(username, password);
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                    return done(err);
                 });
-            // If username correct, compare password hash
-            } else {
-                compareHash(username, password);
-            }
-        }).catch(err => {
-            console.error(err);
-            return done(err);
-        })
-    });
-})
+        });
+    })
 );
 
-// Hashing
+// Password Hash Check
 function compareHash(username, password) {
     const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
     // Obtain user info and then user's hashed password
-    collection.findOne({ username: username })
-        .then(user => {
+    collection
+        .findOne({ username: username })
+        .then((user) => {
             const hash = user.password;
             // Compare hashed password to typed password
             bcrypt.compare(password, hash, function (err, res) {
@@ -92,13 +95,14 @@ function compareHash(username, password) {
                 if (res) {
                     console.log(res);
                 } else {
-                    console.error("Password does not match " + err);
+                    console.error("Password does not match");
                 }
             });
-        }).catch(err => {
-            console.error("User data doesn't exist" + err);
-            return done(err);
         })
+        .catch((err) => {
+            console.error("User doesn't exist" + err);
+            return done(err);
+        });
 }
 
 // Logged In Check Middleware
@@ -111,40 +115,32 @@ function isLoggedIn(req, res, next) {
     }
 }
 
-// Login Routes
-
+// Analytics Dashboard route
 analyticsRouter.get("/", function (req, res) {
     res.send("Analytics root route");
 });
 
+// Login Routes
+
+// Login Form
 analyticsRouter.get("/login", function (req, res) {
+    // Hash password
     const password = "process.env.ANALYTICS_PASSWORD";
     bcrypt.hash(password, 10, function (err, hash) {
-        client.connect(err => {
+        console.log(hash);
+        client.connect((err) => {
             const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
-        // Obtain user info and then update user's hashed password
-        const userInfo = { name: process.env.ANALYTICS_USER };
-    const updatePassword = { $set: {password: hash } };
-        collection.updateOne(userInfo, updatePassword)
-            .then(result => {
-                console.log(result);
-                // Compare hashed password to typed password
-                const hash = user.password;
-                bcrypt.compare(password, hash, function (err, res) {
-                    console.log("Entered password is " + password);
-                    console.log("Hashed password is " + hash);
-                    console.log(res);
-                    if (res) {
-                        console.log(res);
-                    } else {
-                        console.error("Password does not match " + err);
-                    }
+            // Obtain user info and then update user's hashed password
+            const userInfo = { name: process.env.ANALYTICS_USER };
+            const updatePassword = { $set: { password: hash } };
+            collection
+                .updateOne(userInfo, updatePassword)
+                .then((result) => {})
+                .catch((err) => {
+                    console.error(err);
                 });
-            }).catch(err => {
-                console.error(err);
-            });
         });
- });
+    });
     res.render("pages/analytics/login");
 });
 
