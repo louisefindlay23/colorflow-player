@@ -16,8 +16,7 @@ const mongo = new MongoClient(process.env.DB_URL, {
 let collection = null;
 
 mongo.connect((err, result) => {
-    global.mongo = result;
-    collection = global.mongo.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
+    collection = result.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
 
     process.on("SIGINT", function () {
         mongo.close();
@@ -47,12 +46,12 @@ analyticsRouter.use(passport.session());
 
 // Add User to Session
 passport.serializeUser(function (user, done) {
-    done(null, user.username); /* Callback User from Database */
+    done(null, user.username);
 });
 
 // Remove User from Session
 passport.deserializeUser(function (username, done) {
-    db.collection("users").findOne(
+    collection("users").findOne(
         {
             username: username,
         },
@@ -74,12 +73,20 @@ passport.use(
                     console.error("Incorrect Username " + username);
                     return done(null, false, {
                         // TODO: Send errors to user
-                        message: "Incorrect username.",
+                        message: "Incorrect username",
                     });
-                    // If username correct, compare password hash
-                } else {
-                    compareHash(username, password);
                 }
+                (async () => {
+                    console.log(await compareHash(username, password));
+                })();
+
+                // If username is correct, compare password hash
+                // } else if (compareHash(username, password)) {
+                //     return done(null, user);
+                //   } else {
+                //      return done(null, false, {
+                //        message: "Incorrect password",
+                //    });
             })
             .catch((err) => {
                 console.error(err);
@@ -89,29 +96,30 @@ passport.use(
 );
 
 // Password Hash Check
-function compareHash(username, password) {
+const compareHash = async (username, password) => {
     // Obtain user info and then user's hashed password
     collection
         .findOne({ username: username })
-        .then((user) => {
+        .then(function (user) {
             const hash = user.password;
+            return hash;
+        })
+        .then(async function (hash) {
             // Compare hashed password to typed password
-            bcrypt.compare(password, hash, function (err, res) {
-                console.log("Entered password is " + password);
-                console.log("Hashed password is " + hash);
-                console.log(res);
+            const passwordResult = await bcrypt.compare(password, hash, function (err, res) {
                 if (res) {
-                    console.log(res);
+                    return res;
                 } else {
                     console.error("Password does not match");
                 }
             });
+            return passwordResult;
         })
         .catch((err) => {
             console.error("User doesn't exist" + err);
-            return done(err);
+            return err;
         });
-}
+};
 
 // Logged In Check Middleware
 function isLoggedIn(req, res, next) {
@@ -132,20 +140,6 @@ analyticsRouter.get("/", function (req, res) {
 
 // Login Form
 analyticsRouter.get("/login", function (req, res) {
-    // Hash password
-    const password = process.env.ANALYTICS_PASSWORD;
-    bcrypt.hash(password, 10, function (err, hash) {
-        console.log(hash);
-        // Obtain user info and then update user's hashed password
-        const userInfo = { name: process.env.ANALYTICS_USER };
-        const updatePassword = { $set: { password: hash } };
-        collection
-            .updateOne(userInfo, updatePassword)
-            .then((result) => {})
-            .catch((err) => {
-                console.error(err);
-            });
-    });
     res.render("pages/analytics/login");
 });
 
