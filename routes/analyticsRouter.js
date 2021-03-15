@@ -7,10 +7,22 @@ const expressSession = require("express-session")({
     saveUninitialized: false,
 });
 
-// DB
-const MongoClient = require("mongodb").MongoClient;
-const dbUrl = process.env.DB_URL;
-const client = new MongoClient(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+// MongoDB
+const { MongoClient } = require("mongodb");
+const mongo = new MongoClient(process.env.DB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+let collection = null;
+
+mongo.connect((err, result) => {
+    global.mongo = result;
+    collection = global.mongo.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
+
+    process.on("SIGINT", function () {
+        mongo.close();
+    });
+});
 
 // Passport
 const passport = require("passport");
@@ -53,35 +65,31 @@ passport.deserializeUser(function (username, done) {
 // Authenticate user
 passport.use(
     new LocalStrategy(function (username, password, done) {
-        client.connect((err) => {
-            const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
-            // Search DB for user with username
-            collection
-                .findOne({ username: username })
-                .then((user) => {
-                    // Test for correct username
-                    if (!user) {
-                        console.error("Incorrect Username " + username);
-                        return done(null, false, {
-                            // TODO: Send errors to user
-                            message: "Incorrect username.",
-                        });
-                        // If username correct, compare password hash
-                    } else {
-                        compareHash(username, password);
-                    }
-                })
-                .catch((err) => {
-                    console.error(err);
-                    return done(err);
-                });
-        });
+        // Search DB for user with username
+        collection
+            .findOne({ username: username })
+            .then((user) => {
+                // Test for correct username
+                if (!user) {
+                    console.error("Incorrect Username " + username);
+                    return done(null, false, {
+                        // TODO: Send errors to user
+                        message: "Incorrect username.",
+                    });
+                    // If username correct, compare password hash
+                } else {
+                    compareHash(username, password);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                return done(err);
+            });
     })
 );
 
 // Password Hash Check
 function compareHash(username, password) {
-    const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
     // Obtain user info and then user's hashed password
     collection
         .findOne({ username: username })
@@ -125,21 +133,18 @@ analyticsRouter.get("/", function (req, res) {
 // Login Form
 analyticsRouter.get("/login", function (req, res) {
     // Hash password
-    const password = "process.env.ANALYTICS_PASSWORD";
+    const password = process.env.ANALYTICS_PASSWORD;
     bcrypt.hash(password, 10, function (err, hash) {
         console.log(hash);
-        client.connect((err) => {
-            const collection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
-            // Obtain user info and then update user's hashed password
-            const userInfo = { name: process.env.ANALYTICS_USER };
-            const updatePassword = { $set: { password: hash } };
-            collection
-                .updateOne(userInfo, updatePassword)
-                .then((result) => {})
-                .catch((err) => {
-                    console.error(err);
-                });
-        });
+        // Obtain user info and then update user's hashed password
+        const userInfo = { name: process.env.ANALYTICS_USER };
+        const updatePassword = { $set: { password: hash } };
+        collection
+            .updateOne(userInfo, updatePassword)
+            .then((result) => {})
+            .catch((err) => {
+                console.error(err);
+            });
     });
     res.render("pages/analytics/login");
 });
