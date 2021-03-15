@@ -78,11 +78,10 @@ spotifyRouter.get("/callback", function (req, res) {
             if (referrer) {
                 let referrerpath = urlModule.parse(referrer, true);
                 referrerpath = referrerpath.path;
+                if (referrerpath === "/") {
+                    referrerpath = "/spotify";
+                }
                 res.redirect(referrerpath);
-                // TODO: Fix referrerpath
-                //if (referrerpath === "/") {
-                //    res.redirect("/spotify");
-                // }
             } else {
                 res.redirect("/spotify");
             }

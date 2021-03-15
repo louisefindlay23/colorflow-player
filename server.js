@@ -27,7 +27,6 @@ if (process.env.NODE_ENV === "development") {
     const connectLivereload = require("connect-livereload");
     // Setup Live Reload
     liveReloadServer.server.once("connection", () => {
-        console.log("Live Reload active");
         setTimeout(() => {
             liveReloadServer.refresh("/");
         }, 100);
