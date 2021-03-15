@@ -76,17 +76,33 @@ passport.use(
                         message: "Incorrect username",
                     });
                 }
-                (async () => {
-                    console.log(await compareHash(username, password));
-                })();
-
                 // If username is correct, compare password hash
-                // } else if (compareHash(username, password)) {
-                //     return done(null, user);
-                //   } else {
-                //      return done(null, false, {
-                //        message: "Incorrect password",
-                //    });
+                collection
+                    .findOne({ username: username })
+                    .then(function (user) {
+                        const hash = user.password;
+                        return hash;
+                    })
+                    .then(function (hash) {
+                        // Compare hashed password to typed password
+                        bcrypt.compare(password, hash, function (err, res) {
+                            if (res) {
+                                console.info(res);
+                                return done(null, user);
+                            } else {
+                                console.error("Password does not match");
+                                return done(null, false, {
+                                    message: "Password does not match",
+                                });
+                            }
+                        });
+                    })
+                    .catch((err) => {
+                        console.error("Error authenticating password " + err);
+                        return done(err, false, {
+                            message: "Error authenticating password " + err,
+                        });
+                    });
             })
             .catch((err) => {
                 console.error(err);
@@ -94,32 +110,6 @@ passport.use(
             });
     })
 );
-
-// Password Hash Check
-const compareHash = async (username, password) => {
-    // Obtain user info and then user's hashed password
-    collection
-        .findOne({ username: username })
-        .then(function (user) {
-            const hash = user.password;
-            return hash;
-        })
-        .then(async function (hash) {
-            // Compare hashed password to typed password
-            const passwordResult = await bcrypt.compare(password, hash, function (err, res) {
-                if (res) {
-                    return res;
-                } else {
-                    console.error("Password does not match");
-                }
-            });
-            return passwordResult;
-        })
-        .catch((err) => {
-            console.error("User doesn't exist" + err);
-            return err;
-        });
-};
 
 // Logged In Check Middleware
 function isLoggedIn(req, res, next) {
