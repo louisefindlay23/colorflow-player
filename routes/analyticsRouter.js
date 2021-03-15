@@ -42,6 +42,7 @@ analyticsRouter.use(bodyParser.json());
 
 // Passport Session
 analyticsRouter.use(passport.initialize());
+analyticsRouter.use(express.session());
 analyticsRouter.use(passport.session());
 
 // Add User to Session
@@ -116,14 +117,14 @@ function isLoggedIn(req, res, next) {
     if (req.session.user !== undefined) {
         next();
     } else {
-        console.log("User isn't logged in");
+        console.error("User isn't logged in");
         res.redirect("/analytics/login");
     }
 }
 
 // Analytics Dashboard route
-analyticsRouter.get("/", function (req, res) {
-    res.send("Analytics root route");
+analyticsRouter.get("/", isLoggedIn, function (req, res) {
+    res.render("pages/analytics/index");
 });
 
 // Login Routes
