@@ -19,8 +19,28 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 // Run server
-app.listen(port);
-console.log("Listening on " + port);
+app.listen(process.env.PORT);
+console.log("Listening on " + process.env.PORT);
+
+// Live reload Static Files
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === "development") {
+    const livereload = require("livereload");
+    const options = {
+        port: process.env.RELOAD_PORT,
+    };
+    const liveReloadServer = livereload.createServer(options);
+    liveReloadServer.watch(path.join(__dirname, "public"));
+    const connectLivereload = require("connect-livereload");
+    // Setup Live Reload
+    liveReloadServer.server.once("connection", () => {
+        console.log("Live Reload active");
+        setTimeout(() => {
+            liveReloadServer.refresh("/");
+        }, 100);
+    });
+    app.use(connectLivereload());
+}
 
 // Root Route
 app.get("/", function (req, res) {
