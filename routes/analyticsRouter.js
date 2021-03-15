@@ -1,6 +1,6 @@
 const express = require("express");
 
-// MongoDB
+// Connect to MongoDB
 const { MongoClient } = require("mongodb");
 const mongo = new MongoClient(process.env.DB_URL, {
     useNewUrlParser: true,
@@ -16,7 +16,7 @@ mongo.connect((err, result) => {
     });
 });
 
-// Passport
+// Passport and Authentication Modules
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
@@ -44,7 +44,6 @@ analyticsRouter.use(
     })
 );
 analyticsRouter.use(passport.session());
-const user = null;
 
 // Add User to Session
 passport.serializeUser(function (user, done) {
@@ -72,7 +71,6 @@ passport.use(
             .then((user) => {
                 // Test for correct username
                 if (!user) {
-                    console.error("Incorrect Username " + username);
                     return done(null, false, {
                         // TODO: Send errors to user
                         message: "Incorrect username",
@@ -91,23 +89,22 @@ passport.use(
                             if (res) {
                                 return done(null, user);
                             } else {
-                                console.error("Password does not match");
                                 return done(null, false, {
-                                    message: "Password does not match",
+                                    message: "Incorrect password",
                                 });
                             }
                         });
                     })
                     .catch((err) => {
-                        console.error("Error authenticating password " + err);
                         return done(err, false, {
                             message: "Error authenticating password " + err,
                         });
                     });
             })
             .catch((err) => {
-                console.error(err);
-                return done(err);
+                return done(err, false, {
+                    message: "Error searching for user " + err,
+                });
             });
     })
 );
@@ -117,7 +114,7 @@ function isLoggedIn(req, res, next) {
     if (req.session.user !== undefined) {
         next();
     } else {
-        console.error("User isn't logged in");
+        req.session.error = "You are not logged in";
         res.redirect("/analytics/login");
     }
 }
@@ -131,18 +128,26 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
 
 // Login Form
 analyticsRouter.get("/login", function (req, res) {
-    res.render("pages/analytics/login", {
-        loggedIn: true,
-    });
+    let error = null;
+    // Show login errors to the user
+    if (req.session.error) {
+        error = req.session.error;
+    }
+    res.render("pages/analytics/login", { error: error });
+    if (req.session.error) {
+        delete req.session.error;
+    }
 });
 
 // Passport-Local Auth
 analyticsRouter.post("/login", function (req, res, next) {
-    passport.authenticate("local", function (err, user) {
+    passport.authenticate("local", function (err, user, message) {
         if (err || user === false) {
             if (err) {
-                console.error(err);
+                req.session.error = "Error authenticating username " + err;
             }
+            // Store login errors in a session object
+            req.session.error = message.message;
             res.redirect("/analytics/login");
         } else {
             req.logIn(user, function (err) {
@@ -150,8 +155,6 @@ analyticsRouter.post("/login", function (req, res, next) {
                     return next(err);
                 }
                 req.session.user = req.user;
-                const user = req.session.user;
-                console.info("User is " + req.session.user.username);
                 return res.redirect("/analytics");
             });
         }

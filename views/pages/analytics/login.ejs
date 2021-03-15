@@ -12,6 +12,9 @@
             <h2>Login to Access Analytics</h2>
             <form id="login-form" action="/analytics/login" method="post">
                 <div class="flex-around">
+                    <p><%- error %></p>
+                </div>
+                <div class="flex-around">
                     <label for="username">Username:</label>
                     <input name="username" type="text" placeholder="Enter your username" required />
                 </div>
