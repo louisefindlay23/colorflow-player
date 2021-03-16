@@ -61,12 +61,19 @@ passport.serializeUser(function (user, done) {
 });
 
 // Remove User from Session
-passport.deserializeUser(function (username, done) {
+passport.deserializeUser(function (req, username, done) {
     collection("users").findOne(
         {
             username: username,
         },
         function (err, user) {
+            if (err) {
+                req.session.destroy(function () {
+                    return done(err, user, {
+                        message: "Error logging out " + err,
+                    });
+                });
+            }
             done(null, user);
         }
     );
@@ -105,13 +112,13 @@ passport.use(
                         });
                     })
                     .catch((err) => {
-                        return done(err, false, {
+                        return done(err, null, {
                             message: "Error authenticating password " + err,
                         });
                     });
             })
             .catch((err) => {
-                return done(err, false, {
+                return done(err, null, {
                     message: "Error searching for user " + err,
                 });
             });
@@ -172,7 +179,13 @@ analyticsRouter.post("/login", function (req, res, next) {
 
 analyticsRouter.get("/logout", function (req, res) {
     req.logout();
-    console.info(req.session.user);
+    req.session.destroy(function (err) {
+        if (err) {
+            req.session.error = "Error destroying session " + err;
+            res.redirect("/analytics/login");
+        }
+    });
+    res.locals.loggedIn = false;
     res.redirect("/analytics/login");
 });
 
