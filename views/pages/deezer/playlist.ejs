@@ -29,7 +29,7 @@
             <section id="songs">
                 <h3>Songs</h3>
                 <% playlistTrackInfo.forEach(function(track, index) { %>
-                <div class="flex-row">
+                <div class="grid-row">
                     <a href="/deezer/album/<%= track.album.id %>">
                         <% if (track.album.cover_small) { %>
                         <img src="<%= track.album.cover_small %>" />

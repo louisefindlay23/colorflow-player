@@ -81,6 +81,11 @@ section .flex-row {
     justify-content: space-around;
 }
 
+#songs {
+    width: 100%;
+    height: auto;
+}
+
 #songs .flex-row {
     justify-content: space-between;
 }
@@ -107,6 +112,11 @@ section .flex-row {
     background: #333;
 }
 
+.card img {
+    display: block;
+    margin: 2.5% auto;
+}
+
 .card a,
 #songs a {
     text-decoration: none;
@@ -129,14 +139,8 @@ section .flex-row {
 }
 
 #artists img {
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 5%;
-}
-
-#album img,
-#playlist img {
-    margin-top: 5%;
+    width: 300px;
+    height: 300px;
 }
 
 #artists .la-user-circle {
@@ -144,15 +148,14 @@ section .flex-row {
     justify-content: center;
 }
 
-#songs,
-playlists img {
-    width: 100%;
-    height: auto;
-}
-
-.fallback-album {
+#artist .fallback-album {
     width: 64px;
     height: 64px;
+}
+
+#album img:not(.card img),
+#playlist img:not(.card img) {
+    margin-top: 5%;
 }
 
 /* Spotify Section Text Styling */

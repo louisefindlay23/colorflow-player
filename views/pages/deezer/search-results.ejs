@@ -24,7 +24,6 @@
             <section id="songs">
                 <h3>Tracks</h3>
                 <!-- TODO: Fix uneven track results (Grid?) -->
-                <!-- TODO: Fix unequal card height and two card row (Grid Snippets ?) -->
                 <% trackResults.forEach(function(result, index) { %>
                 <div class="flex-row">
                     <a href="/deezer/album/<%= result.album.id %>">
@@ -48,7 +47,7 @@
             <% } %> <% if (playlistResults.length > 0) { %>
             <section id="playlists">
                 <h2>Playlists</h2>
-                <div class="flex-row">
+                <div class="grid-row">
                     <% playlistResults.forEach(function(result) { %>
                     <div class="card">
                         <a href="/deezer/playlist/<%= result.id %>">
@@ -67,7 +66,7 @@
             <% } %> <% if (trackResults.length > 0) { %>
             <section id="albums">
                 <h3>Albums</h3>
-                <div class="flex-row">
+                <div class="grid-row">
                     <% trackResults.forEach(function(result) { %>
                     <div class="card">
                         <a href="/deezer/album/<%= result.album.id %>">
@@ -88,7 +87,7 @@
             <% } %> <% if (artistResults.length > 0) { %>
             <section id="artists">
                 <h3>Artists</h3>
-                <div class="flex-row">
+                <div class="grid-row">
                     <% artistResults.forEach(function(result) { %>
                     <div class="card">
                         <a href="/deezer/artist/<%= result.id %>">
