@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === "development") {
     const livereload = require("livereload");
     const options = {
         port: process.env.RELOAD_PORT,
+        extraExts: "ejs",
     };
     const liveReloadServer = livereload.createServer(options);
     const path = require("path");
@@ -30,7 +31,7 @@ if (process.env.NODE_ENV === "development") {
     liveReloadServer.server.once("connection", () => {
         setTimeout(() => {
             liveReloadServer.refresh("/");
-        }, 100);
+        }, 50);
     });
     app.use(connectLivereload());
 }
