@@ -9,17 +9,24 @@
         <header><%- include('../partials/header') %></header>
 
         <main class="flex-center no-bottom">
-            <p>
-                Colorflow Player is a Node.js music streaming app (Spotify and Deezer) where the background color of all
-                views changes to match the predominate color of the album or playlist artwork. This style is called
-                ColorFlow.
-            </p>
+            <div id="intro-text">
+                <p>
+                    Colorflow Player is a music streaming app where the background color changes to match the
+                    predominate color of the artist, album or playlist. This feature is called ColorFlow, named after
+                    the popular iOS jailbreak tweak.
+                    <p>Interested about ColorFlow and the other inspiration behind this app? Take a look at the
+                    <a href="https://github.com/louisefindlay23/colorflow-player">project details</a>.</p>
+                </p>
+                <p>Otherwise, have a look at the Feature List below and choose between Spotify and Deezer to get started.</p>
+            </div>
             <h2>Features</h2>
             <ul>
-                <li>Spotify (30s previews) and Deezer Streaming</li>
-                <li>Beautiful Colorflow-inspired album and playlist views</li>
-                <li>Branded Spotify and Deezer UI</li>
                 <li>Search for tracks, albums, artists or playlists</li>
+                <li>Spotify and Deezer Streaming (30s previews)</li>
+                <li>Beautiful Colorflow-inspired album, artist and playlist views</li>
+                <li>Spotify and Deezer-inspired user interface</li>
+                <li>Analytics Dashboard for Spotify vs Deezer</li>
+                <li><span class="bold">Note:</span> Only authorised users may access analytics</li>
             </ul>
             <h2>Choose between Spotify and Deezer</h2>
             <div class="flex-row half">
