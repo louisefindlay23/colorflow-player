@@ -23,9 +23,8 @@
             <% if (trackResults.length > 0) { %>
             <section id="songs">
                 <h3>Tracks</h3>
-                <!-- TODO: Fix uneven track results (Grid?) -->
                 <% trackResults.forEach(function(result, index) { %>
-                <div class="flex-row">
+                <div class="grid-row">
                     <a href="/deezer/album/<%= result.album.id %>">
                         <% if (result.album.cover_small) { %>
                         <img src="<%= result.album.cover_small %>" />
@@ -37,7 +36,7 @@
                     <a href="/deezer/artist/<%= result.artist.id %>">
                         <p><%= result.artist.name %></p>
                     </a>
-                    <i class="las la-play-circle"></i>
+                    <i class="las la-2x la-play-circle"></i>
                     <audio>
                         <source src="<%- result.preview %>" type="audio/mpeg" />
                     </audio>

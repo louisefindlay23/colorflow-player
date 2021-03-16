@@ -1,7 +1,6 @@
 /* Deezer CSS */
 
 /* TODO: Responsiveness */
-/* TODO: Convert fonts to CSS Variables */
 
 /* CSS Variables */
 :root {
@@ -130,6 +129,13 @@ section .flex-row {
     grid-auto-rows: auto;
     grid-gap: 2rem;
     margin: 5%;
+}
+
+#songs .grid-row {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    align-items: center;
+    justify-items: center;
+    margin: 5% 0;
 }
 
 .card {

@@ -1,7 +1,6 @@
 /* Spotify CSS */
 
 /* TODO: Responsiveness */
-/* TODO: Convert fonts to CSS Variables */
 
 /* CSS Variables */
 :root {
@@ -100,6 +99,12 @@ section .flex-row {
     margin: 5%;
 }
 
+#songs .grid-row {
+    align-items: center;
+    justify-items: center;
+    margin: 5% 0;
+}
+
 .card {
     box-sizing: border-box;
     background: #282828;
@@ -115,6 +120,8 @@ section .flex-row {
 
 .card img {
     display: block;
+    width: 275px;
+    height: 275px;
     margin: 2.5% auto;
 }
 
@@ -137,11 +144,6 @@ section .flex-row {
 #artists img,
 #artist img {
     border-radius: 50%;
-}
-
-#artists img {
-    width: 300px;
-    height: 300px;
 }
 
 #artists .la-user-circle {

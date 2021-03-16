@@ -20,9 +20,8 @@
             <% if (trackResults.length > 0) { %>
             <section id="songs">
                 <h3>Songs</h3>
-                <!-- TODO: Fix uneven track results (Grid?) -->
                 <% trackResults.forEach(function(result) { %>
-                <div class="flex-row">
+                <div class="grid-row">
                     <a href="/spotify/album/<%= result.album.id %>">
                         <% if (result.album.images[2]) { %>
                         <img src="<%= result.album.images[2].url %>" />
@@ -34,7 +33,7 @@
                     <a href="/spotify/artist/<%= result.album.artists[0].id %>">
                         <p><%= result.album.artists[0].name %></p>
                     </a>
-                    <i class="las la-play-circle"></i>
+                    <i class="las la-2x la-play-circle"></i>
                     <audio>
                         <source src="<%- result.preview_url %>" type="audio/mpeg" />
                     </audio>

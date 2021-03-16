@@ -31,13 +31,13 @@
             </section>
             <section id="songs">
                 <% albumInfo.tracks.items.forEach(function(track) { %>
-                <div class="flex-row">
+                <div class="grid-row">
                     <p><%= track.track_number %></p>
                     <h4><%= track.name %></h4>
                     <a href="/spotify/artist/<%= track.artists[0].id %>">
                         <p><%= track.artists[0].name %></p>
                     </a>
-                    <i class="las la-play-circle"></i>
+                    <i class="las la-2x la-play-circle"></i>
                     <audio style="background-color: rgb(<%- color %>)">
                         <source src="<%- track.preview_url %>" type="audio/mpeg" />
                     </audio>

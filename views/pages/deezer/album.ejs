@@ -34,13 +34,13 @@
             </section>
             <section id="songs">
                 <% albumInfo.tracks.data.forEach(function(track, index) { %>
-                <div class="flex-row">
+                <div class="grid-row">
                     <p><%- index %></p>
                     <h4><%= track.title_short %></h4>
                     <a href="/deezer/artist/<%= track.artist.id %>">
                         <p><%= track.artist.name %></p>
                     </a>
-                    <i class="las la-play-circle"></i>
+                    <i class="las la-2x la-play-circle"></i>
                     <audio style="background-color: rgb(<%- color %>)">
                         <source src="<%- track.preview %>" type="audio/mpeg" />
                     </audio>

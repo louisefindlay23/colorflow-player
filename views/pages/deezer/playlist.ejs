@@ -29,7 +29,7 @@
             <section id="songs">
                 <h3>Songs</h3>
                 <% playlistTrackInfo.forEach(function(track, index) { %>
-                <div class="flex-row">
+                <div class="grid-row">
                     <a href="/deezer/album/<%= track.album.id %>">
                         <% if (track.album.cover_small) { %>
                         <img src="<%= track.album.cover_small %>" />
@@ -42,7 +42,7 @@
                     <a href="/deezer/artist/<%= track.artist.id %>">
                         <p><%= track.artist.name %></p>
                     </a>
-                    <i class="las la-play-circle"></i>
+                    <i class="las la-2x la-play-circle"></i>
                     <audio>
                         <source src="<%- track.preview %>" type="audio/mpeg" />
                     </audio>
