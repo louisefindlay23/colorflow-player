@@ -1,5 +1,6 @@
 // Server Modules
 const express = require("express");
+const session = require("express-session");
 const ejs = require("ejs");
 const app = express();
 const port = 3000;
@@ -33,6 +34,25 @@ if (process.env.NODE_ENV === "development") {
     });
     app.use(connectLivereload());
 }
+
+// Initalise Session
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+    })
+);
+
+// Detect Login State Middleware
+app.use(function (req, res, next) {
+    if (req.session.user !== undefined) {
+        res.locals.loggedIn = true;
+    } else {
+        res.locals.loggedIn = false;
+    }
+    next();
+});
 
 // Root Route
 app.get("/", function (req, res) {

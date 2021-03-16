@@ -22,8 +22,9 @@ const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 
-// Parse Form Data
+// Parsing Modules
 const bodyParser = require("body-parser");
+const url = require("url");
 
 // Initialise Analytics Router
 const analyticsRouter = express.Router();
@@ -36,24 +37,7 @@ analyticsRouter.use(bodyParser.json());
 
 // Passport Session
 analyticsRouter.use(passport.initialize());
-analyticsRouter.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-    })
-);
 analyticsRouter.use(passport.session());
-
-// Detect Login State Middleware
-analyticsRouter.use(function (req, res, next) {
-    if (req.session.user !== undefined) {
-        res.locals.loggedIn = true;
-    } else {
-        res.locals.loggedIn = false;
-    }
-    next();
-});
 
 // Add User to Session
 passport.serializeUser(function (user, done) {
@@ -62,7 +46,7 @@ passport.serializeUser(function (user, done) {
 
 // Remove User from Session
 passport.deserializeUser(function (req, username, done) {
-    collection("users").findOne(
+    collection.findOne(
         {
             username: username,
         },
@@ -186,7 +170,18 @@ analyticsRouter.get("/logout", function (req, res) {
         }
     });
     res.locals.loggedIn = false;
-    res.redirect("/analytics/login");
+    // Redirect to referrer unless on Analytics page
+    const referrer = req.get("Referrer");
+    if (referrer) {
+        let referrerpath = url.parse(referrer, true);
+        referrerpath = referrerpath.path;
+        if (referrerpath === "/analytics") {
+            referrerpath = "/analytics";
+        }
+        res.redirect(referrerpath);
+    } else {
+        res.redirect("/analytics/login");
+    }
 });
 
 module.exports = analyticsRouter;
