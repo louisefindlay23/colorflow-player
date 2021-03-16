@@ -73,14 +73,8 @@ function adaptiveBackground() {
     }
 }
 
-// TODO: Move Analytics button to left and have Log Out button in right. Show on all pages until logged out
-
-// Change Analytics button to Log Out
-document.addEventListener("DOMContentLoaded", function () {
-    if (window.location.pathname === "/analytics") {
-        const button = document.querySelector("header button");
-        button.innerText = "Log Out";
-        button.value = "Log Out";
-        button.onClick = "/logout";
-    }
-});
+// Move Analytics button to the right
+const headerButtons = document.querySelectorAll("header button");
+if (headerButtons.length === 1) {
+    headerButtons[0].style.left = "auto";
+}

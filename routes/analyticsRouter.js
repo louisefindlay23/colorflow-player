@@ -45,6 +45,16 @@ analyticsRouter.use(
 );
 analyticsRouter.use(passport.session());
 
+// Detect Login State Middleware
+analyticsRouter.use(function (req, res, next) {
+    if (req.session.user !== undefined) {
+        res.locals.loggedIn = true;
+    } else {
+        res.locals.loggedIn = false;
+    }
+    next();
+});
+
 // Add User to Session
 passport.serializeUser(function (user, done) {
     done(null, user.username);
@@ -72,7 +82,6 @@ passport.use(
                 // Test for correct username
                 if (!user) {
                     return done(null, false, {
-                        // TODO: Send errors to user
                         message: "Incorrect username",
                     });
                 }
@@ -163,6 +172,7 @@ analyticsRouter.post("/login", function (req, res, next) {
 
 analyticsRouter.get("/logout", function (req, res) {
     req.logout();
+    console.info(req.session.user);
     res.redirect("/analytics/login");
 });
 

@@ -40,6 +40,13 @@ footer {
 header button {
     display: block;
     position: absolute;
+}
+
+header button:first-of-type {
+    left: 5%;
+}
+
+header button:last-of-type {
     right: 5%;
 }
 
