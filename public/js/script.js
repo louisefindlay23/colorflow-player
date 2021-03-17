@@ -7,11 +7,13 @@ if (headerButtons.length === 1) {
 // Center grid card if only one
 document.querySelectorAll(".grid-row").forEach((grid) => {
     if (grid.children.length === 1) {
+        console.log(grid);
         grid.classList.remove("grid-row");
         grid.classList.add("flex-row");
     }
 });
 
+// Move header buttons to the bottom for mobile nav
 document.addEventListener("DOMContentLoaded", function () {
     const headerStyles = window.getComputedStyle(document.querySelector("header .flex-row-center"));
     if (headerStyles.getPropertyValue("display") === "block") {

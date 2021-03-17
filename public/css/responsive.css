@@ -1,6 +1,11 @@
 /* Responsive (Media Queries) CSS */
 
-@media (max-width: 700px) {
+@media (max-width: 750px) {
+    /* HTML Elements */
+    html {
+        font-size: 14pt;
+    }
+
     header {
         padding-bottom: 5%;
     }
@@ -44,6 +49,15 @@
         margin: 5%;
     }
 
+    input[type="search"] {
+        width: 50vw;
+    }
+
+    /* Utility Classes */
+    .flex-row-center h2 {
+        width: 50%;
+    }
+
     #intro-text {
         width: 95%;
     }
@@ -51,4 +65,8 @@
     .half {
         margin-top: 7.5%;
     }
-}
+
+    .half img {
+        width: 100%;
+        height: auto;
+    }
