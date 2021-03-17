@@ -192,6 +192,7 @@ input[type="search"] {
     padding: 10px;
     height: auto;
     border-radius: 5px;
+    appearance: none;
     outline: none;
 }
 

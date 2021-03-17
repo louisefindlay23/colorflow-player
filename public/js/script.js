@@ -7,7 +7,6 @@ if (headerButtons.length === 1) {
 // Center grid card if only one
 document.querySelectorAll(".grid-row").forEach((grid) => {
     if (grid.children.length === 1) {
-        console.log(grid);
         grid.classList.remove("grid-row");
         grid.classList.add("flex-row");
     }
@@ -82,7 +81,7 @@ function adaptiveBackground() {
         // If background is light, change text to black
         if (lightOrDark(artworkColor) === "light") {
             const adaptiveElements = document.querySelectorAll(
-                "main h2, main h3, main a, #artist-stats p, #album p, #playlist p, #songs h4, #songs p, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
+                "main h2, main h3, main a, #artist-stats p, #album p, #playlist p, #songs h4, #songs p, #playlist-songs p, #playlist-songs h4, .la-arrow-circle-left, .la-play-circle, .la-pause-circle"
             );
             adaptiveElements.forEach((element) => {
                 element.style.color = "#000000";
