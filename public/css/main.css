@@ -161,6 +161,10 @@ footer p,
     align-items: center;
 }
 
+.flex-row-center h2 {
+    width: 65%;
+}
+
 .flex-space {
     display: flex;
     flex-direction: column;
