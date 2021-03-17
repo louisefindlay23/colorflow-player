@@ -12,6 +12,19 @@ document.querySelectorAll(".grid-row").forEach((grid) => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const headerStyles = window.getComputedStyle(document.querySelector("header .flex-row-center"));
+    if (headerStyles.getPropertyValue("display") === "block") {
+        const headerButtons = document.querySelectorAll("header button");
+        headerButtons.forEach((button) => {
+            const newButton = button.cloneNode();
+            newButton.innerHTML = button.innerHTML;
+            document.querySelector("header").appendChild(newButton);
+            button.remove();
+        });
+    }
+});
+
 // Play/Pause Audio and Change Icon accordingly
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("#songs i").forEach((playButton) => {
