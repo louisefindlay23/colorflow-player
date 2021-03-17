@@ -26,7 +26,7 @@ footer {
 
 section {
     width: 100%;
-    margin-bottom: 5%;
+    margin-bottom: 0;
 }
 
 h1,
@@ -100,25 +100,21 @@ section .flex-row {
     height: auto;
 }
 
-#songs .flex-row {
-    justify-content: space-between;
-}
-
 /* Deezer Track Border Styling */
-#songs .flex-row {
+#songs .grid-row {
     border-top: var(--border);
     border-bottom: var(--border);
 }
 
-#songs .flex-row:first-of-type {
+#songs .grid-row:first-of-type {
     border-top: none;
 }
 
-#songs .flex-row:last-of-type {
+#songs .grid-row:last-of-type {
     border-bottom: none;
 }
 
-#songs .flex-row:not(#search-results #songs .flex-row) {
+#songs .grid-row:not(#search-results #songs .grid-row) {
     border-color: var(--text-color);
 }
 
@@ -132,7 +128,7 @@ section .flex-row {
 }
 
 #songs .grid-row {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
     align-items: center;
     justify-items: center;
     margin: 5% 0;
@@ -171,8 +167,8 @@ section .flex-row {
 }
 
 #artists img {
-    width: 300%;
-    height: 300px;
+    width: 250px;
+    height: 250px;
 }
 
 #artists .la-user-circle {
@@ -187,7 +183,7 @@ section .flex-row {
 
 #album img:not(.card img),
 #playlist img:not(.card img) {
-    margin-top: 5%;
+    margin-top: 2.5%;
 }
 
 /* Deezer Section Text Styling */
@@ -198,5 +194,5 @@ section .flex-row {
 }
 
 #artist-stats p:first-of-type {
-    padding-bottom: 2.5%;
+    padding-top: 2.5%;
 }

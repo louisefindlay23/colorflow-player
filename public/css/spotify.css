@@ -24,7 +24,7 @@ footer {
 
 section {
     width: 100%;
-    margin-bottom: 5%;
+    margin-bottom: 0;
 }
 
 h1,
@@ -86,10 +86,6 @@ section .flex-row {
     height: auto;
 }
 
-#songs .flex-row {
-    justify-content: space-between;
-}
-
 /* Spotify Card Styling */
 .grid-row {
     display: grid;
@@ -100,6 +96,7 @@ section .flex-row {
 }
 
 #songs .grid-row {
+    grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
     align-items: center;
     justify-items: center;
     margin: 5% 0;
@@ -158,7 +155,7 @@ section .flex-row {
 
 #album img:not(.card img),
 #playlist img:not(.card img) {
-    margin-top: 5%;
+    margin-top: 2.5%;
 }
 
 /* Spotify Section Text Styling */
@@ -169,5 +166,5 @@ section .flex-row {
 }
 
 #artist-stats p:first-of-type {
-    padding-bottom: 2.5%;
+    padding-top: 2.5%;
 }
