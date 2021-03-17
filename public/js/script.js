@@ -1,3 +1,17 @@
+// Move Analytics button to the right if only button
+const headerButtons = document.querySelectorAll("header button");
+if (headerButtons.length === 1) {
+    headerButtons[0].style.left = "auto";
+}
+
+// Center grid card if only one
+document.querySelectorAll(".grid-row").forEach((grid) => {
+    if (grid.children.length === 1) {
+        grid.classList.remove("grid-row");
+        grid.classList.add("flex-row");
+    }
+});
+
 // Play/Pause Audio and Change Icon accordingly
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("#songs i").forEach((playButton) => {
@@ -71,10 +85,4 @@ function adaptiveBackground() {
             });
         }
     }
-}
-
-// Move Analytics button to the right
-const headerButtons = document.querySelectorAll("header button");
-if (headerButtons.length === 1) {
-    headerButtons[0].style.left = "auto";
 }
