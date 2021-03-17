@@ -62,14 +62,17 @@ h4 {
     right: 10vw;
 }
 
-.la-arrow-circle-left:hover {
-    cursor: pointer;
-}
-
 .la-play-circle,
 .la-pause-circle,
 .la-arrow-circle-left {
     color: var(--text-color);
+}
+
+.la-play-circle:hover,
+.la-pause-circle:hover,
+.la-arrow-circle-left:hover {
+    color: var(--accent-color);
+    cursor: pointer;
 }
 
 /* Deezer Form Styling */

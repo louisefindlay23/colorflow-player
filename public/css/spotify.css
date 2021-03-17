@@ -49,14 +49,17 @@ footer p {
     right: 10vw;
 }
 
-.la-arrow-circle-left:hover {
-    cursor: pointer;
-}
-
 .la-play-circle,
 .la-pause-circle,
 .la-arrow-circle-left {
     color: var(--text-color);
+}
+
+.la-play-circle:hover,
+.la-pause-circle:hover,
+.la-arrow-circle-left:hover {
+    color: #7c7c7c;
+    cursor: pointer;
 }
 
 /* Spotify Form Styling */
@@ -162,7 +165,9 @@ section .flex-row {
 
 #album img:not(.card img),
 #playlist img:not(.card img) {
-    margin-top: 2.5%;
+    width: 500px;
+    height: 500px;
+    margin: 5%;
 }
 
 /* Spotify Section Text Styling */
@@ -178,9 +183,38 @@ section .flex-row {
 
 /* Responsive Spotify CSS */
 @media (max-width: 650px) {
+    .flex-row-center {
+        display: block;
+        text-align: center;
+    }
+
+    .flex-row-center h2 {
+        width: 95%;
+    }
+
+    .la-arrow-circle-left {
+        position: static;
+    }
+
     #songs .grid-row,
     #playlist-songs .grid-row {
         grid-template-columns: repeat(auto-fill, minmax(15vw, 1fr));
         margin-left: 5%;
+    }
+
+    #playlist-songs .grid-row {
+        grid-template-columns: repeat(auto-fill, minmax(10vw, 1fr));
+    }
+
+    #album img:not(.card img),
+    #playlist img:not(.card img) {
+        width: 300px;
+        height: 300px;
+    }
+
+    #artist img {
+        width: 250px;
+        height: 250px;
+        margin-top: 5%;
     }
 }
