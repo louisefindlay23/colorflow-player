@@ -143,7 +143,7 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
     });
 });
 
-// Page View Increase route
+// Add analytics route
 analyticsRouter.post("/", function (req, res) {
     // Passport Session Analytics
     if (!req.session.analytics || !req.session.analytics[0]) {
@@ -167,8 +167,8 @@ analyticsRouter.post("/", function (req, res) {
     obj.deezerViews = req.session.analytics[0].deezerViews || 0;
     obj.spotifyPlays = req.session.analytics[0].spotifyPlays || 0;
     obj.deezerPlays = req.session.analytics[0].deezerPlays || 0;
-    // Page Views
-    if (req.body === "Page Views") {
+    // Add Page Views
+    if (req.body.pageView) {
         // Global Page Views
         obj.pageViews = obj.pageViews + 1;
         // Get referrer to increase page views by type
@@ -186,7 +186,8 @@ analyticsRouter.post("/", function (req, res) {
                 obj.deezerViews = req.session.analytics.deezerViews + 1;
             }
         }
-    } else if (req.body === "Song Plays") {
+        // Add song plays
+    } else if (req.body.songPlay) {
         const referrer = req.get("Referrer");
         if (referrer) {
             let referrerpath = url.parse(referrer, true);
@@ -194,7 +195,7 @@ analyticsRouter.post("/", function (req, res) {
             if (referrerpath.includes("/spotify")) {
                 obj.spotifyPlays = obj.spotifyPlays + 1;
             } else if (referrerpath.includes("/deezer")) {
-                obj.deezerPlays = req.session.analytics.deezerPlays + 1;
+                obj.deezerPlays = obj.deezerPlays + 1;
             }
         }
     }

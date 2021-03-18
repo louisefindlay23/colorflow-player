@@ -105,16 +105,28 @@ function adaptiveBackground() {
 // Send page views to server (to avoid counting redirects)
 document.addEventListener("DOMContentLoaded", pageCounter());
 function pageCounter() {
-    fetch(window.location.origin + "/analytics/analytics", {
+    fetch(window.location.origin + "/analytics", {
         method: "POST",
-        body: "pageView",
+        mode: "same-origin",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ pageView: true }),
+    }).catch((err) => {
+        console.error(err);
     });
 }
 
 // Send song plays to server
 function songCounter() {
-    fetch(window.location.origin + "/analytics/analytics", {
+    fetch(window.location.origin + "/analytics", {
         method: "POST",
-        body: "songPlay",
+        mode: "same-origin",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ songPlay: true }),
+    }).catch((err) => {
+        console.error(err);
     });
 }
