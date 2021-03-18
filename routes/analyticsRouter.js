@@ -125,57 +125,82 @@ function isLoggedIn(req, res, next) {
 
 // Analytics Dashboard route
 analyticsRouter.get("/", isLoggedIn, function (req, res) {
-    // Build array for current session
-    const pageViews = req.session.pageViews;
-    const homeViews = req.session.homeViews;
-    const analyticsViews = req.session.analyticsViews;
-    const spotifyViews = req.session.spotifyViews;
-    const deezerViews = req.session.deezerViews;
-    // Analytics for all sessions
+    // Current Session Analytics
+    const currentAnalytics = req.session.analytics[0];
+    // All Sessions Analytics
     sessionCollection.find({}).toArray(function (err, result) {
         if (err) {
             console.error(err);
         } else {
             result.forEach((result) => {
-                const sessionArray = JSON.parse(result.session);
-                console.info(sessionArray);
+                const allAnalytics = JSON.parse(result.session).analytics;
+                res.render("pages/analytics/index", {
+                    currentAnalytics: currentAnalytics,
+                    allAnalytics: allAnalytics,
+                });
             });
         }
-    });
-    res.render("pages/analytics/index", {
-        pageViews: pageViews,
-        homeViews: homeViews,
-        analyticsViews: analyticsViews,
-        spotifyViews: spotifyViews,
-        deezerViews: deezerViews,
     });
 });
 
 // Page View Increase route
-analyticsRouter.post("/page-views", function (req, res) {
+analyticsRouter.post("/", function (req, res) {
     // Passport Session Analytics
-    req.session.pageViews = req.session.pageViews || 0;
-    req.session.homeViews = req.session.homeViews || 0;
-    req.session.analyticsViews = req.session.analyticsViews || 0;
-    req.session.spotifyViews = req.session.spotifyViews || 0;
-    req.session.deezerViews = req.session.deezerViews || 0;
-    // Global Page Views
-    req.session.pageViews = req.session.pageViews + 1;
-    // Get referrer to increase page views by type
-    const referrer = req.get("Referrer");
-    if (referrer) {
-        let referrerpath = url.parse(referrer, true);
-        referrerpath = referrerpath.path;
-        if (referrerpath === "/") {
-            req.session.homeViews = req.session.homeViews + 1;
-        } else if (referrerpath.includes("/analytics")) {
-            req.session.analyticsViews = req.session.analyticsViews + 1;
-        } else if (referrerpath.includes("/spotify")) {
-            req.session.spotifyViews = req.session.spotifyViews + 1;
-        } else if (referrerpath.includes("/deezer")) {
-            req.session.deezerViews = req.session.deezerViews + 1;
+    if (!req.session.analytics || !req.session.analytics[0]) {
+        req.session.analytics = [
+            {
+                pageViews: 0,
+                homeViews: 0,
+                analyticsViews: 0,
+                spotifyViews: 0,
+                deezerViews: 0,
+                spotifyPlays: 0,
+                deezerPlays: 0,
+            },
+        ];
+    }
+    const obj = {};
+    obj.pageViews = req.session.analytics[0].pageViews || 0;
+    obj.homeViews = req.session.analytics[0].homeViews || 0;
+    obj.analyticsViews = req.session.analytics[0].analyticsViews || 0;
+    obj.spotifyViews = req.session.analytics[0].spotifyViews || 0;
+    obj.deezerViews = req.session.analytics[0].deezerViews || 0;
+    obj.spotifyPlays = req.session.analytics[0].spotifyPlays || 0;
+    obj.deezerPlays = req.session.analytics[0].deezerPlays || 0;
+    // Page Views
+    if (req.body === "Page Views") {
+        // Global Page Views
+        obj.pageViews = obj.pageViews + 1;
+        // Get referrer to increase page views by type
+        const referrer = req.get("Referrer");
+        if (referrer) {
+            let referrerpath = url.parse(referrer, true);
+            referrerpath = referrerpath.path;
+            if (referrerpath === "/") {
+                obj.homeViews = obj.homeViews + 1;
+            } else if (referrerpath.includes("/analytics")) {
+                obj.analyticsViews = obj.analyticsViews + 1;
+            } else if (referrerpath.includes("/spotify")) {
+                obj.spotifyViews = obj.spotifyViews + 1;
+            } else if (referrerpath.includes("/deezer")) {
+                obj.deezerViews = req.session.analytics.deezerViews + 1;
+            }
+        }
+    } else if (req.body === "Song Plays") {
+        const referrer = req.get("Referrer");
+        if (referrer) {
+            let referrerpath = url.parse(referrer, true);
+            referrerpath = referrerpath.path;
+            if (referrerpath.includes("/spotify")) {
+                obj.spotifyPlays = obj.spotifyPlays + 1;
+            } else if (referrerpath.includes("/deezer")) {
+                obj.deezerPlays = req.session.analytics.deezerPlays + 1;
+            }
         }
     }
+    req.session.analytics.pop();
+    req.session.analytics.push(obj);
+
     res.send({
         status: 200,
     });

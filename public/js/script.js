@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
                 audio.play();
+                songCounter();
             } else {
                 audio.pause();
             }
@@ -104,7 +105,16 @@ function adaptiveBackground() {
 // Send page views to server (to avoid counting redirects)
 document.addEventListener("DOMContentLoaded", pageCounter());
 function pageCounter() {
-    fetch(window.location.origin + "/analytics/page-views", {
+    fetch(window.location.origin + "/analytics/analytics", {
         method: "POST",
+        body: "pageView",
+    });
+}
+
+// Send song plays to server
+function songCounter() {
+    fetch(window.location.origin + "/analytics/analytics", {
+        method: "POST",
+        body: "songPlay",
     });
 }
