@@ -10,6 +10,10 @@ Colorflow Player is a Node.js music streaming app (Spotify and Apple Music) wher
 -   Spotify and Deezer-inspired user interface
 -   Analytics Dashboard (page views and song plays) - requires account
 
+## Planned Updates
+
+See the open [Issues](https://github.com/louisefindlay23/colorflow-player/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) for planned updates for v2 of the web app.
+
 ## Inspiration
 
 ### Colorflow Players
@@ -52,6 +56,8 @@ Chris Banes created an [Android utility](https://chris.banes.dev/colour-matching
 -   [node-fetch](https://www.npmjs.com/package/node-fetch) - Node.js version of Fetch to download artwork from remote URLs
 
 ## Dev Dependencies
+
+`npm start` runs the web app and `npm run server` starts the live-reload development server using the below NPM modules.
 
 -   [Nodemon](https://www.npmjs.com/package/nodemon) - Live reloads Node server when server-side code changes
 -   [node-livereload](https://www.npmjs.com/package/livereload) - Live reload for client-side code
