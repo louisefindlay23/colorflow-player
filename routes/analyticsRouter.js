@@ -121,7 +121,53 @@ function isLoggedIn(req, res, next) {
 
 // Analytics Dashboard route
 analyticsRouter.get("/", isLoggedIn, function (req, res) {
-    res.render("pages/analytics/index");
+    const pageViews = req.session.pageViews;
+    const homeViews = req.session.homeViews;
+    const analyticsViews = req.session.analyticsViews;
+    const spotifyViews = req.session.spotifyViews;
+    const deezerViews = req.session.deezerViews;
+    console.info(deezerViews);
+    res.render("pages/analytics/index", {
+        pageViews: pageViews,
+        homeViews: homeViews,
+        analyticsViews: analyticsViews,
+        spotifyViews: spotifyViews,
+        deezerViews: deezerViews,
+    });
+});
+
+// Page View Counter
+analyticsRouter.post("/page-views", function (req, res) {
+    // Passport Session Analytics
+    req.session.pageViews = req.session.pageViews || 0;
+    req.session.homeViews = req.session.homeViews || 0;
+    req.session.analyticsViews = req.session.analyticsViews || 0;
+    req.session.spotifyViews = req.session.spotifyViews || 0;
+    req.session.deezerViews = req.session.deezerViews || 0;
+    // Global Page Views
+    req.session.pageViews = req.session.pageViews + 1;
+    // Get referrer
+    const referrer = req.get("Referrer");
+    if (referrer) {
+        let referrerpath = url.parse(referrer, true);
+        referrerpath = referrerpath.path;
+        // Homepage Views
+        if (referrerpath === "/") {
+            req.session.homeViews = req.session.homeViews + 1;
+            // Analytics Page Views
+        } else if (referrerpath.includes("/analytics")) {
+            req.session.analyticsViews = req.session.analyticsViews + 1;
+            // Spotify Page Views
+        } else if (referrerpath.includes("/spotify")) {
+            req.session.spotifyViews = req.session.spotifyViews + 1;
+            // Deezer Page Views
+        } else if (referrerpath.includes("/deezer")) {
+            req.session.deezerViews = req.session.deezerViews + 1;
+        }
+    }
+    res.send({
+        status: 200,
+    });
 });
 
 // Login Routes

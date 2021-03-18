@@ -100,3 +100,11 @@ function adaptiveBackground() {
         }
     }
 }
+
+// Send page views to server (to avoid counting redirects)
+document.addEventListener("DOMContentLoaded", pageCounter());
+function pageCounter() {
+    fetch(window.location.origin + "/analytics/page-views", {
+        method: "POST",
+    });
+}
