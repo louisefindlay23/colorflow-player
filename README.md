@@ -1,6 +1,6 @@
-# ColorFlow Player
+# Colorflow Player
 
-Colorflow Player is a Node.js music streaming app (Spotify and Apple Music) where the color of the album view and now playing screen changes to match the predominate color of the album artwork which is called ColorFlow.
+Colorflow Player is a Node.js music streaming app (Spotify and Deezer) where the color of the album view and now playing screen changes to match the predominate color of the album artwork which is called ColorFlow.
 
 ## Features
 
