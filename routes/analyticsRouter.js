@@ -132,16 +132,37 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
         if (err) {
             console.error(err);
         } else {
+            let analyticsArray = [];
+            let obj = {};
             let totalPageViews = [];
+            let totalHomeViews = [];
+            let totalAnalyticsViews = [];
+            let totalSpotifyViews = [];
+            let totalDeezerViews = [];
+            let totalSpotifyPlays = [];
+            let totalDeezerPlays = [];
             result.forEach((result) => {
                 const results = JSON.parse(result.session).analytics;
                 totalPageViews.push(results[0].pageViews);
+                totalHomeViews.push(results[0].homeViews);
+                totalAnalyticsViews.push(results[0].analyticsViews);
+                totalSpotifyViews.push(results[0].spotifyViews);
+                totalDeezerViews.push(results[0].deezerViews);
+                totalSpotifyPlays.push(results[0].spotifyPlays);
+                totalDeezerPlays.push(results[0].deezerViews);
             });
-            totalPageViews = totalPageViews.reduce((a, b) => a + b);
-            console.info(totalPageViews);
+            obj.pageViews = totalPageViews.reduce((a, b) => a + b);
+            obj.homeViews = totalHomeViews.reduce((a, b) => a + b);
+            obj.analyticsViews = totalAnalyticsViews.reduce((a, b) => a + b);
+            obj.spotifyViews = totalSpotifyViews.reduce((a, b) => a + b);
+            obj.deezerViews = totalDeezerViews.reduce((a, b) => a + b);
+            obj.spotifyPlays = totalSpotifyPlays.reduce((a, b) => a + b);
+            obj.deezerPlays = totalDeezerPlays.reduce((a, b) => a + b);
+            analyticsArray.push(obj);
+            console.log(analyticsArray);
             res.render("pages/analytics/index", {
+                analyticsArray: analyticsArray,
                 currentAnalytics: currentAnalytics,
-                //allAnalytics: allAnalytics,
             });
         }
     });

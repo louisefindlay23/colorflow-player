@@ -13,12 +13,12 @@
             <p>See how the Spotify and Deezer versions of Colorflow Player compare.</p>
             <ul>
                 <!-- TODO: More metrics  -->
+                <!-- TODO: Fix analytics login form styling + Responsive + iOS -->
                 <!-- Your views vs Others.  -->
-                <!-- JS Counter for Spotify Plays vs Deezer  -->
                 <!-- Playlists vs Songs vs Album views/plays? -->
                 <!-- Number of Sessions  -->
                 <!-- Session length  -->
-                <% allAnalytics.forEach(function(analytic) { %>
+                <% analyticsArray.forEach(function(analytic) { %>
                 <li><span class="bold">Total Page Views: </span><%- analytic.pageViews %></li>
                 <li><span class="bold">Home Page Views: </span><%- analytic.homeViews %></li>
                 <li><span class="bold">Analytics Views: </span><%- analytic.analyticsViews %></li>
