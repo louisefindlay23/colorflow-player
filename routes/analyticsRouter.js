@@ -6,10 +6,12 @@ const mongo = new MongoClient(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-let collection = null;
+let userCollection = null;
+let sessionCollection = null;
 
 mongo.connect((err, result) => {
-    collection = result.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
+    userCollection = result.db(process.env.DB_NAME).collection(process.env.DB_USER_COLLECTION);
+    sessionCollection = result.db(process.env.DB_NAME).collection(process.env.DB_SESSION_COLLECTION);
 
     process.on("SIGINT", function () {
         mongo.close();
@@ -46,7 +48,7 @@ passport.serializeUser(function (user, done) {
 
 // Remove User from Session
 passport.deserializeUser(function (req, username, done) {
-    collection.findOne(
+    userCollection.findOne(
         {
             username: username,
         },
@@ -67,7 +69,7 @@ passport.deserializeUser(function (req, username, done) {
 passport.use(
     new LocalStrategy(function (username, password, done) {
         // Search DB for user with username
-        collection
+        userCollection
             .findOne({ username: username })
             .then((user) => {
                 // Test for correct username
@@ -77,7 +79,7 @@ passport.use(
                     });
                 }
                 // If username is correct, compare password hash
-                collection
+                userCollection
                     .findOne({ username: username })
                     .then(function (user) {
                         const hash = user.password;
@@ -119,14 +121,27 @@ function isLoggedIn(req, res, next) {
     }
 }
 
+// Analytics Routes
+
 // Analytics Dashboard route
 analyticsRouter.get("/", isLoggedIn, function (req, res) {
+    // Build array for current session
     const pageViews = req.session.pageViews;
     const homeViews = req.session.homeViews;
     const analyticsViews = req.session.analyticsViews;
     const spotifyViews = req.session.spotifyViews;
     const deezerViews = req.session.deezerViews;
-    console.info(deezerViews);
+    // Analytics for all sessions
+    sessionCollection.find({}).toArray(function (err, result) {
+        if (err) {
+            console.error(err);
+        } else {
+            result.forEach((result) => {
+                const sessionArray = JSON.parse(result.session);
+                console.info(sessionArray);
+            });
+        }
+    });
     res.render("pages/analytics/index", {
         pageViews: pageViews,
         homeViews: homeViews,
@@ -136,7 +151,7 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
     });
 });
 
-// Page View Counter
+// Page View Increase route
 analyticsRouter.post("/page-views", function (req, res) {
     // Passport Session Analytics
     req.session.pageViews = req.session.pageViews || 0;
@@ -146,21 +161,17 @@ analyticsRouter.post("/page-views", function (req, res) {
     req.session.deezerViews = req.session.deezerViews || 0;
     // Global Page Views
     req.session.pageViews = req.session.pageViews + 1;
-    // Get referrer
+    // Get referrer to increase page views by type
     const referrer = req.get("Referrer");
     if (referrer) {
         let referrerpath = url.parse(referrer, true);
         referrerpath = referrerpath.path;
-        // Homepage Views
         if (referrerpath === "/") {
             req.session.homeViews = req.session.homeViews + 1;
-            // Analytics Page Views
         } else if (referrerpath.includes("/analytics")) {
             req.session.analyticsViews = req.session.analyticsViews + 1;
-            // Spotify Page Views
         } else if (referrerpath.includes("/spotify")) {
             req.session.spotifyViews = req.session.spotifyViews + 1;
-            // Deezer Page Views
         } else if (referrerpath.includes("/deezer")) {
             req.session.deezerViews = req.session.deezerViews + 1;
         }
