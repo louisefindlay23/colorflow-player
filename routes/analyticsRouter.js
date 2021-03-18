@@ -132,12 +132,16 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
         if (err) {
             console.error(err);
         } else {
+            let totalPageViews = [];
             result.forEach((result) => {
-                const allAnalytics = JSON.parse(result.session).analytics;
-                res.render("pages/analytics/index", {
-                    currentAnalytics: currentAnalytics,
-                    allAnalytics: allAnalytics,
-                });
+                const results = JSON.parse(result.session).analytics;
+                totalPageViews.push(results[0].pageViews);
+            });
+            totalPageViews = totalPageViews.reduce((a, b) => a + b);
+            console.info(totalPageViews);
+            res.render("pages/analytics/index", {
+                currentAnalytics: currentAnalytics,
+                //allAnalytics: allAnalytics,
             });
         }
     });
