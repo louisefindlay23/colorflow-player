@@ -1,0 +1,72 @@
+/* Responsive Global CSS */
+
+@media (max-width: 750px) {
+    /* HTML Elements */
+    html {
+        font-size: 14pt;
+    }
+
+    header {
+        padding-bottom: 5%;
+    }
+    header .flex-row-center {
+        display: block;
+    }
+
+    header button {
+        position: static;
+        padding: 2.5% 7.5vw;
+        margin-top: 5%;
+    }
+
+    main p {
+        margin: 5%;
+    }
+
+    main ul {
+        margin: 7.5% 5%;
+    }
+
+    nav ul {
+        padding: 0;
+    }
+
+    nav li {
+        padding: 5% 0;
+    }
+
+    nav li:first-of-type {
+        flex: 0 0 100%;
+        padding-bottom: 5%;
+        text-align: center;
+    }
+
+    footer p {
+        padding: 2% 0;
+    }
+
+    h2 {
+        margin: 5%;
+    }
+
+    input[type="search"] {
+        width: 50vw;
+    }
+
+    /* Utility Classes */
+    .flex-row-center h2 {
+        width: 50%;
+    }
+
+    #intro-text {
+        width: 95%;
+    }
+
+    .half {
+        margin-top: 7.5%;
+    }
+
+    .half img {
+        width: 100%;
+        height: auto;
+    }

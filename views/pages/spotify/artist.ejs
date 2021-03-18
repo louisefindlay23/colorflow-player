@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title><%- artistInfo.name %> - Spotify Artist - Coverflow Player</title>
+    </head>
+
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" type="text/css" href="/css/spotify.css" />
+        </header>
+
+        <main class="flex-center" style="background-color: rgb(<%- color %>)">
+            <section id="artist">
+                <div class="flex-row-center">
+                    <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                    <h2>Artist: <%- artistInfo.name %></h2>
+                </div>
+                <div class="flex-row">
+                    <img src="/img/analysed-artwork/spotify/artist/<%- artistInfo.id %>.png" />
+                </div>
+            </section>
+            <section id="artist-stats">
+                <p><span class="bold">Followers:</span> <%- artistInfo.followers.total %></p>
+                <p><span class="bold">Popularity:</span> <%- artistInfo.popularity %>%</p>
+            </section>
+            <section id="albums">
+                <h3>Albums</h3>
+                <div class="grid-row">
+                    <% albumInfo.forEach(function(album) { %>
+                    <div class="card">
+                        <a href="/spotify/album/<%= album.id %>">
+                            <% if (album.images[1]) { %>
+                            <img src="<%= album.images[1].url %>" />
+                            <% } else { %>
+                            <img src="/img/fallback-imgs/fallback-album.jpg" />
+                            <% } %>
+                            <h4><%= album.name %></h4>
+                            <a href="/spotify/artist/<%= album.id %>">
+                                <p><%= album.artists[0].name %></p>
+                            </a>
+                        </a>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+        </main>
+
+        <%- include('../../partials/footer') %>
+    </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title>Analytics Dashboard - Colorflow Player</title>
+    </head>
+
+    <body>
+        <header><%- include('../../partials/header') %></header>
+
+        <main class="flex-center">
+            <h2>Analytics Dashboard</h2>
+            <div id="intro-text">
+                <p>
+                    See how the Spotify and Deezer versions of Colorflow Player compare as well as overall analytics for
+                    the website. Does Spotify reign supreme or is Deezer's diverse music catalogue more popular?
+                </p>
+                <p>Metrics such as page views and songs plays are available, calculated from every session.</p>
+            </div>
+            <h3>Website Metrics</h3>
+            <% analyticsArray.forEach(function(analytic) { %>
+            <ul>
+                <li><span class="bold">Total Page Views: </span><%- analytic.pageViews %></li>
+                <li><span class="bold">Home Page Views: </span><%- analytic.homeViews %></li>
+                <li><span class="bold">Analytics Views: </span><%- analytic.analyticsViews %></li>
+            </ul>
+            <% }); %>
+            <h3>Streaming Service Metrics</h3>
+            <% analyticsArray.forEach(function(analytic) { %>
+            <ul>
+                <li><span class="bold">Spotify Views: </span><%- analytic.spotifyViews %></li>
+                <li><span class="bold">Deezer Views: </span><%- analytic.deezerViews %></li>
+                <li><span class="bold">Spotify Plays: </span><%- analytic.spotifyPlays %></li>
+                <li><span class="bold">Deezer Plays: </span><%- analytic.deezerPlays %></li>
+            </ul>
+            <% }); %>
+        </main>
+
+        <%- include('../../partials/footer') %>
+    </body>
+</html>

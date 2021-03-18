@@ -1,145 +1,281 @@
+/* Global CSS */
+
 /* CSS Variables */
 :root {
-  --main-color: #ffd633;
+    --main-color: #32392f;
+    --header-color: #cc0707;
+    --text-color: #ffffff;
+}
+
+/* Custom Webfonts */
+@font-face {
+    font-family: "Squealer";
+    src: url("/css/fonts/squealer.woff2");
 }
 
 /* Main Elements */
 html,
 body {
-  max-width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 16pt;
 }
 
-body, input[type=search] {
-  display: flex;
-  flex-direction: column;
-  font-family: "Lato", sans-serif;
+body,
+input[type="search"] {
+    display: flex;
+    flex-direction: column;
+    font-family: "Lato", sans-serif;
 }
 
 header,
 footer {
-  width: 100%;
-  background: var(--main-color);
+    width: 100%;
+    background: var(--header-color);
+}
+
+header button {
+    display: block;
+    position: absolute;
+    background: var(--main-color);
+    color: var(--text-color);
+    border: 3px solid var(--main-color);
+}
+
+header button:hover {
+    background: var(--header-color);
+    color: var(--text-color);
+    border-color: var(--main-color);
+}
+
+header button:first-of-type {
+    left: 5%;
+}
+
+header button:last-of-type {
+    right: 5%;
+}
+
+h1,
+h2,
+h3,
+p,
+li,
+a,
+label,
+input[type="search"],
+input[type="search"]:focus {
+    color: var(--text-color);
 }
 
 footer {
-  padding: 1% 0;
-  flex-shrink: 0;
+    padding: 1% 0;
+    flex-shrink: 0;
 }
+
 footer p {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 nav {
-  margin: 2.5% 0;
+    margin: 2.5% 0;
 }
+
 nav ul {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  list-style-type: none;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    list-style-type: none;
 }
+
 nav a {
-  font-weight: bold;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 main {
-  max-width: 100%;
-  margin: 5% 0;
+    max-width: 100%;
+    padding: 5% 0;
+    background: var(--main-color);
 }
 
-a {
-  color: #000000;
+main li {
+    margin: 5% 0;
+}
+
+main p {
+    margin: 2.5% 5%;
+}
+
+h2 {
+    font-size: 1.75rem;
+    margin: 2.5% 0;
+}
+
+h3 {
+    font-size: 1.33rem;
+}
+
+main h2:first-of-type {
+    margin-bottom: 2.5%;
 }
 
 p {
-  margin: 0 5%;
-  line-height: 140%;
+    margin: 0 5%;
+    line-height: 140%;
 }
 
-h1, h2, h3,
-footer p, .text-center {
-  color: #000000;
-  text-align: center;
+h1,
+h2,
+h3,
+button,
+nav a,
+footer p {
+    font-family: Squealer, sans-serif;
 }
 
-/* Track Styling */
-
-main p {
-    color: #fff;
+h1,
+h2,
+h3,
+footer p,
+.text-center {
+    text-align: center;
 }
 
 /* Flex Classes */
+
 .flex-center {
-  max-width: 100vw;
-  display: flex;
-  flex-flow: column wrap;
-  flex: 1 0 auto;
-  justify-content: center;
-  align-items: center;
+    max-width: 100vw;
+    display: flex;
+    flex-flow: column wrap;
+    flex: 1 0 auto;
+    justify-content: center;
+    align-items: center;
 }
-
-.flex-space {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  flex: 1 0 auto;
-}
-
-#album-art {
-    margin-bottom: 5%;
-}
-
-/* Form Styling */
-input[type=search] {
-  width: 50%;
-  border: 3px solid var(--main-color);
-  border-right: none;
-  padding: 10px;
-  height: auto;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #000000;
-}
-input[type=search]:focus {
-  color: #000000;
-}
-
-button[type=submit] {
-  width: 40px;
-  height: auto;
-  border: 1px solid var(--main-color);
-  background: var(--main-color);
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-/* Other Classes */
-.book-result {
-  width: 98px;
-  height: 148px;
-  margin: 0 10px;
-}
-
-#booksearch {
-  width: 100%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-
-/*# sourceMappingURL=main.css.map */
 
 .flex-row {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
+}
+
+.flex-row-around {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 2.5%;
+}
+
+.flex-row-center {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-row-center h2 {
+    width: 65%;
+}
+
+.flex-space {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1 0 auto;
+}
+
+/* Form Styling */
+form {
+    width: 100%;
+    margin-top: 2.5vh;
+}
+
+label {
+    display: block;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+input:not(input[type="submit"]) {
+    display: block;
+    width: 30vw;
+    border: 3px solid var(--main-color);
+    margin: 5vh auto;
+    padding: 10px;
+    height: auto;
+    border-radius: 5px;
+    appearance: none;
+    outline: none;
+}
+
+option {
+    border-color: #fff;
+    border-radius: 20px;
+}
+
+button {
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 1% 2.5%;
+    margin: 2.5% auto;
+    background: var(--header-color);
+    color: var(--text-color);
+    border: 3px solid var(--main-color);
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+button:hover {
+    background: none;
+    border-color: var(--header-color);
+    cursor: pointer;
+}
+
+#login-form button {
+    margin-top: 5%;
+}
+
+/* Utility Classes */
+
+.full-width {
+    width: 100%;
+    margin: 0;
+}
+
+.no-bottom {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.half {
+    margin-top: 2.5%;
+}
+
+.half img {
+    width: 50%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#intro-text {
+    width: 70%;
+    margin-bottom: 2.5%;
+}
+
+main ul:first-of-type {
+    margin-bottom: 2.5%;
 }

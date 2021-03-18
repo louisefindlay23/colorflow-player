@@ -1,7 +1,19 @@
-<h1><a href="/">Colorflow Player</a></h1>
+<% if (!locals.loggedIn) { %>
+<div class="flex-row-center">
+    <h1><a href="/">Colorflow Player</a></h1>
+    <button type="button" onclick="window.location.href='/analytics/login'" value="Analytics">Analytics</button>
+</div>
+<!-- Show Log Out button -->
+<% } else { %>
+<div class="flex-row-center">
+    <button type="button" onclick="window.location.href='/analytics'" value="Analytics">Analytics</button>
+    <h1><a href="/">Colorflow Player</a></h1>
+    <button type="button" onclick="window.location.href='/analytics/logout'" value="Log Out">Log Out</button>
+</div>
+<% } %>
 <nav role="navigation">
     <ul>
-        <li><a href="/spotify">Spotify</a></li>
+        <li><a href="/spotify/login">Spotify</a></li>
         <li><a href="/deezer">Deezer</a></li>
     </ul>
 </nav>

@@ -1,27 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title><%- searchQuery %> - Spotify Search - Coverflow Player</title>
+    </head>
 
-<head>
-    <%- include('/views/partials/head') %>
-</head>
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" type="text/css" href="/css/spotify.css" />
+        </header>
 
-<body>
-    <header>
-        <%- include('/views/partials/header') %>
-    </header>
+        <main class="flex-center">
+            <div class="flex-row-center">
+                <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                <h2>Search Results For: <%- searchQuery %></h2>
+            </div>
+            <% if (trackResults.length > 0) { %>
+            <section id="songs">
+                <h3>Songs</h3>
+                <% trackResults.forEach(function(result) { %>
+                <div class="grid-row">
+                    <a href="/spotify/album/<%= result.album.id %>">
+                        <% if (result.album.images[2]) { %>
+                        <img src="<%= result.album.images[2].url %>" />
+                        <% } else { %>
+                        <img src="/img/fallback-imgs/fallback-album.jpg" />
+                        <% } %>
+                    </a>
+                    <h4><%= result.name %></h4>
+                    <a href="/spotify/artist/<%= result.album.artists[0].id %>">
+                        <p><%= result.album.artists[0].name %></p>
+                    </a>
+                    <i class="las la-2x la-play-circle"></i>
+                    <audio>
+                        <source src="<%- result.preview_url %>" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <% }); %>
+            </section>
+            <% } %> <% if (artistResults.length > 0) { %>
+            <section id="artists">
+                <h3>Artists</h3>
+                <div class="grid-row">
+                    <% artistResults.forEach(function(result) { %>
+                    <div class="card">
+                        <a href="/spotify/artist/<%= result.id %>">
+                            <% if (result.images[1]) { %>
+                            <img src="<%= result.images[1].url %>" />
+                            <% } else { %>
+                            <img src="/img/fallback-imgs/fallback-artist.png" />
+                            <% } %>
+                            <h4><%= result.name %></h4>
+                            <p>Artist</p>
+                        </a>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+            <% } %> <% if (trackResults.length > 0) { %>
+            <section id="albums">
+                <h3>Albums</h3>
+                <div class="grid-row">
+                    <% trackResults.forEach(function(result) { %>
+                    <div class="card">
+                        <a href="/spotify/album/<%= result.album.id %>">
+                            <% if (result.album.images[1]) { %>
+                            <img src="<%= result.album.images[1].url %>" />
+                            <% } else { %>
+                            <img src="/img/fallback-imgs/fallback-album.jpg" />
+                            <% } %>
+                            <h4><%= result.album.name %></h4>
+                            <a href="/spotify/artist/<%= result.album.artists[0].id %>">
+                                <p><%= result.album.artists[0].name %></p>
+                            </a>
+                        </a>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+            <% } %> <% if (playlistResults.length > 0) { %>
+            <section id="playlists">
+                <h3>Playlists</h3>
+                <div class="grid-row">
+                    <% playlistResults.forEach(function(result) { %>
+                    <div class="card">
+                        <a href="/spotify/playlist/<%= result.id %>">
+                            <% if (result.images[1]) { %>
+                            <img src="<%= result.images[1].url %>" />
+                            <% } else { %>
+                            <img src="/img/fallback-imgs/fallback-album.jpg" />
+                            <% } %>
+                            <h4><%= result.name %></h4>
+                            <p>By <%= result.owner.display_name %></p>
+                        </a>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+            <% } %>
+        </main>
 
-    <main class="flex-center">
-        <% bookresult.forEach(function(book) { %>
-        <a id="<%= book.best_book.id._ %>" href="/book">
-            <img class="book-result" src="<%= book.best_book.image_url %>">
-            <% }); %>
-        </a>
-    </main>
-
-    <footer>
-        <%- include('/views/partials/footer') %>
-    </footer>
-
-</body>
-
+        <%- include('../../partials/footer') %>
+    </body>
 </html>

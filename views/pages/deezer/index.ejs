@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title>Deezer Search - Coverflow Player</title>
+    </head>
 
-<head>
-    <%- include('../../partials/head') %>
-</head>
+    <body>
+        <header><%- include('../../partials/header') %></header>
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Open+Sans&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" type="text/css" href="/css/deezer.css" />
 
-<body>
-    <header>
-        <%- include('../../partials/header') %>
-    </header>
+        <main class="flex-center">
+            <h2>Search In: Deezer Library</h2>
+            <p>Search for a song, album, artist or playlist in Deezer's content library.</p>
+            <h3>Deezer Content Statistics</h3>
+            <ul>
+                <li>100 million playlists</li>
+                <li>73 million songs</li>
+                <li>Lots of artists</li>
+            </ul>
+            <form id="search-form" action="/deezer/search" method="post">
+                <label for="searchbar">Search</label>
+                <input id="search-bar" name="searchbar" type="search" required />
+                <button type="submit">Search</button>
+            </form>
+        </main>
 
-    <main class="flex-center">
-        <h2>Deezer Coverflow Player</h2>
-        <!-- FUTURE: Add Deezer Intro + Logo? -->
-        <button onclick="window.location.href = '/deezer/album'">View Album</button>
-        <button onclick="window.location.href = '/deezer/artist'">View Artist</button>
-        <!-- FUTURE: Search for different things? -->
-        <button onclick="window.location.href = '/deezer/search'">Search</button>
-    </main>
-
-    <footer>
         <%- include('../../partials/footer') %>
-    </footer>
-
-</body>
-
+    </body>
 </html>

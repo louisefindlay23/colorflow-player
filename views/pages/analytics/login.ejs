@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title>Analytics Login - Colorflow Player</title>
+    </head>
+
+    <body>
+        <header><%- include('../../partials/header') %></header>
+
+        <main class="flex-center">
+            <h2>Login to Access Analytics</h2>
+            <form id="login-form" action="/analytics/login" method="post">
+                <div class="flex-row-around">
+                    <p><%- error %></p>
+                </div>
+                <label for="username">Username:</label>
+                <input name="username" type="text" placeholder="Enter your username" required />
+                <label for="password">Password:</label>
+                <input name="password" type="password" placeholder="Enter your password" required />
+                <button type="submit" value="Login">Login</button>
+            </form>
+        </main>
+
+        <%- include('../../partials/footer') %>
+    </body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <%- include('../../partials/head') %>
-        <title><%- albumInfo.title %> - Deezer Album - Coverflow Player</title>
+        <title><%- playlistInfo.title %> - Deezer Playlist - Coverflow Player</title>
     </head>
 
     <body>
@@ -16,32 +16,34 @@
         </header>
 
         <main class="flex-center" style="background-color: rgb(<%- color %>)">
-            <section id="album">
+            <section id="playlist">
                 <div class="flex-row-center">
                     <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
-                    <h2>Album: <%- albumInfo.title %></h2>
+                    <h2>Playlist: <%- playlistInfo.title %></h2>
                 </div>
-                <p>
-                    <span class="bold">By:</span>
-                    <a href="/deezer/artist/<%- albumInfo.artist.id %>"><%- albumInfo.artist.name %></a>
-                </p>
+                <p><span class="bold">By:</span> <%- playlistInfo.creator.name %></p>
                 <div class="flex-row">
-                    <img
-                        src="/img/analysed-artwork/deezer/album/<%- albumInfo.id %>.png"
-                        alt="<%- albumInfo.name %> cover"
-                    />
+                    <img src="/img/analysed-artwork/deezer/playlist/<%- playlistInfo.id %>.png" />
                 </div>
             </section>
-            <section id="songs">
-                <% albumInfo.tracks.data.forEach(function(track, index) { %>
+            <section id="playlist-songs">
+                <h3>Songs</h3>
+                <% playlistTrackInfo.forEach(function(track, index) { %>
                 <div class="grid-row">
+                    <a href="/deezer/album/<%= track.album.id %>">
+                        <% if (track.album.cover_small) { %>
+                        <img src="<%= track.album.cover_small %>" />
+                        <% } else { %>
+                        <img class="fallback-album" src="/img/fallback-imgs/fallback-album.jpg" />
+                        <% } %>
+                    </a>
                     <p><%- index %></p>
-                    <h4><%= track.title_short %></h4>
+                    <h4><%= track.title %></h4>
                     <a href="/deezer/artist/<%= track.artist.id %>">
                         <p><%= track.artist.name %></p>
                     </a>
                     <i class="las la-2x la-play-circle"></i>
-                    <audio style="background-color: rgb(<%- color %>)">
+                    <audio>
                         <source src="<%- track.preview %>" type="audio/mpeg" />
                     </audio>
                 </div>

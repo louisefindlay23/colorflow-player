@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title><%- playlistInfo.name %> - Spotify Playlist - Coverflow Player</title>
+    </head>
+
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" type="text/css" href="/css/spotify.css" />
+        </header>
+
+        <main class="flex-center" style="background-color: rgb(<%- color %>)">
+            <section id="playlist">
+                <div class="flex-row-center">
+                    <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                    <h2>Playlist: <%- playlistInfo.name %></h2>
+                </div>
+                <p><span class="bold">By:</span> <%- playlistInfo.owner.display_name %></p>
+                <div class="flex-row">
+                    <img src="/img/analysed-artwork/spotify/playlist/<%- playlistInfo.id %>.png" />
+                </div>
+            </section>
+            <section id="playlist-songs">
+                <h3>Songs</h3>
+                <% playlistTrackInfo.forEach(function(track) { %>
+                <div class="grid-row">
+                    <a href="/spotify/album/<%= track.track.album.id %>">
+                        <% if (track.track.album.images[2]) { %>
+                        <img src="<%= track.track.album.images[2].url %>" />
+                        <% } else { %>
+                        <img class="fallback-album" src="/img/fallback-imgs/fallback-album.jpg" />
+                        <% } %>
+                    </a>
+                    <p><%= track.track.track_number %></p>
+                    <h4><%= track.track.name %></h4>
+                    <a href="/spotify/artist/<%= track.track.artists[0].id %>">
+                        <p><%= track.track.artists[0].name %></p>
+                    </a>
+                    <i class="las la-2x la-play-circle"></i>
+                    <audio>
+                        <source src="<%- track.track.preview_url %>" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <% }); %>
+            </section>
+        </main>
+
+        <%- include('../../partials/footer') %>
+    </body>
+</html>

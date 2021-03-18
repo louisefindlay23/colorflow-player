@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title><%- searchQuery %> - Deezer Search - Coverflow Player</title>
+    </head>
+
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link
+                href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Open+Sans&display=swap"
+                rel="stylesheet"
+            />
+            <link rel="stylesheet" type="text/css" href="/css/deezer.css" />
+        </header>
+
+        <main id="search-results" class="flex-center">
+            <div class="flex-row-center">
+                <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                <h2>Search Results For: <%- searchQuery %></h2>
+            </div>
+            <% if (trackResults.length > 0) { %>
+            <section id="songs">
+                <h3>Tracks</h3>
+                <% trackResults.forEach(function(result, index) { %>
+                <div class="grid-row">
+                    <a href="/deezer/album/<%= result.album.id %>">
+                        <% if (result.album.cover_small) { %>
+                        <img src="<%= result.album.cover_small %>" />
+                        <% } else { %>
+                        <img src="/img/fallback-imgs/fallback-album.jpg" />
+                        <% } %>
+                    </a>
+                    <h4><%= result.title_short %></h4>
+                    <a href="/deezer/artist/<%= result.artist.id %>">
+                        <p><%= result.artist.name %></p>
+                    </a>
+                    <i class="las la-2x la-play-circle"></i>
+                    <audio>
+                        <source src="<%- result.preview %>" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <% }); %>
+            </section>
+            <% } %> <% if (playlistResults.length > 0) { %>
+            <section id="playlists">
+                <h3>Playlists</h3>
+                <div class="grid-row">
+                    <% playlistResults.forEach(function(result) { %>
+                    <div class="card">
+                        <a href="/deezer/playlist/<%= result.id %>">
+                            <% if (result.picture_medium) { %>
+                            <img src="<%= result.picture_medium %>" />
+                            <% } else { %>
+                            <img src="/img/fallback-imgs/fallback-album.jpg" />
+                            <% } %>
+                            <h4><%= result.title %></h4>
+                            <p><%= result.nb_tracks %> tracks</p>
+                        </a>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+            <% } %> <% if (trackResults.length > 0) { %>
+            <section id="albums">
+                <h3>Albums</h3>
+                <div class="grid-row">
+                    <% trackResults.forEach(function(result) { %>
+                    <div class="card">
+                        <a href="/deezer/album/<%= result.album.id %>">
+                            <% if (result.album.cover_medium) { %>
+                            <img src="<%= result.album.cover_medium %>" />
+                            <% } else { %>
+                            <img src="/img/fallback-imgs/fallback-album.jpg" />
+                            <% } %>
+                            <h4><%= result.album.title %></h4>
+                            <a href="/deezer/artist/<%= result.artist.id %>">
+                                <p>by <%= result.artist.name %></p>
+                            </a>
+                        </a>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+            <% } %> <% if (artistResults.length > 0) { %>
+            <section id="artists">
+                <h3>Artists</h3>
+                <div class="grid-row">
+                    <% artistResults.forEach(function(result) { %>
+                    <div class="card">
+                        <a href="/deezer/artist/<%= result.id %>">
+                            <% if (result.picture_medium) { %>
+                            <img src="<%= result.picture_medium %>" />
+                            <% } else { %>
+                            <img src="/img/fallback-imgs/fallback-artist.png" />
+                            <% } %>
+                            <h4><%= result.name %></h4>
+                            <% if (result.nb_fan) { %>
+                            <p><%= result.nb_fan %> fans</p>
+                            <% } %>
+                        </a>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+            <% } %>
+        </main>
+
+        <%- include('../../partials/footer') %>
+    </body>
+</html>

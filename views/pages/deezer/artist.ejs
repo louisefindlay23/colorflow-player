@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../../partials/head') %>
+        <title><%- artistInfo.name %> - Deezer Artist - Coverflow Player</title>
+    </head>
+
+    <body>
+        <header>
+            <%- include('../../partials/header') %>
+            <link
+                href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Open+Sans&display=swap"
+                rel="stylesheet"
+            />
+            <link rel="stylesheet" type="text/css" href="/css/deezer.css" />
+        </header>
+
+        <main class="flex-center" style="background-color: rgb(<%- color %>)">
+            <section id="artist">
+                <div class="flex-row-center">
+                    <i class="las la-3x la-arrow-circle-left" onclick="window.history.back();"></i>
+                    <h2>Artist: <%- artistInfo.name %></h2>
+                </div>
+                <div class="flex-row">
+                    <img src="/img/analysed-artwork/deezer/artist/<%- artistInfo.id %>.png" />
+                </div>
+            </section>
+            <section id="artist-stats">
+                <p><span class="bold">Fans:</span> <%- artistInfo.nb_fan %></p>
+            </section>
+            <section id="albums">
+                <h3>Albums</h3>
+                <div class="grid-row">
+                    <% albumInfo.forEach(function(album) { %>
+                    <div class="card">
+                        <a href="/deezer/album/<%= album.id %>">
+                            <% if (album.cover_small) { %>
+                            <img src="<%= album.cover_medium %>" />
+                            <% } else { %>
+                            <img src="/img/fallback-imgs/fallback-album.jpg" />
+                            <% } %>
+                            <h4><%= album.title %></h4>
+                            <a href="/deezer/artist/<%= artistInfo.id %>">
+                                <p><%= artistInfo.name %></p>
+                            </a>
+                        </a>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+        </main>
+
+        <%- include('../../partials/footer') %>
+    </body>
+</html>
