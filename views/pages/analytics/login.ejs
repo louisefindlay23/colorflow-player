@@ -11,20 +11,14 @@
         <main class="flex-center">
             <h2>Login to Access Analytics</h2>
             <form id="login-form" action="/analytics/login" method="post">
-                <div class="flex-around">
+                <div class="flex-row-around">
                     <p><%- error %></p>
                 </div>
-                <div class="flex-around">
-                    <label for="username">Username:</label>
-                    <input name="username" type="text" placeholder="Enter your username" required />
-                </div>
-                <div class="flex-around">
-                    <label for="password">Password:</label>
-                    <input name="password" type="password" placeholder="Enter your password" required />
-                </div>
-                <div class="flex-around">
-                    <button type="submit" value="Login">Login</button>
-                </div>
+                <label for="username">Username:</label>
+                <input name="username" type="text" placeholder="Enter your username" required />
+                <label for="password">Password:</label>
+                <input name="password" type="password" placeholder="Enter your password" required />
+                <button type="submit" value="Login">Login</button>
             </form>
         </main>
 

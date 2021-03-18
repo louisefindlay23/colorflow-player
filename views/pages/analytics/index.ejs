@@ -8,28 +8,32 @@
     <body>
         <header><%- include('../../partials/header') %></header>
 
-        <main class="flex-center no-bottom">
+        <main class="flex-center">
             <h2>Analytics Dashboard</h2>
-            <p>See how the Spotify and Deezer versions of Colorflow Player compare.</p>
+            <div id="intro-text">
+                <p>
+                    See how the Spotify and Deezer versions of Colorflow Player compare as well as overall analytics for
+                    the website. Does Spotify reign supreme or is Deezer's diverse music catalogue more popular?
+                </p>
+                <p>Metrics such as page views and songs plays are available, calculated from every session.</p>
+            </div>
+            <h3>Website Metrics</h3>
+            <% analyticsArray.forEach(function(analytic) { %>
             <ul>
-                <!-- TODO: More metrics  -->
-                <!-- TODO: Fix analytics login form styling + Responsive + iOS -->
-                <!-- Your views vs Others.  -->
-                <!-- Playlists vs Songs vs Album views/plays? -->
-                <!-- Number of Sessions  -->
-                <!-- Session length  -->
-                <% analyticsArray.forEach(function(analytic) { %>
                 <li><span class="bold">Total Page Views: </span><%- analytic.pageViews %></li>
                 <li><span class="bold">Home Page Views: </span><%- analytic.homeViews %></li>
                 <li><span class="bold">Analytics Views: </span><%- analytic.analyticsViews %></li>
+            </ul>
+            <% }); %>
+            <h3>Streaming Service Metrics</h3>
+            <% analyticsArray.forEach(function(analytic) { %>
+            <ul>
                 <li><span class="bold">Spotify Views: </span><%- analytic.spotifyViews %></li>
                 <li><span class="bold">Deezer Views: </span><%- analytic.deezerViews %></li>
                 <li><span class="bold">Spotify Plays: </span><%- analytic.spotifyPlays %></li>
                 <li><span class="bold">Deezer Plays: </span><%- analytic.deezerPlays %></li>
-                <% }); %>
             </ul>
-            <!-- TODO: Reset metrics (current session or all - all analytics or by type?) -->
-            <button type="reset" value="Reset Analytics">Reset Analytics</button>
+            <% }); %>
         </main>
 
         <%- include('../../partials/footer') %>

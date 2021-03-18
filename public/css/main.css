@@ -39,6 +39,15 @@ footer {
 header button {
     display: block;
     position: absolute;
+    background: var(--main-color);
+    color: var(--text-color);
+    border: 3px solid var(--main-color);
+}
+
+header button:hover {
+    background: var(--header-color);
+    color: var(--text-color);
+    border-color: var(--main-color);
 }
 
 header button:first-of-type {
@@ -55,6 +64,7 @@ h3,
 p,
 li,
 a,
+label,
 input[type="search"],
 input[type="search"]:focus {
     color: var(--text-color);
@@ -153,6 +163,14 @@ footer p,
     align-items: center;
 }
 
+.flex-row-around {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 2.5%;
+}
+
 .flex-row-center {
     display: flex;
     flex-flow: row wrap;
@@ -185,7 +203,8 @@ label {
     font-weight: bold;
 }
 
-input[type="search"] {
+input:not(input[type="submit"]) {
+    display: block;
     width: 30vw;
     border: 3px solid var(--main-color);
     margin: 5vh auto;
@@ -207,20 +226,23 @@ button {
     height: auto;
     padding: 1% 2.5%;
     margin: 2.5% auto;
-    border: 3px solid var(--main-color);
-    background: var(--main-color);
-    text-align: center;
+    background: var(--header-color);
     color: var(--text-color);
+    border: 3px solid var(--main-color);
+    text-align: center;
     border-radius: 5px;
     cursor: pointer;
     font-size: 20px;
 }
 
 button:hover {
-    background: var(--header-color);
-    color: var(--text-color);
-    border-color: var(--main-color);
+    background: none;
+    border-color: var(--header-color);
     cursor: pointer;
+}
+
+#login-form button {
+    margin-top: 5%;
 }
 
 /* Utility Classes */
@@ -251,4 +273,9 @@ button:hover {
 
 #intro-text {
     width: 70%;
+    margin-bottom: 2.5%;
+}
+
+main ul:first-of-type {
+    margin-bottom: 2.5%;
 }

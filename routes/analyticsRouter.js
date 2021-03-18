@@ -125,15 +125,15 @@ function isLoggedIn(req, res, next) {
 
 // Analytics Dashboard route
 analyticsRouter.get("/", isLoggedIn, function (req, res) {
-    // Current Session Analytics
-    const currentAnalytics = req.session.analytics[0];
-    // All Sessions Analytics
+    // Get all session analytics from Mongo Session Store Collection
     sessionCollection.find({}).toArray(function (err, result) {
         if (err) {
             console.error(err);
         } else {
+            // Create array to hold calculated totals
             let analyticsArray = [];
             let obj = {};
+            // Create arrays to store the results of each analytic metric
             let totalPageViews = [];
             let totalHomeViews = [];
             let totalAnalyticsViews = [];
@@ -141,6 +141,7 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
             let totalDeezerViews = [];
             let totalSpotifyPlays = [];
             let totalDeezerPlays = [];
+            // Push the results of every session for each metric to its own array
             result.forEach((result) => {
                 const results = JSON.parse(result.session).analytics;
                 totalPageViews.push(results[0].pageViews);
@@ -151,6 +152,7 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
                 totalSpotifyPlays.push(results[0].spotifyPlays);
                 totalDeezerPlays.push(results[0].deezerViews);
             });
+            // Reduce results (add) to get the total for each metric of all sessions
             obj.pageViews = totalPageViews.reduce((a, b) => a + b);
             obj.homeViews = totalHomeViews.reduce((a, b) => a + b);
             obj.analyticsViews = totalAnalyticsViews.reduce((a, b) => a + b);
@@ -158,17 +160,17 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
             obj.deezerViews = totalDeezerViews.reduce((a, b) => a + b);
             obj.spotifyPlays = totalSpotifyPlays.reduce((a, b) => a + b);
             obj.deezerPlays = totalDeezerPlays.reduce((a, b) => a + b);
+            // Finally, push to the overall array to render to EJS template
             analyticsArray.push(obj);
             console.log(analyticsArray);
             res.render("pages/analytics/index", {
                 analyticsArray: analyticsArray,
-                currentAnalytics: currentAnalytics,
             });
         }
     });
 });
 
-// Add analytics route
+// Update Analytics route
 analyticsRouter.post("/", function (req, res) {
     // Passport Session Analytics
     if (!req.session.analytics || !req.session.analytics[0]) {
