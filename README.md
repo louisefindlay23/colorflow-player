@@ -34,21 +34,24 @@ Chris Banes created an [Android utility](https://chris.banes.dev/colour-matching
 ### Dependencies
 
 -   [Express](https://expressjs.com) - Node.js Web Server
--   [Express Session]() - Session
+-   [Express Session](https://github.com/expressjs/session) - Creates session to track analytics and save user logins
+-   [connect-mongo](https://www.npmjs.com/package/connect-mongo) - Use MongoDB Database as permanent session storage so analytics can be retrieved from all sessions
 -   [EJS](https://ejs.co) - Templating Language
+
+-   [PassportJS](http://www.passportjs.org) - Passport allows to easily authenticate users via a variety of strategies
+-   [Passport-Local](https://github.com/jaredhanson/passport-local) - Passport Local Strategy to authenticate users via username and password to view analytics
+-   [bcrypt](https://www.npmjs.com/package/bcrypt) - Salts and hashes user passwords before they are stored in the database
+
 -   [Spotify Web API Node](https://github.com/thelinmichael/spotify-web-api-node) - Node.js Spotify API Wrapper
--   [Deezer Public API]() - Deezer Public API Wrapper (Parts of the Deezer API where users don't need to log in)
--   [Color Thief Node](https://lokeshdhakar.com/projects/color-thief) - Analyse colours from an image to generate background color
--   [bcrypt]() - Salts and hashes user passwords
--   [connect-mongo]() - Use MongoDB Database as permanent session storage
--   [dotenv]() - Securely store environment variables
--   [fs]() - Filesystem module to download images
--   [Mongo] - Node.js driver to interact with MongoDB Database
--   [node-fetch]() - Fetch artwork to be downloaded
--   [Passport]() - Passport
--   [Passport-Local]() - Passport Local
+-   [Deezer Public API](https://github.com/zaosoula/deezer-public-api) - Node.js Deezer Public API Wrapper (Parts of the Deezer API where users don't need to log in)
+-   [Color Thief Node](https://lokeshdhakar.com/projects/color-thief) - Analyses colours from album artwork, playlist artwork and artist images to generate background color
+
+-   [dotenv](https://www.npmjs.com/package/dotenv) - Securely store environment variables such as API keys and DB details
+-   [fs] - Used to download artwork images to the server filesystem so Color Thief can analyse them. The downloaded artwork/images are then used on the album/artist/playlist pages to avoid waiting for them remotely. Stored in `public/img/analysed-artwork`. Images are separated by streaming service and then by type. Fallbacks are provided in `public/img/fallback-imgs` if there is no image available.
+-   [MongoDB](https://www.npmjs.com/package/mongodb) - Node.js driver to interact with MongoDB Database. The database is used as a permanent session store and for users (usernames and hashed passwords.)
+-   [node-fetch](https://www.npmjs.com/package/node-fetch) - Node.js version of Fetch to download artwork from remote URLs
 
 ## Dev Dependencies
 
--   [Nodemon]() - Live reloads Node server when server-side code changes
--   [Livereload]() - Live reload for client-side code
+-   [Nodemon](https://www.npmjs.com/package/nodemon) - Live reloads Node server when server-side code changes
+-   [node-livereload](https://www.npmjs.com/package/livereload) - Live reload for client-side code
