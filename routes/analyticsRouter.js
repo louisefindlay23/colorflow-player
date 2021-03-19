@@ -116,7 +116,7 @@ function isLoggedIn(req, res, next) {
     if (req.session.user !== undefined) {
         next();
     } else {
-        req.session.error = "You are not logged in";
+        req.session.loginError = "You are not logged in";
         res.redirect("/analytics/login");
     }
 }
@@ -233,18 +233,71 @@ analyticsRouter.post("/", function (req, res) {
     });
 });
 
+// Reset Analytics route
+analyticsRouter.delete("/", function (req, res) {
+    req.logout();
+    req.session.destroy(function (err) {
+        if (err) {
+            req.session.loginError = "Error destroying session " + err;
+        }
+    });
+    res.locals.loggedIn = false;
+    sessionCollection
+        .deleteMany({})
+        .then((result) => {
+            res.send({
+                status: 200,
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+});
+
+// Register Routes
+
+// Register Form
+analyticsRouter.get("/register", function (req, res) {
+    let error = null;
+    // Show login errors to the user
+    if (req.session.registerError) {
+        error = req.session.registerError;
+        delete req.session.registerError;
+    }
+    res.render("pages/analytics/register", { error: error });
+});
+
+// Register User
+analyticsRouter.post("/register", function (req, res) {
+    bcrypt.hash(req.body.password, 10, function (err, hash) {
+        if (err) {
+            req.session.registerError = "Error hashing password " + err;
+            res.redirect("/analytics/register");
+        } else {
+            const user = { username: req.body.username, password: hash };
+            userCollection.insertOne(user, function (err, result) {
+                if (err) {
+                    req.session.registerError = "Error inserting user into database " + err;
+                } else {
+                    res.redirect("/analytics/login");
+                }
+            });
+        }
+    });
+});
+
 // Login Routes
 
 // Login Form
 analyticsRouter.get("/login", function (req, res) {
     let error = null;
     // Show login errors to the user
-    if (req.session.error) {
-        error = req.session.error;
+    if (req.session.loginError) {
+        error = req.session.loginError;
     }
     res.render("pages/analytics/login", { error: error });
-    if (req.session.error) {
-        delete req.session.error;
+    if (req.session.loginError) {
+        delete req.session.loginError;
     }
 });
 
@@ -253,10 +306,10 @@ analyticsRouter.post("/login", function (req, res, next) {
     passport.authenticate("local", function (err, user, message) {
         if (err || user === false) {
             if (err) {
-                req.session.error = "Error authenticating username " + err;
+                req.session.loginError = "Error authenticating username " + err;
             }
             // Store login errors in a session object
-            req.session.error = message.message;
+            req.session.loginError = message.message;
             res.redirect("/analytics/login");
         } else {
             req.logIn(user, function (err) {
@@ -274,7 +327,7 @@ analyticsRouter.get("/logout", function (req, res) {
     req.logout();
     req.session.destroy(function (err) {
         if (err) {
-            req.session.error = "Error destroying session " + err;
+            req.session.loginError = "Error destroying session " + err;
             res.redirect("/analytics/login");
         }
     });
@@ -291,6 +344,24 @@ analyticsRouter.get("/logout", function (req, res) {
     } else {
         res.redirect("/analytics/login");
     }
+});
+
+analyticsRouter.get("/delete-account", function (req, res) {
+    const currentUser = { username: req.session.user.username };
+    req.logout();
+    req.session.destroy(function (err) {
+        if (err) {
+            req.session.registerError = "Error destroying session " + err;
+        }
+    });
+    res.locals.loggedIn = false;
+    userCollection.deleteOne(currentUser, function (err, result) {
+        if (err) {
+            console.error(err);
+        } else {
+            res.redirect("/analytics/register");
+        }
+    });
 });
 
 module.exports = analyticsRouter;
