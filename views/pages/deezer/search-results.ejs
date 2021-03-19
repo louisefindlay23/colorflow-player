@@ -24,23 +24,25 @@
             <section id="songs">
                 <h3>Tracks</h3>
                 <% trackResults.forEach(function(result, index) { %>
-                <div class="grid-row">
-                    <a href="/deezer/album/<%= result.album.id %>">
-                        <% if (result.album.cover_small) { %>
-                        <img src="<%= result.album.cover_small %>" />
-                        <% } else { %>
-                        <img src="/img/fallback-imgs/fallback-album.jpg" />
-                        <% } %>
-                    </a>
-                    <h4><%= result.title_short %></h4>
-                    <a href="/deezer/artist/<%= result.artist.id %>">
-                        <p><%= result.artist.name %></p>
-                    </a>
-                    <i class="las la-2x la-play-circle"></i>
-                    <audio>
-                        <source src="<%- result.preview %>" type="audio/mpeg" />
-                    </audio>
-                </div>
+                    <% if (result.preview) { %>
+                        <div class="grid-row">
+                            <a href="/deezer/album/<%= result.album.id %>">
+                                <% if (result.album.cover_small) { %>
+                                <img src="<%= result.album.cover_small %>" />
+                                <% } else { %>
+                                <img src="/img/fallback-imgs/fallback-album.jpg" />
+                                <% } %>
+                            </a>
+                            <h4><%= result.title_short %></h4>
+                            <a href="/deezer/artist/<%= result.artist.id %>">
+                                <p><%= result.artist.name %></p>
+                            </a>
+                            <i class="las la-2x la-play-circle"></i>
+                            <audio>
+                                <source src="<%- result.preview %>" type="audio/mpeg" />
+                            </audio>
+                        </div>
+                    <% } %>
                 <% }); %>
             </section>
             <% } %> <% if (playlistResults.length > 0) { %>
