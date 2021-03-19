@@ -150,7 +150,7 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
                 totalSpotifyViews.push(results[0].spotifyViews);
                 totalDeezerViews.push(results[0].deezerViews);
                 totalSpotifyPlays.push(results[0].spotifyPlays);
-                totalDeezerPlays.push(results[0].deezerViews);
+                totalDeezerPlays.push(results[0].deezerPlays);
             });
             // Reduce results (add) to get the total for each metric of all sessions
             obj.pageViews = totalPageViews.reduce((a, b) => a + b);
@@ -162,7 +162,6 @@ analyticsRouter.get("/", isLoggedIn, function (req, res) {
             obj.deezerPlays = totalDeezerPlays.reduce((a, b) => a + b);
             // Finally, push to the overall array to render to EJS template
             analyticsArray.push(obj);
-            console.log(analyticsArray);
             res.render("pages/analytics/index", {
                 analyticsArray: analyticsArray,
             });
@@ -210,7 +209,7 @@ analyticsRouter.post("/", function (req, res) {
             } else if (referrerpath.includes("/spotify")) {
                 obj.spotifyViews = obj.spotifyViews + 1;
             } else if (referrerpath.includes("/deezer")) {
-                obj.deezerViews = req.session.analytics.deezerViews + 1;
+                obj.deezerViews = obj.deezerViews + 1;
             }
         }
         // Add song plays
