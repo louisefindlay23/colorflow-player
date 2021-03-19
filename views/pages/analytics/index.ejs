@@ -34,6 +34,11 @@
                 <li><span class="bold">Deezer Plays: </span><%- analytic.deezerPlays %></li>
             </ul>
             <% }); %>
+            <p>Note: Resetting analytics will log you out</p>
+            <button type="button" onclick="resetAnalytics()" value="Reset Analytics">Reset Analytics</button>
+            <button type="button" onclick="window.location.href='/analytics/delete-account'" value="Delete Account">
+                Delete Account
+            </button>
         </main>
 
         <%- include('../../partials/footer') %>

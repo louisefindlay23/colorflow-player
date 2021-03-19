@@ -6,10 +6,12 @@ const mongo = new MongoClient(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
+let database = null;
 let userCollection = null;
 let sessionCollection = null;
 
 mongo.connect((err, result) => {
+    database = result.db(process.env.DB_NAME);
     userCollection = result.db(process.env.DB_NAME).collection(process.env.DB_USER_COLLECTION);
     sessionCollection = result.db(process.env.DB_NAME).collection(process.env.DB_SESSION_COLLECTION);
 
@@ -233,6 +235,51 @@ analyticsRouter.post("/", function (req, res) {
     });
 });
 
+// Reset Analytics route
+analyticsRouter.delete("/", function (req, res) {
+    database.dropCollection(sessionCollection, function (err, result) {
+        if (err) {
+            console.error(err);
+        } else {
+            console.info(result);
+        }
+        res.redirect("/login");
+    });
+});
+
+// Register Routes
+
+// Register Form
+analyticsRouter.get("/register", function (req, res) {
+    let error = null;
+    // Show login errors to the user
+    if (req.session.registerError) {
+        error = req.session.registerError;
+        delete req.session.registerError;
+    }
+    res.render("pages/analytics/register", { error: error });
+});
+
+// Register User
+analyticsRouter.post("/register", function (req, res) {
+    bcrypt.hash(req.body.password, 10, function (err, hash) {
+        if (err) {
+            req.session.registerError = "Error hashing password " + err;
+            res.redirect("/analytics/register");
+        } else {
+            console.info(hash);
+            const user = { username: req.body.username, password: hash };
+            userCollection.insertOne(user, function (err, result) {
+                if (err) {
+                    req.session.registerError = "Error inserting user into database " + err;
+                } else {
+                    res.redirect("/analytics/login");
+                }
+            });
+        }
+    });
+});
+
 // Login Routes
 
 // Login Form
@@ -291,6 +338,25 @@ analyticsRouter.get("/logout", function (req, res) {
     } else {
         res.redirect("/analytics/login");
     }
+});
+
+analyticsRouter.get("/delete-account", function (req, res) {
+    req.logout();
+    req.session.destroy(function (err) {
+        if (err) {
+            req.session.error = "Error destroying session " + err;
+        }
+    });
+    res.locals.loggedIn = false;
+    const currentUser = { _id: req.session.user._id };
+    userCollection.deleteOne(currentUser, function (err, result) {
+        if (err) {
+            console.error(err);
+        } else {
+            console.info(result);
+            res.redirect("/analytics/register");
+        }
+    });
 });
 
 module.exports = analyticsRouter;
