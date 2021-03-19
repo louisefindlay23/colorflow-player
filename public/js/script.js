@@ -92,7 +92,7 @@ function adaptiveBackground() {
         // If background is dark, change text to white
         if (lightOrDark(artworkColor) === "dark") {
             const adaptiveElements = document.querySelectorAll(
-                "main h2, main h3, main a, main p, main h4, .la-arrow-circle-left, .la-play-circle, .la-pause-circle, #songs .flex-row"
+                "main h2, main h3, main a, main p, main h4, .la-arrow-circle-left, .la-play-circle, .la-pause-circle, #songs .grid-row"
             );
             adaptiveElements.forEach((element) => {
                 element.style.color = "#ffffff";
