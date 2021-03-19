@@ -6,12 +6,10 @@ const mongo = new MongoClient(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-let database = null;
 let userCollection = null;
 let sessionCollection = null;
 
 mongo.connect((err, result) => {
-    database = result.db(process.env.DB_NAME);
     userCollection = result.db(process.env.DB_NAME).collection(process.env.DB_USER_COLLECTION);
     sessionCollection = result.db(process.env.DB_NAME).collection(process.env.DB_SESSION_COLLECTION);
 
@@ -118,7 +116,7 @@ function isLoggedIn(req, res, next) {
     if (req.session.user !== undefined) {
         next();
     } else {
-        req.session.error = "You are not logged in";
+        req.session.loginError = "You are not logged in";
         res.redirect("/analytics/login");
     }
 }
@@ -237,13 +235,18 @@ analyticsRouter.post("/", function (req, res) {
 
 // Reset Analytics route
 analyticsRouter.delete("/", function (req, res) {
-    database.dropCollection(sessionCollection, function (err, result) {
+    req.logout();
+    req.session.destroy(function (err) {
+        if (err) {
+            req.session.loginError = "Error destroying session " + err;
+        }
+    });
+    res.locals.loggedIn = false;
+    sessionCollection.deleteMany({}, function (err, result) {
         if (err) {
             console.error(err);
-        } else {
-            console.info(result);
         }
-        res.redirect("/login");
+        res.redirect("/analytics/login");
     });
 });
 
@@ -267,7 +270,6 @@ analyticsRouter.post("/register", function (req, res) {
             req.session.registerError = "Error hashing password " + err;
             res.redirect("/analytics/register");
         } else {
-            console.info(hash);
             const user = { username: req.body.username, password: hash };
             userCollection.insertOne(user, function (err, result) {
                 if (err) {
@@ -286,12 +288,12 @@ analyticsRouter.post("/register", function (req, res) {
 analyticsRouter.get("/login", function (req, res) {
     let error = null;
     // Show login errors to the user
-    if (req.session.error) {
-        error = req.session.error;
+    if (req.session.loginError) {
+        error = req.session.loginError;
     }
     res.render("pages/analytics/login", { error: error });
-    if (req.session.error) {
-        delete req.session.error;
+    if (req.session.loginError) {
+        delete req.session.loginError;
     }
 });
 
@@ -300,10 +302,10 @@ analyticsRouter.post("/login", function (req, res, next) {
     passport.authenticate("local", function (err, user, message) {
         if (err || user === false) {
             if (err) {
-                req.session.error = "Error authenticating username " + err;
+                req.session.loginError = "Error authenticating username " + err;
             }
             // Store login errors in a session object
-            req.session.error = message.message;
+            req.session.loginError = message.message;
             res.redirect("/analytics/login");
         } else {
             req.logIn(user, function (err) {
@@ -321,7 +323,7 @@ analyticsRouter.get("/logout", function (req, res) {
     req.logout();
     req.session.destroy(function (err) {
         if (err) {
-            req.session.error = "Error destroying session " + err;
+            req.session.loginError = "Error destroying session " + err;
             res.redirect("/analytics/login");
         }
     });
@@ -341,12 +343,11 @@ analyticsRouter.get("/logout", function (req, res) {
 });
 
 analyticsRouter.get("/delete-account", function (req, res) {
-    console.log(req.session.user.username);
     const currentUser = { username: req.session.user.username };
     req.logout();
     req.session.destroy(function (err) {
         if (err) {
-            req.session.error = "Error destroying session " + err;
+            req.session.registerError = "Error destroying session " + err;
         }
     });
     res.locals.loggedIn = false;
