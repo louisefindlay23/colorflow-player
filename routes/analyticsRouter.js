@@ -242,12 +242,16 @@ analyticsRouter.delete("/", function (req, res) {
         }
     });
     res.locals.loggedIn = false;
-    sessionCollection.deleteMany({}, function (err, result) {
-        if (err) {
+    sessionCollection
+        .deleteMany({})
+        .then((result) => {
+            res.send({
+                status: 200,
+            });
+        })
+        .catch((err) => {
             console.error(err);
-        }
-        res.redirect("/analytics/login");
-    });
+        });
 });
 
 // Register Routes

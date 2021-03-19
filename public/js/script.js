@@ -136,7 +136,11 @@ function resetAnalytics() {
     fetch(window.location.origin + "/analytics", {
         method: "DELETE",
         mode: "same-origin",
-    }).catch((err) => {
-        console.error(err);
-    });
+    })
+        .then((response) => {
+            window.location.pathname = "/analytics/login";
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 }
