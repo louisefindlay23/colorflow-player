@@ -51,11 +51,11 @@ Chris Banes created an [Android utility](https://chris.banes.dev/colour-matching
 -   [Color Thief Node](https://lokeshdhakar.com/projects/color-thief) - Analyses colours from album artwork, playlist artwork and artist images to generate background color
 
 -   [dotenv](https://www.npmjs.com/package/dotenv) - Securely store environment variables such as API keys and DB details
--   [fs] - Used to download artwork images to the server filesystem so Color Thief can analyse them. The downloaded artwork/images are then used on the album/artist/playlist pages to avoid waiting for them remotely. Stored in `public/img/analysed-artwork`. Images are separated by streaming service and then by type. Fallbacks are provided in `public/img/fallback-imgs` if there is no image available.
+-   fs - Used to download artwork images to the server filesystem so Color Thief can analyse them. The downloaded artwork/images are then used on the album/artist/playlist pages to avoid waiting for them remotely. Stored in `public/img/analysed-artwork`. Images are separated by streaming service and then by type. Fallbacks are provided in `public/img/fallback-imgs` if there is no image available.
 -   [MongoDB](https://www.npmjs.com/package/mongodb) - Node.js driver to interact with MongoDB Database. The database is used as a permanent session store and for users (usernames and hashed passwords.)
 -   [node-fetch](https://www.npmjs.com/package/node-fetch) - Node.js version of Fetch to download artwork from remote URLs
 
-## Dev Dependencies
+### Dev Dependencies
 
 `npm start` runs the web app and `npm run server` starts the live-reload development server using the below NPM modules.
 
