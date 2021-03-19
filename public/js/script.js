@@ -28,11 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Play/Pause Audio and Change Icon accordingly
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("#songs i").forEach((playButton) => {
+    document.querySelectorAll(".grid-row i").forEach((playButton) => {
         playButton.addEventListener("click", (e) => {
             const audio = e.target.nextElementSibling;
             if (audio.paused) {
-                document.querySelectorAll("#songs audio").forEach((track) => {
+                document.querySelectorAll("audio").forEach((track) => {
                     if (!track.paused) {
                         track.pause();
                         track.previousElementSibling.classList.remove("la-pause-circle");
@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.pathname.includes("playlist")
     ) {
         adaptiveBackground();
+        noSongs();
     }
 });
 
@@ -98,6 +99,29 @@ function adaptiveBackground() {
                 element.style.color = "#ffffff";
                 element.style.borderColor = "#ffffff";
             });
+        }
+    }
+}
+
+// Display message if no songs with previews
+function noSongs() {
+    let songs = document.getElementById("songs");
+    if (window.location.pathname.includes("playlist")) {
+        songs = document.getElementById("playlist-songs");
+        if (songs.children.length < 2) {
+            const para = document.createElement("p");
+            para.classList.add("flex-row-around");
+            const newContent = document.createTextNode("Sorry. There are no songs available with 30s previews");
+            para.append(newContent);
+            songs.append(para);
+        }
+    } else {
+        if (songs.children.length === 0) {
+            const para = document.createElement("p");
+            para.classList.add("flex-row-around");
+            const newContent = document.createTextNode("Sorry. There are no songs available with 30s previews");
+            para.append(newContent);
+            songs.append(para);
         }
     }
 }

@@ -29,24 +29,26 @@
             <section id="playlist-songs">
                 <h3>Songs</h3>
                 <% playlistTrackInfo.forEach(function(track, index) { %>
-                <div class="grid-row">
-                    <a href="/deezer/album/<%= track.album.id %>">
-                        <% if (track.album.cover_small) { %>
-                        <img src="<%= track.album.cover_small %>" />
-                        <% } else { %>
-                        <img class="fallback-album" src="/img/fallback-imgs/fallback-album.jpg" />
-                        <% } %>
-                    </a>
-                    <p><%- index %></p>
-                    <h4><%= track.title %></h4>
-                    <a href="/deezer/artist/<%= track.artist.id %>">
-                        <p><%= track.artist.name %></p>
-                    </a>
-                    <i class="las la-2x la-play-circle"></i>
-                    <audio>
-                        <source src="<%- track.preview %>" type="audio/mpeg" />
-                    </audio>
-                </div>
+                    <% if (track.preview) { %>
+                        <div class="grid-row">
+                            <a href="/deezer/album/<%= track.album.id %>">
+                                <% if (track.album.cover_small) { %>
+                                <img src="<%= track.album.cover_small %>" />
+                                <% } else { %>
+                                <img class="fallback-album" src="/img/fallback-imgs/fallback-album.jpg" />
+                                <% } %>
+                            </a>
+                            <p><%- index %></p>
+                            <h4><%= track.title %></h4>
+                            <a href="/deezer/artist/<%= track.artist.id %>">
+                                <p><%= track.artist.name %></p>
+                            </a>
+                            <i class="las la-2x la-play-circle"></i>
+                            <audio>
+                                <source src="<%- track.preview %>" type="audio/mpeg" />
+                            </audio>
+                        </div>
+                    <% } %>
                 <% }); %>
             </section>
         </main>
