@@ -61,14 +61,16 @@ footer p {
 }
 
 /* Spotify Form Styling */
-input[type="search"],
-button {
+input:not(input[type="submit"]),
+button,
+header button {
     background: var(--accent-color);
     border-color: var(--text-color);
 }
 
 input[type="search"]:focus,
-button:hover {
+button:hover,
+header button:hover {
     background: var(--text-color);
     border-color: var(--accent-color);
     color: var(--accent-color);
