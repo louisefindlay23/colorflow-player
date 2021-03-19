@@ -341,6 +341,8 @@ analyticsRouter.get("/logout", function (req, res) {
 });
 
 analyticsRouter.get("/delete-account", function (req, res) {
+    console.log(req.session.user.username);
+    const currentUser = { username: req.session.user.username };
     req.logout();
     req.session.destroy(function (err) {
         if (err) {
@@ -348,12 +350,10 @@ analyticsRouter.get("/delete-account", function (req, res) {
         }
     });
     res.locals.loggedIn = false;
-    const currentUser = { _id: req.session.user._id };
     userCollection.deleteOne(currentUser, function (err, result) {
         if (err) {
             console.error(err);
         } else {
-            console.info(result);
             res.redirect("/analytics/register");
         }
     });
