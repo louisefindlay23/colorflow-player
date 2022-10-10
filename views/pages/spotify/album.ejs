@@ -3,6 +3,19 @@
     <head>
         <%- include('../../partials/head') %>
         <title><%- albumInfo.name %> - Spotify Album - Coverflow Player</title>
+        <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "MusicAlbum",
+              "byArtist": {
+                "@type": "MusicGroup",
+                "name": "<%- albumInfo.artists[0].name %>"
+              },
+              "image": "/img/analysed-artwork/spotify/album/<%- albumInfo.id %>.png",
+              "name": "<%- albumInfo.name %>",
+              "url": "/spotify/album/<%- albumInfo.id %>"
+            }
+            </script>
     </head>
 
     <body>
